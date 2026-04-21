@@ -48,15 +48,15 @@ export default function Home() {
           </p>
 
           <h1
-            className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(3.2rem,10vw,8.8rem)] leading-[0.94] text-[var(--color-cream)] sm:leading-[0.9]"
+            className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(2.8rem,8vw,7rem)] leading-[0.98] text-[var(--color-cream)] sm:leading-[0.94]"
             data-reveal
           >
             <span className="block text-[var(--color-red)] [text-shadow:0_0_60px_rgba(200,16,46,0.5)]">
-              Queen City
+              UNC Charlotte&apos;s
             </span>
-            <span className="block">Ishaare</span>
+            <span className="block">Premier Bollywood</span>
             <span className="block text-transparent opacity-60 [-webkit-text-stroke:1px_var(--color-cream)] sm:[-webkit-text-stroke:2px_var(--color-cream)]">
-              On Stage
+              Fusion Dance Team
             </span>
           </h1>
 
@@ -73,8 +73,8 @@ export default function Home() {
             className="reveal-on-scroll reveal-delay-3 mt-6 max-w-xl text-[0.95rem] leading-8 text-[var(--color-muted)] sm:text-base"
             data-reveal
           >
-            {siteMeta.tagline}, blending classical Indian movement with hip-hop, contemporary, and
-            full-cast storytelling built for campus showcases and competition weekends.
+            Queen City Ishaare brings Bollywood fusion, hip-hop, contemporary, and South Asian
+            stage energy together for campus showcases, community events, and competition weekends.
           </p>
 
           <div className="reveal-on-scroll reveal-delay-3 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
@@ -240,7 +240,7 @@ export default function Home() {
                 Join the Team
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Spring Auditions <span className="text-[var(--color-red)]">Coming Soon</span>
+                Fall Auditions <span className="text-[var(--color-red)]">Coming Soon</span>
               </h2>
             </div>
           </div>

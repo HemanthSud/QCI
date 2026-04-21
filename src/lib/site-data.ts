@@ -1,9 +1,9 @@
 export const siteMeta = {
   name: "Queen City Ishaare",
   shortName: "QCI",
-  tagline: "UNC Charlotte's premier Bollywood dance team",
+  tagline: "UNC Charlotte's premier Bollywood fusion dance team",
   description:
-    "UNC Charlotte's premier Bollywood dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
+    "UNC Charlotte's premier Bollywood fusion dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
   email: "qcishaare25@gmail.com",
   instagram: "https://www.instagram.com/queencity_ishaare/",
   donateUrl:
