@@ -3,6 +3,7 @@ import { Abril_Fatface, Bebas_Neue, DM_Sans } from "next/font/google";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { SiteEffects } from "@/components/site-effects";
+import { AuthProvider } from "@/components/auth-context";
 import { siteMeta } from "@/lib/site-data";
 
 import "./globals.css";
@@ -48,12 +49,14 @@ export default function RootLayout({
       lang="en"
     >
       <body suppressHydrationWarning>
-        <SiteEffects />
-        <div className="site-shell flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="relative z-10 flex-1">{children}</main>
-          <SiteFooter />
-        </div>
+        <AuthProvider>
+          <SiteEffects />
+          <div className="site-shell flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="relative z-10 flex-1">{children}</main>
+            <SiteFooter />
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

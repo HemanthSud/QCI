@@ -5,11 +5,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { navLinks, siteMeta } from "@/lib/site-data";
+import { useAuth } from "@/components/auth-context";
 
 import { Container } from "./ui";
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,6 +63,14 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
+            {!loading && (
+              <Link
+                href={user ? "/members" : "/auth"}
+                className="shrink-0 border border-[rgba(242,237,228,0.12)] bg-[rgba(255,255,255,0.03)] px-3 py-2 font-accent text-[0.72rem] uppercase tracking-[0.16em] text-[rgba(242,237,228,0.78)] transition hover:border-[var(--color-gold)] hover:text-[var(--color-gold)] sm:px-4 sm:text-[0.78rem] md:text-[0.82rem]"
+              >
+                {user ? "Members" : "Login"}
+              </Link>
+            )}
           </nav>
         </div>
       </Container>
