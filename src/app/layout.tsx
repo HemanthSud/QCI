@@ -47,7 +47,16 @@ export default function RootLayout({
       className={`${dmSans.variable} ${abrilFatface.variable} ${bebasNeue.variable}`}
       data-scroll-behavior="smooth"
       lang="en"
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'try{var theme=localStorage.getItem("qci-theme");if(theme==="light"){document.documentElement.dataset.theme="light";}}catch(error){}',
+          }}
+        />
+      </head>
       <body suppressHydrationWarning>
         <AuthProvider>
           <SiteEffects />

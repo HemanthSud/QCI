@@ -3,7 +3,7 @@ export const siteMeta = {
   shortName: "QCI",
   tagline: "UNCC's Premier Bollywood Fusion Dance Team",
   description:
-    "UNCC's Premier Bollywood Dance Team, Blending South Asian styles, sharp storytelling, and full-cast stage energy.",
+    "UNCC's premier Bollywood fusion dance team.",
   email: "qcishaare25@gmail.com",
   instagram: "https://www.instagram.com/queencity_ishaare/",
   donateUrl:
@@ -15,6 +15,7 @@ export const siteMeta = {
 };
 
 export const navLinks = [
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/gallery", label: "Gallery" },
   { href: "/calendar", label: "Calendar" },
@@ -67,45 +68,63 @@ export const homeStoryStats = [
 export const homePhotoStrip = [
   {
     caption: "NASHA Showcase",
+    src: "/gallery/nasha/nasha-01.jpg",
     position: "50% 18%",
   },
   {
     caption: "Jersey Jalwa",
+    src: "/gallery/jalwa/jalwa-08.jpg",
     position: "50% 38%",
   },
   {
-    caption: "Disco Night",
+    caption: "NASHA Showcase",
+    src: "/gallery/nasha/nasha-12.jpg",
     position: "50% 56%",
   },
   {
-    caption: "Fall SZN Recap",
+    caption: "Jersey Jalwa",
+    src: "/gallery/jalwa/jalwa-22.jpg",
     position: "50% 28%",
   },
 ] as const;
 
+function makeGalleryImages(folder: "jalwa" | "nasha", label: string, count: number) {
+  return Array.from({ length: count }, (_, index) => {
+    const photoNumber = String(index + 1).padStart(2, "0");
+
+    return {
+      alt: `${label} photo ${index + 1}`,
+      src: `/gallery/${folder}/${folder}-${photoNumber}.jpg`,
+    };
+  });
+}
+
+export const jalwaImages = makeGalleryImages("jalwa", "Jersey Jalwa", 34);
+export const nashaImages = makeGalleryImages("nasha", "NASHA Showcase", 27);
+
 export const homeEventHighlights = [
   {
-    badge: "Finalist Stage",
+    badge: "Competition",
     meta: "2026",
     title: "South Asian Showdown",
     date: "February 28, 2026",
-    detail: "National finalist season",
+    detail: "Finalist stage",
     location: "Boston, Massachusetts",
   },
   {
-    badge: "Podium",
-    meta: "3rd",
+    badge: "Competition",
+    meta: "2026",
     title: "Jersey Jalwa",
-    date: "February 2025",
-    detail: "Competition circuit milestone",
+    date: "This season",
+    detail: "Competition weekend",
     location: "New Jersey",
   },
   {
-    badge: "Campus Night",
-    meta: "2025",
-    title: "UNCC Back-to-School Bash",
-    date: "August 23, 2025",
-    detail: "Co-presented student event",
+    badge: "Showcase",
+    meta: "2026",
+    title: "NASHA Showcase",
+    date: "This season",
+    detail: "Season stage",
     location: "Charlotte, North Carolina",
   },
 ] as const;
@@ -236,50 +255,42 @@ export const recognitionSlides = [
 export const historyTimeline = [
   {
     year: "2017",
-    title: "Public circuit appearances begin showing up",
-    description:
-      "The earliest public competition lineups we found place Queen City Ishaare in the Southeast collegiate dance circuit, including ATL Tamasha.",
+    title: "Early circuit years",
+    description: "QCI shows up in the Southeast collegiate dance circuit.",
   },
   {
     year: "2019",
-    title: "Charlotte footprint gets louder",
-    description:
-      "By CLT Pulse season, QCI was already being described publicly as UNCC's competitive Bollywood team and a visible part of the regional scene.",
+    title: "Charlotte presence",
+    description: "The team keeps building a visible regional footprint.",
   },
   {
     year: "2025",
-    title: "A season built on fundraising and podium momentum",
-    description:
-      "Public fundraiser pages and music listings tie QCI to a national competition push, including a documented third-place finish at Jersey Jalwa 2025.",
+    title: "Podium momentum",
+    description: "Jersey Jalwa marks a major recent competition moment.",
   },
   {
     year: "2026",
-    title: "National finalist stage",
-    description:
-      "Queen City Ishaare was listed among the ten teams selected for South Asian Showdown 2026 in Boston, a major moment in the current era of the team.",
+    title: "Finalist stage",
+    description: "South Asian Showdown brings the current era to Boston.",
   },
 ];
 
 export const aboutPillars = [
   {
-    title: "Culture with edge",
-    description:
-      "South Asian forms stay at the center while each routine pushes into fresh textures, musical transitions, and visual risk.",
+    title: "Fusion",
+    description: "Bollywood roots with hip-hop, contemporary, classical, and South Asian styles.",
   },
   {
-    title: "Student-run by design",
-    description:
-      "The team runs on captains, choreographers, logistics leads, fundraising, PR, and people willing to stay after practice until the details hit.",
+    title: "Student-run",
+    description: "Captains, choreographers, production, fundraising, and PR all run through the team.",
   },
   {
-    title: "Performance as community",
-    description:
-      "QCI lives in the overlap between campus culture, friendship, competition weekends, and the wider South Asian creative circuit.",
+    title: "Competition",
+    description: "Rehearsals, clean-up, travel, costumes, and stage weekends drive the season.",
   },
   {
-    title: "Big-stage discipline",
-    description:
-      "Travel, costumes, music mixes, prop strategy, and full-cast spacing all matter just as much as the final eight-count on stage.",
+    title: "Community",
+    description: "Campus performances, showcases, and fundraisers keep QCI connected to Charlotte.",
   },
 ];
 
@@ -309,45 +320,38 @@ export const teamStructure = [
 export const fundingUses = [
   {
     title: "Travel & lodging",
-    description:
-      "Flights, gas, hotels, and all the movement it takes to get a student team to out-of-state competitions.",
+    description: "Gas, flights, hotels, and competition weekend travel.",
   },
   {
     title: "Competition fees",
-    description:
-      "Registration costs that secure the team's spot on the circuit and make national weekends possible.",
+    description: "Registration costs for the circuit.",
   },
   {
     title: "Costumes & props",
-    description:
-      "The details that turn choreography into a full visual world instead of a rehearsal-room draft.",
+    description: "The visual details that make the set stage-ready.",
   },
   {
     title: "Production expenses",
-    description:
-      "Music mixes, edits, videography, and the finish work that gives a competition set its final hit.",
+    description: "Music, edits, media, and final production needs.",
   },
 ];
 
 export const supportWays = [
   {
     title: "Back the season fund",
-    description:
-      "Contribute directly to the current campaign supporting travel, fees, costumes, and core team expenses.",
-    href: siteMeta.donateUrl,
-    label: "Donate now",
+    description: "Use the GoFundMe above to support the current season.",
+    href: "#gofundme",
+    label: "View campaign",
   },
   {
     title: "Book QCI for your event",
-    description:
-      "Campus shows, cultural nights, showcases, and collaborations are some of the fastest ways to support the team and share the work.",
+    description: "Bring the team to a campus show, cultural night, or showcase.",
     href: `mailto:${siteMeta.email}`,
     label: "Book the team",
   },
   {
     title: "Sponsor or partner",
-    description:
-      "Local businesses, alumni, and community supporters can help expand what the team is able to build each season.",
+    description: "Partner with QCI for the season.",
     href: `mailto:${siteMeta.email}?subject=QCI%20Sponsorship%20Inquiry`,
     label: "Start a partnership",
   },
@@ -413,23 +417,19 @@ export const calendarArchive = [
 export const calendarBuckets = [
   {
     title: "Competition weekends",
-    description:
-      "Travel-heavy stretches where rehearsals, load-ins, costumes, and storytelling all have to click under pressure.",
+    description: "Confirmed competition weekends will show here.",
   },
   {
     title: "Campus performances",
-    description:
-      "Shows that keep QCI rooted in UNCC culture while building visibility across the year.",
+    description: "On-campus performances and showcases.",
   },
   {
     title: "Fundraisers & socials",
-    description:
-      "Events that help cover season costs and keep the wider community connected to the team.",
+    description: "Team fundraisers, socials, and ticketed events.",
   },
   {
     title: "Collaborations & bookings",
-    description:
-      "Guest appearances, cultural nights, showcases, and partner events where QCI gets to bring the energy somewhere new.",
+    description: "Partner events and booking dates.",
   },
 ];
 
@@ -481,58 +481,47 @@ export const galleryCards = [
 export const videoTimelineEntries = [
   {
     year: "2026",
-    title: "South Asian Showdown era",
-    subtitle: "Newest season",
-    description:
-      "The current top of the archive. The latest work sits first before the older seasons.",
+    embedUrl: "https://www.youtube.com/embed/_BNEzyjdav0",
+    watchUrl: "https://www.youtube.com/watch?v=_BNEzyjdav0",
   },
   {
     year: "2025",
-    title: "Jersey Jalwa season",
-    subtitle: "Competition momentum",
-    description:
-      "A season connected publicly to podium momentum and a sharper national competition push.",
+    embedUrl: "https://www.youtube.com/embed/fNjySm8f9mM?start=361",
+    watchUrl: "https://www.youtube.com/watch?v=fNjySm8f9mM&t=361s",
+  },
+  {
+    year: "2024",
+    embedUrl: "https://www.youtube.com/embed/yYbVQIUNnWE",
+    watchUrl: "https://www.youtube.com/watch?v=yYbVQIUNnWE",
   },
   {
     year: "2022",
-    title: "Return-to-stage energy",
-    subtitle: "A newer chapter in the archive",
-    description:
-      "A later-era performance entry that helps bridge the team's early years and its current stage identity.",
+    embedUrl: "https://www.youtube.com/embed/GPhe0vP71FQ",
+    watchUrl: "https://www.youtube.com/watch?v=GPhe0vP71FQ",
   },
   {
     year: "2020",
-    title: "Season archive 2020",
-    subtitle: "Timeline entry",
-    description:
-      "A preserved season marker placed in descending order so viewers can move backward through the team's evolution.",
+    embedUrl: "https://www.youtube.com/embed/H_MPKUwlw_I",
+    watchUrl: "https://www.youtube.com/watch?v=H_MPKUwlw_I",
   },
   {
     year: "2019",
-    title: "Season archive 2019",
-    subtitle: "Timeline entry",
-    description:
-      "Part of the team's earlier public competition footprint and a key stop in the archive.",
+    embedUrl: "https://www.youtube.com/embed/20-9XRC3rFE",
+    watchUrl: "https://www.youtube.com/watch?v=20-9XRC3rFE",
   },
   {
     year: "2018",
-    title: "Season archive 2018",
-    subtitle: "Timeline entry",
-    description:
-      "An early performance entry that helps show how the team's style sharpened over time.",
+    embedUrl: "https://www.youtube.com/embed/pyzN5SW4YUM",
+    watchUrl: "https://www.youtube.com/watch?v=pyzN5SW4YUM",
   },
   {
     year: "2017",
-    title: "Season archive 2017",
-    subtitle: "Early public-era footage",
-    description:
-      "One of the earliest years in the public performance trail currently loaded into the site.",
+    embedUrl: "https://www.youtube.com/embed/YJN8wEaUXt8",
+    watchUrl: "https://www.youtube.com/watch?v=YJN8wEaUXt8",
   },
   {
     year: "2016",
-    title: "Season archive 2016",
-    subtitle: "Earliest entry at the bottom",
-    description:
-      "The oldest season marker anchors the bottom of the timeline so the archive reads newest to oldest.",
+    embedUrl: "https://www.youtube.com/embed/Em47V-wE7Kw?start=18",
+    watchUrl: "https://www.youtube.com/watch?v=Em47V-wE7Kw&t=18s",
   },
 ] as const;

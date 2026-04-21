@@ -1,161 +1,74 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { ImageMarquee } from "@/components/image-marquee";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
-import { galleryCards, siteMeta, videoTimelineEntries } from "@/lib/site-data";
+import { jalwaImages, nashaImages, siteMeta, videoTimelineEntries } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description:
-    "Explore Queen City Ishaare's reverse-chronological performance timeline plus a visual gallery of stills and poster-style identity moments.",
+  description: "Explore Queen City Ishaare's current season recap and photo gallery.",
 };
+
+const recapVideo = videoTimelineEntries.find((entry) => entry.year === "2026");
 
 export default function GalleryPage() {
   return (
     <>
       <PageHero
-        actions={
-          <>
-            <ButtonLink href={siteMeta.instagram}>See Instagram</ButtonLink>
-            <ButtonLink href={`mailto:${siteMeta.email}?subject=QCI%20Media%20Request`} variant="secondary">
-              Request media
-            </ButtonLink>
-          </>
-        }
-        description="The gallery uses one strong team image and turns it into a more expansive visual system with varied crops, poster cards, and a lightweight season archive."
+        actions={<ButtonLink href={siteMeta.instagram}>See Instagram</ButtonLink>}
         eyebrow="Gallery"
-        title="A performance archive with the newest season first."
+        title="2026 recap and photos."
       />
 
       <section className="py-8 sm:py-12">
         <Container className="space-y-10">
-          <SectionHeading
-            description="A leaner season timeline keeps the archive scannable without shipping oversized media files with the site."
-            eyebrow="Performance timeline"
-            title="Newest at the top. Earliest at the bottom."
-          />
+          <SectionHeading eyebrow="Season recap" title="2026" />
 
-          <div className="relative pl-4 sm:pl-6">
-            <div className="absolute bottom-0 left-[0.4rem] top-0 w-px bg-[linear-gradient(180deg,rgba(255,111,96,0.9),rgba(255,111,96,0.05))] sm:left-[0.6rem]" />
-
-            <div className="space-y-8 sm:space-y-10">
-              {videoTimelineEntries.map((entry, index) => (
-                <article
-                  key={entry.year}
-                  className="fade-rise relative pl-8 sm:pl-12"
-                  style={{ animationDelay: `${index * 0.08}s` }}
-                >
-                  <div className="absolute left-0 top-7 h-4 w-4 rounded-full border border-[var(--color-rose)] bg-[var(--color-flame)] shadow-[0_0_0_6px_rgba(255,59,48,0.14)]" />
-
-                  <div className="grid gap-5 lg:grid-cols-[0.34fr_0.66fr] lg:items-start">
-                    <div className="section-card p-5 sm:p-6">
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-rose)]">
-                        {entry.subtitle}
-                      </p>
-                      <h2 className="mt-3 font-display text-5xl leading-none tracking-[-0.06em] text-[var(--color-night)] sm:text-6xl">
-                        {entry.year}
-                      </h2>
-                      <h3 className="mt-4 font-display text-3xl leading-none tracking-[-0.04em] text-[var(--color-night)]">
-                        {entry.title}
-                      </h3>
-                      <p className="mt-4 text-base leading-8 text-[var(--color-muted)]">
-                        {entry.description}
-                      </p>
-                    </div>
-
-                    <div className="section-card overflow-hidden p-0">
-                      <div className="relative flex aspect-video min-h-[16rem] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.32),transparent_34%),linear-gradient(135deg,var(--color-night),var(--color-red-dark)_58%,var(--color-flame))] p-8">
-                        <div className="absolute inset-x-8 top-8 h-px bg-white/20" />
-                        <div className="absolute inset-x-8 bottom-8 h-px bg-white/20" />
-                        <div className="text-center text-white">
-                          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/70">
-                            Queen City Ishaare
-                          </p>
-                          <p className="mt-5 font-display text-7xl leading-none sm:text-8xl">
-                            {entry.year}
-                          </p>
-                          <p className="mx-auto mt-5 max-w-sm text-sm font-semibold uppercase tracking-[0.24em] text-white/75">
-                            {entry.title}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+          <article className="section-card overflow-hidden p-0">
+            <div className="relative overflow-hidden bg-black">
+              {recapVideo ? (
+                <iframe
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  className="aspect-video w-full"
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  src={recapVideo.embedUrl}
+                  title="Queen City Ishaare 2026 recap"
+                />
+              ) : (
+                <>
+                  <Image
+                    alt="Queen City Ishaare 2026 recap"
+                    className="absolute inset-0 h-full w-full object-cover"
+                    height={3926}
+                    priority
+                    sizes="(min-width: 1024px) 1100px, 100vw"
+                    src={siteMeta.homeImage}
+                    width={5889}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,8,8,0.82),rgba(8,8,8,0.16))]" />
+                  <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10">
+                    <p className="font-display text-8xl leading-none text-white sm:text-9xl">2026</p>
                   </div>
-                </article>
-              ))}
+                </>
+              )}
             </div>
-          </div>
+          </article>
         </Container>
       </section>
 
       <section className="py-16 sm:py-20">
-        <Container className="space-y-10">
-          <SectionHeading
-            description="Under the timeline, the rest of the gallery still works like an editorial moodboard so the archive has branded still-image energy."
-            eyebrow="Poster wall"
-            title="Frames, posters, and image crops that still feel like a campaign."
-          />
+        <Container className="space-y-14">
+          <div className="space-y-8">
+            <SectionHeading eyebrow="Photos" title="Jersey Jalwa" />
+            <ImageMarquee images={jalwaImages} />
+          </div>
 
-          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {galleryCards.map((card) =>
-              card.variant === "poster" ? (
-                <article
-                  key={card.title}
-                  className={`overflow-hidden rounded-[1.75rem] p-6 sm:p-8 ${
-                    card.size === "large" ? "min-h-[22rem]" : "min-h-[18rem]"
-                  } ${
-                    card.accent === "night"
-                      ? "poster-night"
-                      : card.accent === "jade"
-                        ? "poster-jade"
-                        : "poster-sunset"
-                  }`}
-                >
-                  <div className="flex h-full flex-col justify-between">
-                    <p className="poster-text text-xs font-semibold uppercase tracking-[0.28em]">
-                      Poster frame
-                    </p>
-                    <div className="space-y-3">
-                      <h2 className="poster-text font-display text-4xl leading-none tracking-[-0.05em] sm:text-5xl">
-                        {card.title}
-                      </h2>
-                      <p className="poster-text max-w-sm text-sm leading-7 text-white/80">
-                        {card.caption}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              ) : (
-                <article
-                  key={card.title}
-                  className={`group relative overflow-hidden rounded-[1.75rem] ${
-                    card.size === "large" ? "min-h-[28rem]" : "min-h-[20rem]"
-                  }`}
-                >
-                  <Image
-                    alt={card.title}
-                    className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                    height={3926}
-                    sizes="(min-width: 1280px) 28vw, (min-width: 768px) 50vw, 100vw"
-                    src={siteMeta.homeImage}
-                    style={{ objectPosition: card.position }}
-                    width={5889}
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,3,5,0.04),rgba(15,3,5,0.82))]" />
-                  <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
-                    <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
-                      Photo frame
-                    </p>
-                    <h2 className="mt-3 font-display text-3xl leading-none tracking-[-0.04em] sm:text-4xl">
-                      {card.title}
-                    </h2>
-                    <p className="mt-3 max-w-md text-sm leading-7 text-white/80">
-                      {card.caption}
-                    </p>
-                  </div>
-                </article>
-              ),
-            )}
+          <div className="space-y-8">
+            <SectionHeading eyebrow="Photos" title="NASHA Showcase" />
+            <ImageMarquee images={nashaImages} reverse />
           </div>
         </Container>
       </section>

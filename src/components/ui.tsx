@@ -15,14 +15,14 @@ type ButtonLinkProps = {
 type SectionHeadingProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   align?: "left" | "center";
 };
 
 type PageHeroProps = {
   eyebrow: string;
   title: string;
-  description: string;
+  description?: string;
   actions?: React.ReactNode;
 };
 
@@ -40,7 +40,7 @@ export function ButtonLink({
     "inline-flex items-center justify-center px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] transition duration-200";
   const variants = {
     primary:
-      "bg-[var(--color-red)] text-[var(--color-cream)] shadow-[0_12px_32px_rgba(200,16,46,0.3)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(200,16,46,0.4)]",
+      "bg-[var(--color-red)] text-[var(--color-on-red)] shadow-[0_12px_32px_rgba(200,16,46,0.3)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(200,16,46,0.4)]",
     secondary:
       "border border-[var(--color-gold)] bg-transparent text-[var(--color-gold)] hover:-translate-y-0.5 hover:bg-[var(--color-gold-dim)] hover:shadow-[0_16px_36px_rgba(212,175,55,0.15)]",
     ghost:
@@ -86,9 +86,11 @@ export function SectionHeading({
       <h2 className="text-balance break-words font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
         {title}
       </h2>
-      <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-[1.05rem]">
-        {description}
-      </p>
+      {description ? (
+        <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-[1.05rem]">
+          {description}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -110,9 +112,11 @@ export function PageHero({
             <h1 className="text-balance break-words font-display text-5xl leading-[0.98] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
               {title}
             </h1>
-            <p className="max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
-              {description}
-            </p>
+            {description ? (
+              <p className="max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
+                {description}
+              </p>
+            ) : null}
             {actions ? <div className="flex flex-wrap gap-4 pt-2">{actions}</div> : null}
           </div>
         </div>

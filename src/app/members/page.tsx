@@ -8,20 +8,30 @@ import { useAuth } from "@/components/auth-context";
 import { Container } from "@/components/ui";
 import { siteMeta } from "@/lib/site-data";
 
-const memberCards = [
+const absenceFormUrl = process.env.NEXT_PUBLIC_QCI_ABSENCE_FORM_URL;
+const feedbackFormUrl = process.env.NEXT_PUBLIC_QCI_ANONYMOUS_FEEDBACK_FORM_URL;
+
+const portalLinks = [
   {
-    title: "Private updates",
-    description: "Use this space for rehearsal notes, call times, announcements, and team-only links.",
+    title: "Fundraising points",
+    href: "#fundraising-points",
   },
   {
-    title: "Season resources",
-    description: "Add music cuts, costume details, travel packets, and documents once the portal grows.",
+    title: "Production points",
+    href: "#production-points",
   },
   {
-    title: "Leadership contact",
-    description: "Keep sponsorship, booking, and internal communication paths easy to find.",
+    title: "Comp details",
+    href: "/members/comp",
+  },
+  {
+    title: "Forms",
+    href: "#forms",
   },
 ] as const;
+
+const fundraisingItems = ["Donations", "Sponsor leads", "Event sales", "Dares"];
+const productionItems = ["Clean-up", "Props", "Costumes", "Media"];
 
 export default function MembersPage() {
   const { user, loading, signOut } = useAuth();
@@ -79,24 +89,23 @@ export default function MembersPage() {
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div className="reveal-on-scroll" data-reveal>
               <p className="font-accent text-[0.82rem] uppercase tracking-[0.32em] text-[var(--color-gold)]">
-                Login successful
+                Members
               </p>
               <h1 className="mt-4 max-w-3xl break-words font-display text-5xl leading-[0.98] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
-                Welcome, {memberName}.
+                Hi, {memberName}.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
-                You are signed in and your Supabase Auth session is active. This page is the private
-                landing spot after a successful login.
+                Fundraising, production, comp info, and forms live here.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   className="inline-flex items-center justify-center border border-[var(--color-gold)] px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] text-[var(--color-gold)] transition hover:-translate-y-0.5 hover:bg-[var(--color-gold-dim)]"
-                  href="/calendar"
+                  href="/members/comp"
                 >
-                  Calendar
+                  Comp details
                 </Link>
                 <button
-                  className="inline-flex items-center justify-center bg-[var(--color-red)] px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] text-[var(--color-cream)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)]"
+                  className="inline-flex items-center justify-center bg-[var(--color-red)] px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] text-[var(--color-on-red)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)]"
                   disabled={isSigningOut}
                   onClick={handleSignOut}
                   type="button"
@@ -149,27 +158,118 @@ export default function MembersPage() {
         <Container className="space-y-8">
           <div className="max-w-3xl">
             <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
-              Portal starting point
+              Portal
             </p>
             <h2 className="mt-4 font-display text-4xl leading-none text-[var(--color-cream)] sm:text-5xl">
-              Ready for private team content.
+              Quick access.
             </h2>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-3">
-            {memberCards.map((card) => (
-              <article key={card.title} className="section-card p-6">
-                <h3 className="font-display text-3xl leading-none text-[var(--color-night)]">
-                  {card.title}
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
-                  {card.description}
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {portalLinks.map((link) => (
+              <Link
+                key={link.title}
+                className="section-card block p-6 transition hover:-translate-y-1"
+                href={link.href}
+              >
+                <p className="font-display text-3xl leading-none text-[var(--color-night)]">
+                  {link.title}
                 </p>
-              </article>
+              </Link>
             ))}
           </div>
         </Container>
       </section>
+
+      <section className="pb-20 sm:pb-24">
+        <Container className="grid gap-6 lg:grid-cols-2">
+          <article className="section-card p-6 sm:p-8" id="fundraising-points">
+            <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
+              Fundraising points
+            </p>
+            <div className="mt-6 grid gap-3">
+              {fundraisingItems.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center justify-between border-b border-white/10 pb-3 text-sm"
+                >
+                  <span className="text-[var(--color-muted)]">{item}</span>
+                  <span className="font-semibold text-[var(--color-gold)]">0 pts</span>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="section-card p-6 sm:p-8" id="production-points">
+            <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
+              Production points
+            </p>
+            <div className="mt-6 grid gap-3">
+              {productionItems.map((item) => (
+                <div
+                  key={item}
+                  className="flex items-center justify-between border-b border-white/10 pb-3 text-sm"
+                >
+                  <span className="text-[var(--color-muted)]">{item}</span>
+                  <span className="font-semibold text-[var(--color-gold)]">0 pts</span>
+                </div>
+              ))}
+            </div>
+          </article>
+        </Container>
+      </section>
+
+      <section className="pb-20 sm:pb-24" id="forms">
+        <Container className="space-y-8">
+          <div>
+            <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
+              Forms
+            </p>
+            <h2 className="mt-4 font-display text-4xl leading-none text-[var(--color-cream)] sm:text-5xl">
+              Team forms.
+            </h2>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            <FormCard
+              fallback={`mailto:${siteMeta.email}?subject=Absence%20Form`}
+              href={absenceFormUrl}
+              label="Absence form"
+            />
+            <FormCard href={feedbackFormUrl} label="Anonymous feedback" />
+          </div>
+        </Container>
+      </section>
     </>
+  );
+}
+
+type FormCardProps = {
+  fallback?: string;
+  href?: string;
+  label: string;
+};
+
+function FormCard({ fallback, href, label }: FormCardProps) {
+  const formHref = href || fallback;
+
+  return (
+    <article className="section-card p-6">
+      <h3 className="font-display text-3xl leading-none text-[var(--color-night)]">{label}</h3>
+      {formHref ? (
+        <a
+          className="mt-6 inline-flex items-center justify-center border border-[var(--color-gold)] px-5 py-3 font-accent text-[0.9rem] uppercase tracking-[0.18em] text-[var(--color-gold)] transition hover:bg-[var(--color-gold-dim)]"
+          href={formHref}
+          rel={formHref.startsWith("http") ? "noreferrer" : undefined}
+          target={formHref.startsWith("http") ? "_blank" : undefined}
+        >
+          Open
+        </a>
+      ) : (
+        <p className="mt-5 text-sm leading-7 text-[var(--color-muted)]">
+          Add the form link in Vercel to turn this on.
+        </p>
+      )}
+    </article>
   );
 }

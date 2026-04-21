@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
-import { aboutPillars, historyTimeline, teamStructure } from "@/lib/site-data";
+import { aboutPillars, historyTimeline, videoTimelineEntries } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Learn the history, values, and structure behind Queen City Ishaare's Bollywood team at UNCC.",
+  description: "Learn about Queen City Ishaare, UNCC's Bollywood fusion dance team.",
 };
 
 export default function AboutPage() {
@@ -21,17 +20,16 @@ export default function AboutPage() {
             </ButtonLink>
           </>
         }
-        description="The version of QCI we can trace publicly is a team built through competitions, campus culture, fundraising, and a lot of student leadership behind the scenes."
-        eyebrow="About Queen City Ishaare"
-        title="A UNCC team with a growing competitive footprint and a very clear point of view."
+        description="Student-run. Competition-focused. Charlotte-based."
+        eyebrow="About"
+        title="Queen City Ishaare."
       />
 
       <section className="py-8 sm:py-12" id="history">
         <Container className="space-y-10">
           <SectionHeading
-            description="Rather than inventing a history that isn't documented, this timeline uses the milestones we could actually verify and turns them into a clean narrative backbone for the site."
             eyebrow="History"
-            title="The public record shows momentum, range, and a team that keeps scaling."
+            title="Key years."
           />
 
           <div className="grid gap-5 lg:grid-cols-2">
@@ -52,12 +50,45 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="py-16 sm:py-20">
+      <section className="py-12 sm:py-16">
         <Container className="space-y-10">
           <SectionHeading
-            description="This is where the site shifts from public milestones into brand language: what the team feels like, what it values, and why the performances land the way they do."
-            eyebrow="What defines QCI"
-            title="High-energy on stage. High-accountability behind it."
+            eyebrow="Old videos"
+            title="Archive years."
+          />
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            {videoTimelineEntries
+              .filter((entry) => entry.year !== "2026")
+              .map((entry) => (
+                <article key={entry.year} className="section-card overflow-hidden p-0">
+                  <div className="aspect-video bg-black">
+                    <iframe
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="h-full w-full"
+                      loading="lazy"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      src={entry.embedUrl}
+                      title={`Queen City Ishaare ${entry.year} video`}
+                    />
+                  </div>
+                  <div className="p-6">
+                    <p className="font-display text-6xl leading-none text-[var(--color-night)]">
+                      {entry.year}
+                    </p>
+                  </div>
+                </article>
+              ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-12 sm:py-16">
+        <Container className="space-y-10">
+          <SectionHeading
+            eyebrow="Team basics"
+            title="What QCI does."
           />
 
           <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
@@ -71,33 +102,6 @@ export default function AboutPage() {
                 </p>
               </article>
             ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="py-16 sm:py-20">
-        <Container>
-          <div className="glass-panel px-6 py-8 sm:px-10 sm:py-10">
-            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-              <SectionHeading
-                description="QCI isn't just a roster. It's a mini production house every season, and this section gives that structure a place on the site."
-                eyebrow="How the team runs"
-                title="The creative and operational roles that keep the season sharp."
-              />
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                {teamStructure.map((role) => (
-                  <article key={role.title} className="section-card p-5">
-                    <h3 className="font-display text-2xl leading-none tracking-[-0.04em] text-[var(--color-night)]">
-                      {role.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-[var(--color-muted)]">
-                      {role.description}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </div>
           </div>
         </Container>
       </section>

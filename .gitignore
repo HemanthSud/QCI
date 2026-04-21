@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 /public/videos/
+/Jalwa/
+/Nasha/
 
 # debug
 npm-debug.log*

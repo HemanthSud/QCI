@@ -7,14 +7,13 @@ import {
   homeEventHighlights,
   homePhotoStrip,
   homeStoryStats,
-  siteMeta,
 } from "@/lib/site-data";
 
 export default function Home() {
   return (
     <>
-      <section className="relative min-h-[100svh] overflow-hidden px-0 pb-20 pt-28 sm:pb-24 sm:pt-36" id="top">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_36%,rgba(42,5,16,0.95)_0%,transparent_72%)]" />
+      <section className="relative min-h-[100svh] overflow-hidden px-0 pb-20 pt-32 sm:pb-24 sm:pt-40" id="top">
+        <div className="hero-radial absolute inset-0" />
         <HeroDiscoBall />
 
         <div
@@ -41,23 +40,19 @@ export default function Home() {
 
         <Container className="relative z-10 flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center pt-28 text-center sm:pt-24">
           <p
-            className="reveal-on-scroll max-w-full font-accent text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-gold)] sm:text-[0.86rem] sm:tracking-[0.35em]"
+            className="reveal-on-scroll max-w-full font-accent text-[0.8rem] uppercase tracking-[0.22em] text-[var(--color-gold)] sm:text-[0.95rem] sm:tracking-[0.35em]"
             data-reveal
           >
             Queen City Ishaare · Est. 2015
           </p>
 
           <h1
-            className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(2.8rem,8vw,7rem)] leading-[0.98] text-[var(--color-cream)] sm:leading-[0.94]"
+            className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(2.55rem,7vw,6.6rem)] leading-[1.06] text-[var(--color-cream)] sm:leading-[1.02]"
             data-reveal
           >
-            <span className="block text-[var(--color-red)] [text-shadow:0_0_60px_rgba(200,16,46,0.5)]">
-              UNCC&apos;s
-            </span>
-            <span className="block">Premier Bollywood</span>
-            <span className="block text-transparent opacity-60 [-webkit-text-stroke:1px_var(--color-cream)] sm:[-webkit-text-stroke:2px_var(--color-cream)]">
-              Dance Team
-            </span>
+            <span className="block">UNCC&apos;s Premier</span>
+            <span className="block">Bollywood Fusion</span>
+            <span className="block">Dance Team</span>
           </h1>
 
           <div
@@ -80,15 +75,8 @@ export default function Home() {
           <div className="reveal-on-scroll reveal-delay-3 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
             <ButtonLink href="/support">Donate</ButtonLink>
             <ButtonLink href="/gallery" variant="secondary">
-              Watch the Archive
+              View Gallery
             </ButtonLink>
-          </div>
-
-          <div className="bounce-hint absolute bottom-0 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 pb-4 text-[rgba(242,237,228,0.45)]">
-            <span className="font-accent text-[0.72rem] uppercase tracking-[0.2em]">
-              Scroll
-            </span>
-            <span className="h-10 w-px bg-[linear-gradient(to_bottom,var(--color-cream),transparent)]" />
           </div>
         </Container>
       </section>
@@ -100,20 +88,14 @@ export default function Home() {
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div className="reveal-on-scroll" data-reveal>
               <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
-                Our Story
+                About
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                More Than <span className="text-[var(--color-red)]">Dance.</span> A Family.
+                Bollywood fusion at UNCC.
               </h2>
               <p className="mt-6 max-w-xl text-base leading-8 text-[var(--color-muted)]">
-                Queen City Ishaare is a competitive Bollywood dance team at UNCC.
-                Every season blends South Asian roots with sharper performance design, richer stage
-                storytelling, and the kind of rehearsal culture that turns a student team into a
-                full production unit.
-              </p>
-              <p className="mt-4 max-w-xl text-base leading-8 text-[var(--color-muted)]">
-                From regional competitions to campus showcases, the work is built to feel
-                celebratory, cinematic, and unmistakably QCI the moment it hits.
+                Queen City Ishaare is UNCC&apos;s competitive Bollywood fusion team, built for
+                campus stages, community shows, and competition weekends.
               </p>
 
               <div className="mt-9 flex flex-wrap gap-8 border-t border-white/10 pt-8">
@@ -134,8 +116,8 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-4 sm:gap-5 [transform:rotate(2deg)]">
                 {homePhotoStrip.map((frame, index) => (
                   <article
-                    key={frame.caption}
-                    className={`relative overflow-hidden bg-[#1a1010] p-3 pb-8 shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0 ${
+                    key={`${frame.caption}-${index}`}
+                    className={`relative overflow-hidden bg-[#1a1010] p-3 shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0 ${
                       index === 0
                         ? "rotate-[-3deg]"
                         : index === 1
@@ -152,15 +134,12 @@ export default function Home() {
                         className="h-full w-full object-cover"
                         height={3926}
                         sizes="(min-width: 1024px) 20vw, 44vw"
-                        src={siteMeta.homeImage}
+                        src={frame.src}
                         style={{ objectPosition: frame.position }}
                         width={5889}
                       />
                       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(200,16,46,0.16),rgba(0,0,0,0.42))]" />
                     </div>
-                    <p className="mt-3 text-center text-[0.68rem] uppercase tracking-[0.12em] text-[var(--color-muted)]">
-                      {frame.caption}
-                    </p>
                   </article>
                 ))}
               </div>
@@ -177,11 +156,10 @@ export default function Home() {
                 On Stage
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Featured <span className="text-[var(--color-red)]">Moments</span>
+                Comps this year.
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)]">
-                The homepage now follows the same bold card rhythm as the reference file, but the
-                content is adapted to real QCI milestones instead of generic promo placeholders.
+                The main competition stops and showcase moments for this season.
               </p>
             </div>
 
@@ -206,7 +184,7 @@ export default function Home() {
                   }`}
                 />
 
-                <div className="inline-flex bg-[var(--color-red)] px-3 py-1 font-accent text-[0.76rem] uppercase tracking-[0.16em] text-[var(--color-cream)] [clip-path:polygon(6px_0,100%_0,calc(100%-6px)_100%,0_100%)]">
+                <div className="inline-flex bg-[var(--color-red)] px-3 py-1 font-accent text-[0.76rem] uppercase tracking-[0.16em] text-[var(--color-on-red)] [clip-path:polygon(6px_0,100%_0,calc(100%-6px)_100%,0_100%)]">
                   {event.badge}
                 </div>
                 <p className="absolute right-8 top-7 font-display text-3xl leading-none text-[var(--color-gold)]">
