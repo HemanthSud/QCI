@@ -55,7 +55,7 @@ export default function AuthPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
               placeholder="your@email.com"
             />
           </div>
@@ -67,7 +67,7 @@ export default function AuthPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
               placeholder="••••••••"
             />
           </div>
@@ -81,7 +81,7 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-pink-500 hover:bg-pink-600 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition"
+            className="w-full bg-[var(--color-red)] hover:bg-[var(--color-red-dark)] disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition"
           >
             {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
           </button>
@@ -91,7 +91,7 @@ export default function AuthPage() {
           {isSignUp ? "Already have an account?" : "Don't have an account?"}
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="ml-2 text-pink-500 hover:underline font-medium"
+            className="ml-2 text-[var(--color-red)] hover:underline font-medium"
           >
             {isSignUp ? "Sign In" : "Sign Up"}
           </button>
