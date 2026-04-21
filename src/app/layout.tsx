@@ -34,8 +34,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={`${spaceGrotesk.variable} ${syne.variable}`} lang="en">
-      <body>
+    <html
+      className={`${spaceGrotesk.variable} ${syne.variable}`}
+      data-scroll-behavior="smooth"
+      lang="en"
+    >
+      <body suppressHydrationWarning>
         <div className="page-gradient flex min-h-screen flex-col">
           <SiteHeader />
           <main className="relative z-10 flex-1">{children}</main>
