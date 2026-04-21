@@ -61,6 +61,10 @@ export default function MembersPage() {
         timeStyle: "short",
       }).format(new Date(user.last_sign_in_at))
     : "Session active";
+  const memberName =
+    typeof user.user_metadata.full_name === "string" && user.user_metadata.full_name.trim()
+      ? user.user_metadata.full_name
+      : user.email;
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -78,7 +82,7 @@ export default function MembersPage() {
                 Login successful
               </p>
               <h1 className="mt-4 max-w-3xl break-words font-display text-5xl leading-[0.98] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
-                Welcome to the QCI member portal.
+                Welcome, {memberName}.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
                 You are signed in and your Supabase Auth session is active. This page is the private
@@ -112,8 +116,11 @@ export default function MembersPage() {
                     Signed in as
                   </p>
                   <p className="mt-2 break-words text-xl font-semibold text-[var(--color-cream)]">
-                    {user.email}
+                    {memberName}
                   </p>
+                  {memberName !== user.email ? (
+                    <p className="mt-1 break-words text-sm text-[var(--color-muted)]">{user.email}</p>
+                  ) : null}
                 </div>
                 <div>
                   <p className="text-xs uppercase tracking-[0.22em] text-[var(--color-muted)]">
