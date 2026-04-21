@@ -6,7 +6,7 @@ import { aboutPillars, historyTimeline, teamStructure } from "@/lib/site-data";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Learn the history, values, and structure behind Queen City Ishaare's Bollywood-fusion team at UNC Charlotte.",
+    "Learn the history, values, and structure behind Queen City Ishaare's Bollywood team at UNCC.",
 };
 
 export default function AboutPage() {
@@ -23,10 +23,10 @@ export default function AboutPage() {
         }
         description="The version of QCI we can trace publicly is a team built through competitions, campus culture, fundraising, and a lot of student leadership behind the scenes."
         eyebrow="About Queen City Ishaare"
-        title="A UNC Charlotte team with a growing competitive footprint and a very clear point of view."
+        title="A UNCC team with a growing competitive footprint and a very clear point of view."
       />
 
-      <section className="py-8 sm:py-12">
+      <section className="py-8 sm:py-12" id="history">
         <Container className="space-y-10">
           <SectionHeading
             description="Rather than inventing a history that isn't documented, this timeline uses the milestones we could actually verify and turns them into a clean narrative backbone for the site."

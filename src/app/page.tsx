@@ -44,7 +44,7 @@ export default function Home() {
             className="reveal-on-scroll max-w-full font-accent text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-gold)] sm:text-[0.86rem] sm:tracking-[0.35em]"
             data-reveal
           >
-            Queen City Ishaare · Est. 2014
+            Queen City Ishaare · Est. 2015
           </p>
 
           <h1
@@ -52,11 +52,11 @@ export default function Home() {
             data-reveal
           >
             <span className="block text-[var(--color-red)] [text-shadow:0_0_60px_rgba(200,16,46,0.5)]">
-              UNC Charlotte&apos;s
+              UNCC&apos;s
             </span>
             <span className="block">Premier Bollywood</span>
             <span className="block text-transparent opacity-60 [-webkit-text-stroke:1px_var(--color-cream)] sm:[-webkit-text-stroke:2px_var(--color-cream)]">
-              Fusion Dance Team
+              Dance Team
             </span>
           </h1>
 
@@ -73,8 +73,8 @@ export default function Home() {
             className="reveal-on-scroll reveal-delay-3 mt-6 max-w-xl text-[0.95rem] leading-8 text-[var(--color-muted)] sm:text-base"
             data-reveal
           >
-            Queen City Ishaare brings Bollywood fusion, hip-hop, contemporary, and South Asian
-            stage energy together for campus showcases, community events, and competition weekends.
+            Queen City Ishaare brings Bollywood, hip-hop, contemporary, and South Asian stage
+            energy together for campus showcases, community events, and competition weekends.
           </p>
 
           <div className="reveal-on-scroll reveal-delay-3 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
@@ -106,7 +106,7 @@ export default function Home() {
                 More Than <span className="text-[var(--color-red)]">Dance.</span> A Family.
               </h2>
               <p className="mt-6 max-w-xl text-base leading-8 text-[var(--color-muted)]">
-                Queen City Ishaare is a competitive Bollywood fusion dance team at UNC Charlotte.
+                Queen City Ishaare is a competitive Bollywood dance team at UNCC.
                 Every season blends South Asian roots with sharper performance design, richer stage
                 storytelling, and the kind of rehearsal culture that turns a student team into a
                 full production unit.

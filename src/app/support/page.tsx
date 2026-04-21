@@ -98,7 +98,7 @@ export default function SupportPage() {
                 <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">
                   If you want this site to convert, the ask has to feel human. The language here
                   centers what supporters are actually enabling: reps, travel, stagecraft, and a
-                  student team getting the chance to represent UNC Charlotte at a higher level.
+                  student team getting the chance to represent UNCC at a higher level.
                 </p>
               </div>
 

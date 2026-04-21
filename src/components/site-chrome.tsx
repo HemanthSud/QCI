@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import { navLinks, siteMeta } from "@/lib/site-data";
 
-import { ButtonLink, Container } from "./ui";
+import { Container } from "./ui";
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,8 +24,8 @@ export function SiteHeader() {
 
   return (
     <header className="site-header sticky top-0 z-50" data-scrolled={isScrolled}>
-      <Container className="py-5">
-        <div className="flex items-center justify-between gap-4">
+      <Container className="py-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link className="flex min-w-0 items-center gap-3" href="/">
             <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[rgba(242,237,228,0.18)] bg-black shadow-[0_0_24px_rgba(200,16,46,0.18)]">
               <Image
@@ -47,26 +47,21 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <nav className="hidden items-center gap-7 md:flex">
-              {navLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  className="font-accent text-[0.82rem] uppercase tracking-[0.2em] text-[rgba(242,237,228,0.75)] transition hover:text-[var(--color-gold)]"
-                  href={item.href}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-2">
-              <ButtonLink className="hidden sm:inline-flex" href={siteMeta.instagram} variant="ghost">
-                Instagram
-              </ButtonLink>
-              <ButtonLink href="/support">Donate</ButtonLink>
-            </div>
-          </div>
+          <nav className="flex flex-wrap justify-center gap-2 lg:justify-end">
+            {navLinks.map((item) => (
+              <Link
+                key={item.href}
+                className={`shrink-0 border px-3 py-2 font-accent text-[0.72rem] uppercase tracking-[0.16em] transition sm:px-4 sm:text-[0.78rem] md:text-[0.82rem] ${
+                  item.label === "Donate"
+                    ? "border-[var(--color-red)] bg-[var(--color-red)] text-[var(--color-cream)] shadow-[0_10px_28px_rgba(200,16,46,0.26)]"
+                    : "border-[rgba(242,237,228,0.12)] bg-[rgba(255,255,255,0.03)] text-[rgba(242,237,228,0.78)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
+                }`}
+                href={item.href}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </Container>
     </header>

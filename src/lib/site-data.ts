@@ -1,9 +1,9 @@
 export const siteMeta = {
   name: "Queen City Ishaare",
   shortName: "QCI",
-  tagline: "UNC Charlotte's premier Bollywood fusion dance team",
+  tagline: "UNCC's premier Bollywood dance team",
   description:
-    "UNC Charlotte's premier Bollywood fusion dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
+    "UNCC's premier Bollywood dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
   email: "qcishaare25@gmail.com",
   instagram: "https://www.instagram.com/queencity_ishaare/",
   donateUrl:
@@ -15,8 +15,8 @@ export const siteMeta = {
 };
 
 export const navLinks = [
-  { href: "/#about", label: "About" },
-  { href: "/#events", label: "Events" },
+  { href: "/about", label: "About" },
+  { href: "/about#history", label: "History" },
   { href: "/gallery", label: "Gallery" },
   { href: "/calendar", label: "Calendar" },
   { href: "/support", label: "Donate" },
@@ -173,7 +173,7 @@ export const homepageFeatures = [
   {
     title: "Charlotte roots, national ambition",
     description:
-      "From campus shows to out-of-state competitions, the team carries UNC Charlotte energy into every performance weekend.",
+      "From campus shows to out-of-state competitions, the team carries UNCC energy into every performance weekend.",
   },
 ];
 
@@ -182,13 +182,13 @@ export const homepageServiceGrid = [
     index: "01",
     title: "Competition Sets",
     description:
-      "Narrative-first routines built for the collegiate fusion circuit, with music, props, and pacing treated like a full production.",
+      "Narrative-first routines built for collegiate competition weekends, with music, props, and pacing treated like a full production.",
   },
   {
     index: "02",
     title: "Campus Performances",
     description:
-      "High-impact appearances that keep QCI visible across UNC Charlotte's cultural events, showcases, and student life calendar.",
+      "High-impact appearances that keep QCI visible across UNCC's cultural events, showcases, and student life calendar.",
   },
   {
     index: "03",
@@ -218,7 +218,7 @@ export const homepageServiceGrid = [
 
 export const recognitionSlides = [
   {
-    quote: "UNC Charlotte's premier Bollywood-fusion dance team.",
+    quote: "UNCC's premier Bollywood dance team.",
     source: "Season fundraiser",
     year: "2026",
   },
@@ -239,13 +239,13 @@ export const historyTimeline = [
     year: "2017",
     title: "Public circuit appearances begin showing up",
     description:
-      "The earliest public competition lineups we found place Queen City Ishaare in the Southeast collegiate fusion circuit, including ATL Tamasha.",
+      "The earliest public competition lineups we found place Queen City Ishaare in the Southeast collegiate dance circuit, including ATL Tamasha.",
   },
   {
     year: "2019",
     title: "Charlotte footprint gets louder",
     description:
-      "By CLT Pulse season, QCI was already being described publicly as UNC Charlotte's competitive Bollywood-fusion team and a visible part of the regional scene.",
+      "By CLT Pulse season, QCI was already being described publicly as UNCC's competitive Bollywood team and a visible part of the regional scene.",
   },
   {
     year: "2025",
@@ -362,7 +362,7 @@ export const calendarArchive = [
     location: "Atlanta, Georgia",
     status: "Archive",
     description:
-      "One of the earliest public competition lineups we found featuring QCI in the Southeast fusion circuit.",
+      "One of the earliest public competition lineups we found featuring QCI in the Southeast dance circuit.",
   },
   {
     date: "Mar 16, 2019",
@@ -371,7 +371,7 @@ export const calendarArchive = [
     location: "Charlotte, North Carolina",
     status: "Archive",
     description:
-      "Public sponsor materials from the CLT Pulse era describe QCI as UNC Charlotte's competitive Bollywood-fusion team.",
+      "Public sponsor materials from the CLT Pulse era describe QCI as UNCC's competitive Bollywood team.",
   },
   {
     date: "Jan 18, 2025",
@@ -407,7 +407,7 @@ export const calendarArchive = [
     location: "Boston, Massachusetts",
     status: "Finalist",
     description:
-      "Queen City Ishaare was listed among the ten selected teams for one of the country's highest-profile Bollywood-fusion showcases.",
+      "Queen City Ishaare was listed among the ten selected teams for one of the country's highest-profile Bollywood showcases.",
   },
 ];
 
@@ -420,7 +420,7 @@ export const calendarBuckets = [
   {
     title: "Campus performances",
     description:
-      "Shows that keep QCI rooted in UNC Charlotte culture while building visibility across the year.",
+      "Shows that keep QCI rooted in UNCC culture while building visibility across the year.",
   },
   {
     title: "Fundraisers & socials",
