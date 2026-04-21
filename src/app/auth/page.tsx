@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-context";
 
@@ -9,24 +9,30 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { loading: authLoading, signIn, signUp, user } = useAuth();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/members");
+    }
+  }, [authLoading, router, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setNotice("");
     setLoading(true);
 
     try {
       if (isSignUp) {
         await signUp(email, password);
-        alert(
-          "Check your email to confirm your account before logging in!"
-        );
+        setNotice("Account created. Check your email to confirm it, then sign in.");
       } else {
         await signIn(email, password);
-        router.push("/members");
+        router.replace("/members");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -75,6 +81,12 @@ export default function AuthPage() {
           {error && (
             <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
               {error}
+            </div>
+          )}
+
+          {notice && (
+            <div className="rounded border border-[rgba(212,175,55,0.45)] bg-[rgba(212,175,55,0.12)] p-3 text-[var(--color-gold)]">
+              {notice}
             </div>
           )}
 
