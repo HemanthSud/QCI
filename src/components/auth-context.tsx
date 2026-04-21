@@ -21,39 +21,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if user is logged in
-    const checkUser = async () => {
+    let isActive = true;
+    let subscription: { unsubscribe: () => void } | undefined;
+
+    const initializeAuth = async () => {
       try {
         const supabase = getSupabaseClient();
         const {
           data: { session },
         } = await supabase.auth.getSession();
+
+        if (!isActive) {
+          return;
+        }
+
         setUser(session?.user ?? null);
         setAuthError(null);
+
+        const {
+          data: { subscription: authSubscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+          setUser(session?.user ?? null);
+          setAuthError(null);
+        });
+
+        subscription = authSubscription;
       } catch (error) {
+        if (!isActive) {
+          return;
+        }
+
         const message = error instanceof Error ? error.message : "Auth error";
-        console.error("Auth error:", error);
         setAuthError(message);
       } finally {
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
 
-    checkUser();
+    initializeAuth();
 
-    // Listen for auth changes
-    try {
-      const supabase = getSupabaseClient();
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setUser(session?.user ?? null);
-      });
-
-      return () => subscription?.unsubscribe();
-    } catch (error) {
-      console.error("Auth subscription error:", error);
-    }
+    return () => {
+      isActive = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string) => {

@@ -41,10 +41,10 @@ export function SiteHeader() {
             </span>
             <span className="min-w-0">
               <span className="block font-accent text-2xl uppercase leading-none tracking-[0.18em] text-[var(--color-cream)] sm:text-3xl">
-                QC<span className="text-[var(--color-red)]">I</span>
+                QCI
               </span>
               <span className="hidden max-w-[18rem] truncate text-[0.68rem] uppercase tracking-[0.22em] text-[var(--color-muted)] sm:block">
-                {siteMeta.tagline}
+                Queen City Ishaare
               </span>
             </span>
           </Link>

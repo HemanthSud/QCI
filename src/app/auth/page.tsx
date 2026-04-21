@@ -4,10 +4,15 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-context";
 
+const SIGN_UP_ACCESS_CODE = process.env.NEXT_PUBLIC_QCI_SIGNUP_CODE ?? "QCI2026";
+
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accessCode, setAccessCode] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isSignUpUnlocked, setIsSignUpUnlocked] = useState(false);
+  const [showAccessCodePrompt, setShowAccessCodePrompt] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
@@ -24,6 +29,13 @@ export default function AuthPage() {
     e.preventDefault();
     setError("");
     setNotice("");
+
+    if (isSignUp && !isSignUpUnlocked) {
+      setError("Enter the member access code before creating an account.");
+      setShowAccessCodePrompt(true);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -41,6 +53,41 @@ export default function AuthPage() {
     }
   };
 
+  const handleUnlockSignUp = (event: React.FormEvent) => {
+    event.preventDefault();
+    setError("");
+    setNotice("");
+
+    if (accessCode.trim().toLowerCase() !== SIGN_UP_ACCESS_CODE.trim().toLowerCase()) {
+      setError("That access code does not match. Ask QCI leadership for the current code.");
+      return;
+    }
+
+    setIsSignUpUnlocked(true);
+    setIsSignUp(true);
+    setShowAccessCodePrompt(false);
+    setAccessCode("");
+  };
+
+  const handleSwitchToSignIn = () => {
+    setIsSignUp(false);
+    setShowAccessCodePrompt(false);
+    setError("");
+    setNotice("");
+  };
+
+  const handleRequestSignUp = () => {
+    setError("");
+    setNotice("");
+
+    if (isSignUpUnlocked) {
+      setIsSignUp(true);
+      return;
+    }
+
+    setShowAccessCodePrompt(true);
+  };
+
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -52,6 +99,31 @@ export default function AuthPage() {
             ? "Create an account to access exclusive member content"
             : "Sign in to access exclusive member content"}
         </p>
+
+        {!isSignUp && showAccessCodePrompt && (
+          <form
+            className="mb-6 space-y-4 rounded-lg border border-[rgba(212,175,55,0.45)] bg-[rgba(212,175,55,0.08)] p-4"
+            onSubmit={handleUnlockSignUp}
+          >
+            <div>
+              <label className="block text-sm font-medium mb-2">Member access code</label>
+              <input
+                type="password"
+                required
+                value={accessCode}
+                onChange={(event) => setAccessCode(event.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                placeholder="Enter code"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-[var(--color-red)] hover:bg-[var(--color-red-dark)] text-white font-bold py-2 px-4 rounded-lg transition"
+            >
+              Unlock sign up
+            </button>
+          </form>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -102,7 +174,7 @@ export default function AuthPage() {
         <p className="text-center mt-6">
           {isSignUp ? "Already have an account?" : "Don't have an account?"}
           <button
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={isSignUp ? handleSwitchToSignIn : handleRequestSignUp}
             className="ml-2 text-[var(--color-red)] hover:underline font-medium"
           >
             {isSignUp ? "Sign In" : "Sign Up"}
