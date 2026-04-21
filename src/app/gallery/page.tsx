@@ -7,7 +7,7 @@ import { galleryCards, siteMeta, videoTimelineEntries } from "@/lib/site-data";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Explore Queen City Ishaare's reverse-chronological video timeline plus a visual gallery of stills and poster-style identity moments.",
+    "Explore Queen City Ishaare's reverse-chronological performance timeline plus a visual gallery of stills and poster-style identity moments.",
 };
 
 export default function GalleryPage() {
@@ -22,16 +22,16 @@ export default function GalleryPage() {
             </ButtonLink>
           </>
         }
-        description="The current gallery uses one strong team image and turns it into a more expansive visual system with varied crops, poster cards, and typography-driven layout. When more assets arrive, the structure is already ready."
+        description="The gallery uses one strong team image and turns it into a more expansive visual system with varied crops, poster cards, and a lightweight season archive."
         eyebrow="Gallery"
-        title="A performance archive with the newest season first and the earliest years at the bottom."
+        title="A performance archive with the newest season first."
       />
 
       <section className="py-8 sm:py-12">
         <Container className="space-y-10">
           <SectionHeading
-            description="Every video you added is now arranged like a proper timeline: 2026 at the top, then back through 2025, 2022, 2020, 2019, 2018, 2017, and 2016 at the bottom."
-            eyebrow="Video timeline"
+            description="A leaner season timeline keeps the archive scannable without shipping oversized media files with the site."
+            eyebrow="Performance timeline"
             title="Newest at the top. Earliest at the bottom."
           />
 
@@ -63,17 +63,21 @@ export default function GalleryPage() {
                       </p>
                     </div>
 
-                    <div className="section-card overflow-hidden p-2 sm:p-3">
-                      <div className="overflow-hidden border border-white/8 bg-black">
-                        <video
-                          className="aspect-video w-full bg-black object-contain"
-                          controls
-                          playsInline
-                          preload="metadata"
-                        >
-                          <source src={entry.src} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
+                    <div className="section-card overflow-hidden p-0">
+                      <div className="relative flex aspect-video min-h-[16rem] items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.32),transparent_34%),linear-gradient(135deg,var(--color-night),var(--color-red-dark)_58%,var(--color-flame))] p-8">
+                        <div className="absolute inset-x-8 top-8 h-px bg-white/20" />
+                        <div className="absolute inset-x-8 bottom-8 h-px bg-white/20" />
+                        <div className="text-center text-white">
+                          <p className="text-xs font-semibold uppercase tracking-[0.34em] text-white/70">
+                            Queen City Ishaare
+                          </p>
+                          <p className="mt-5 font-display text-7xl leading-none sm:text-8xl">
+                            {entry.year}
+                          </p>
+                          <p className="mx-auto mt-5 max-w-sm text-sm font-semibold uppercase tracking-[0.24em] text-white/75">
+                            {entry.title}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -87,7 +91,7 @@ export default function GalleryPage() {
       <section className="py-16 sm:py-20">
         <Container className="space-y-10">
           <SectionHeading
-            description="Under the timeline, the rest of the gallery still works like an editorial moodboard so the archive has both motion and branded still-image energy."
+            description="Under the timeline, the rest of the gallery still works like an editorial moodboard so the archive has branded still-image energy."
             eyebrow="Poster wall"
             title="Frames, posters, and image crops that still feel like a campaign."
           />

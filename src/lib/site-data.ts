@@ -483,10 +483,9 @@ export const videoTimelineEntries = [
   {
     year: "2026",
     title: "South Asian Showdown era",
-    subtitle: "Newest season on top",
+    subtitle: "Newest season",
     description:
-      "The current top of the archive. Built to sit first so the latest work always gets seen before the older seasons.",
-    src: "/videos/2026.mp4",
+      "The current top of the archive. The latest work sits first before the older seasons.",
   },
   {
     year: "2025",
@@ -494,7 +493,6 @@ export const videoTimelineEntries = [
     subtitle: "Competition momentum",
     description:
       "A season connected publicly to podium momentum and a sharper national competition push.",
-    src: "/videos/2025.mp4",
   },
   {
     year: "2022",
@@ -502,15 +500,13 @@ export const videoTimelineEntries = [
     subtitle: "A newer chapter in the archive",
     description:
       "A later-era performance entry that helps bridge the team's early years and its current stage identity.",
-    src: "/videos/2022.mp4",
   },
   {
     year: "2020",
     title: "Season archive 2020",
     subtitle: "Timeline entry",
     description:
-      "A preserved season video placed in descending order so viewers can move backward through the team's evolution.",
-    src: "/videos/2020.mp4",
+      "A preserved season marker placed in descending order so viewers can move backward through the team's evolution.",
   },
   {
     year: "2019",
@@ -518,7 +514,6 @@ export const videoTimelineEntries = [
     subtitle: "Timeline entry",
     description:
       "Part of the team's earlier public competition footprint and a key stop in the archive.",
-    src: "/videos/2019.mp4",
   },
   {
     year: "2018",
@@ -526,7 +521,6 @@ export const videoTimelineEntries = [
     subtitle: "Timeline entry",
     description:
       "An early performance entry that helps show how the team's style sharpened over time.",
-    src: "/videos/2018.mp4",
   },
   {
     year: "2017",
@@ -534,14 +528,12 @@ export const videoTimelineEntries = [
     subtitle: "Early public-era footage",
     description:
       "One of the earliest years in the public performance trail currently loaded into the site.",
-    src: "/videos/2017.mp4",
   },
   {
     year: "2016",
     title: "Season archive 2016",
     subtitle: "Earliest entry at the bottom",
     description:
-      "The oldest video now anchors the bottom of the timeline so the archive reads newest to oldest.",
-    src: "/videos/2016.mp4",
+      "The oldest season marker anchors the bottom of the timeline so the archive reads newest to oldest.",
   },
 ] as const;
