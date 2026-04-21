@@ -3,7 +3,7 @@ export const siteMeta = {
   shortName: "QCI",
   description:
     "UNC Charlotte's competitive Bollywood-fusion dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
-  email: "qcishaare24@gmail.com",
+  email: "qcishaare25@gmail.com",
   instagram: "https://www.instagram.com/queencity_ishaare/",
   donateUrl: "https://www.gofundme.com/f/fuel-queen-city-ishaares-competition-season",
   supportStoryUrl:
@@ -12,11 +12,11 @@ export const siteMeta = {
 };
 
 export const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/support", label: "Support Us" },
-  { href: "/calendar", label: "Calendar" },
+  { href: "/#about", label: "About" },
+  { href: "/#events", label: "Events" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/calendar", label: "Calendar" },
+  { href: "/support", label: "Support" },
 ];
 
 export const danceStyles = [
@@ -47,6 +47,115 @@ export const homepageStats = [
   },
 ];
 
+export const homeStoryStats = [
+  {
+    value: "10+",
+    label: "Seasons",
+  },
+  {
+    value: "25+",
+    label: "Members",
+  },
+  {
+    value: "50+",
+    label: "Performances",
+  },
+] as const;
+
+export const homePhotoStrip = [
+  {
+    caption: "NASHA Showcase",
+    position: "50% 18%",
+  },
+  {
+    caption: "Jersey Jalwa",
+    position: "50% 38%",
+  },
+  {
+    caption: "Disco Night",
+    position: "50% 56%",
+  },
+  {
+    caption: "Fall SZN Recap",
+    position: "50% 28%",
+  },
+] as const;
+
+export const homeEventHighlights = [
+  {
+    badge: "Finalist Stage",
+    meta: "2026",
+    title: "South Asian Showdown",
+    date: "February 28, 2026",
+    detail: "National finalist season",
+    location: "Boston, Massachusetts",
+  },
+  {
+    badge: "Podium",
+    meta: "3rd",
+    title: "Jersey Jalwa",
+    date: "February 2025",
+    detail: "Competition circuit milestone",
+    location: "New Jersey",
+  },
+  {
+    badge: "Campus Night",
+    meta: "2025",
+    title: "UNCC Back-to-School Bash",
+    date: "August 23, 2025",
+    detail: "Co-presented student event",
+    location: "Charlotte, North Carolina",
+  },
+] as const;
+
+export const dareBoardColumns = [
+  {
+    price: "$3",
+    items: [
+      "Crack egg on head",
+      "Friend does your makeup",
+      "2 shots of hot sauce",
+      "Get pied",
+    ],
+  },
+  {
+    price: "$4",
+    items: [
+      "Run and scream in public",
+      "Friend picks your outfit",
+      "Rap battle",
+      "Dropped out prank call to parents",
+    ],
+  },
+  {
+    price: "$5",
+    items: [
+      "Freestyle 30-second dance and post",
+      "Ice bucket",
+      "Ugly photo on Insta story",
+      "Serenade a stranger",
+    ],
+  },
+  {
+    price: "$7",
+    items: [
+      "Wax strip",
+      "Jump into a pool",
+      "Sing on the UNCC bus",
+      "Dance our set in the middle of the Union",
+    ],
+  },
+] as const;
+
+export const auditionChecklist = [
+  "Send a DM on Instagram to get the info packet",
+  "Virtual auditions are accepted",
+  "Materials are sent after inquiry",
+  "All dance backgrounds are welcome",
+  "Team expectations are shared before auditions",
+  "Season updates roll out through Instagram",
+] as const;
+
 export const homepageFeatures = [
   {
     title: "Narrative-driven sets",
@@ -64,6 +173,63 @@ export const homepageFeatures = [
       "From campus shows to out-of-state competitions, the team carries UNC Charlotte energy into every performance weekend.",
   },
 ];
+
+export const homepageServiceGrid = [
+  {
+    index: "01",
+    title: "Competition Sets",
+    description:
+      "Narrative-first routines built for the collegiate fusion circuit, with music, props, and pacing treated like a full production.",
+  },
+  {
+    index: "02",
+    title: "Campus Performances",
+    description:
+      "High-impact appearances that keep QCI visible across UNC Charlotte's cultural events, showcases, and student life calendar.",
+  },
+  {
+    index: "03",
+    title: "Guest Bookings",
+    description:
+      "Custom performances for cultural nights, showcases, private events, and collaborations that need real stage presence.",
+  },
+  {
+    index: "04",
+    title: "Fundraising Activations",
+    description:
+      "Pop-ups, socials, and ticketed events designed to support the season while keeping the brand active between competitions.",
+  },
+  {
+    index: "05",
+    title: "Creative Direction",
+    description:
+      "From costume logic to spacing and transitions, the team approaches every set with a clear visual system and performance intent.",
+  },
+  {
+    index: "06",
+    title: "Community Energy",
+    description:
+      "A team culture that blends discipline, mentorship, and joy so the work feels tight on stage and connected off it.",
+  },
+] as const;
+
+export const recognitionSlides = [
+  {
+    quote: "UNC Charlotte's premier Bollywood-fusion dance team.",
+    source: "Season fundraiser",
+    year: "2026",
+  },
+  {
+    quote: "A diverse group of passionate students from all class years.",
+    source: "South Asian Showdown listing",
+    year: "2026",
+  },
+  {
+    quote: "Helped lead the team to their first first-place victory.",
+    source: "Former captain bio",
+    year: "Alumni era",
+  },
+] as const;
 
 export const historyTimeline = [
   {
@@ -309,3 +475,70 @@ export const galleryCards = [
     accent: "jade",
   },
 ];
+
+export const videoTimelineEntries = [
+  {
+    year: "2026",
+    title: "South Asian Showdown era",
+    subtitle: "Newest season on top",
+    description:
+      "The current top of the archive. Built to sit first so the latest work always gets seen before the older seasons.",
+    src: "/videos/2026.mp4",
+  },
+  {
+    year: "2025",
+    title: "Jersey Jalwa season",
+    subtitle: "Competition momentum",
+    description:
+      "A season connected publicly to podium momentum and a sharper national competition push.",
+    src: "/videos/2025.mp4",
+  },
+  {
+    year: "2022",
+    title: "Return-to-stage energy",
+    subtitle: "A newer chapter in the archive",
+    description:
+      "A later-era performance entry that helps bridge the team's early years and its current stage identity.",
+    src: "/videos/2022.mp4",
+  },
+  {
+    year: "2020",
+    title: "Season archive 2020",
+    subtitle: "Timeline entry",
+    description:
+      "A preserved season video placed in descending order so viewers can move backward through the team's evolution.",
+    src: "/videos/2020.mp4",
+  },
+  {
+    year: "2019",
+    title: "Season archive 2019",
+    subtitle: "Timeline entry",
+    description:
+      "Part of the team's earlier public competition footprint and a key stop in the archive.",
+    src: "/videos/2019.mp4",
+  },
+  {
+    year: "2018",
+    title: "Season archive 2018",
+    subtitle: "Timeline entry",
+    description:
+      "An early performance entry that helps show how the team's style sharpened over time.",
+    src: "/videos/2018.mp4",
+  },
+  {
+    year: "2017",
+    title: "Season archive 2017",
+    subtitle: "Early public-era footage",
+    description:
+      "One of the earliest years in the public performance trail currently loaded into the site.",
+    src: "/videos/2017.mp4",
+  },
+  {
+    year: "2016",
+    title: "Season archive 2016",
+    subtitle: "Earliest entry at the bottom",
+    description:
+      "The oldest video now anchors the bottom of the timeline so the archive reads newest to oldest.",
+    src: "/videos/2016.mp4",
+  },
+] as const;

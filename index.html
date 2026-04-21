@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Queen City Ishaare</title>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --deep: #100808;
+    --red: #C8102E;
+    --red-dark: #8B0B1F;
+    --cream: #F2EDE4;
+    --gold: #D4AF37;
+    --gold-dim: rgba(212,175,55,0.15);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.2s, height 0.2s;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 120px 24px 80px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a0510 0%, var(--black) 70%);
+  }
+
+  /* Disco ball */
+  .disco-ball {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    animation: disco-spin 8s linear infinite;
+    opacity: 0.6;
+  }
+  @keyframes disco-spin {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+  }
+
+  /* Disco light beams */
+  .beam {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    width: 2px;
+    height: 45vh;
+    transform-origin: top center;
+    background: linear-gradient(to bottom, rgba(212,175,55,0.5), transparent);
+    animation: beam-sweep 3s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+  .beam:nth-child(2) { animation-delay: -1s; transform: rotate(30deg); background: linear-gradient(to bottom, rgba(200,16,46,0.4), transparent); }
+  .beam:nth-child(3) { animation-delay: -2s; transform: rotate(-30deg); background: linear-gradient(to bottom, rgba(212,175,55,0.3), transparent); }
+  @keyframes beam-sweep {
+    from { opacity: 0.2; transform: rotate(var(--r, 0deg)) scaleX(1); }
+    to { opacity: 0.7; transform: rotate(calc(var(--r, 0deg) + 20deg)) scaleX(2); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.35em;
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(4rem, 14vw, 12rem);
+    line-height: 0.88;
+    color: var(--cream);
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fade-up 0.8s 0.5s forwards;
+  }
+  .hero-title .line-red {
+    display: block;
+    color: var(--red);
+    -webkit-text-stroke: 2px var(--red);
+    text-shadow: 0 0 60px rgba(200,16,46,0.5);
+  }
+  .hero-title .line-outline {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--cream);
+    opacity: 0.6;
+  }
+
+  /* Torn paper banner */
+  .torn-banner {
+    position: relative;
+    background: var(--red);
+    padding: 10px 48px;
+    margin: 24px 0;
+    clip-path: polygon(0 8px, 12px 0, calc(100% - 12px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px));
+    opacity: 0;
+    animation: fade-up 0.8s 0.7s forwards;
+  }
+  .torn-banner p {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.25em;
+    color: var(--cream);
+  }
+
+  .hero-sub {
+    font-size: 0.9rem;
+    opacity: 0.55;
+    letter-spacing: 0.08em;
+    max-width: 400px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fade-up 0.8s 0.9s forwards;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+    animation: fade-up 0.8s 1.1s forwards;
+  }
+  .btn {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.2em;
+    font-size: 0.95rem;
+    padding: 14px 36px;
+    border: none;
+    cursor: none;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+  .btn-primary { background: var(--red); color: var(--cream); }
+  .btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); clip-path: none; }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200,16,46,0.4); }
+  .btn-outline:hover { background: var(--gold-dim); box-shadow: 0 12px 32px rgba(212,175,55,0.2); }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.4;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  .scroll-hint span { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--cream), transparent);
+  }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+  /* SECTION BASE */
+  section { position: relative; }
+
+  .section-divider {
+    height: 80px;
+    background: var(--black);
+    clip-path: polygon(0 0, 100% 0, 100% 60%, 0 100%);
+    margin-top: -2px;
+  }
+  .section-divider.flip {
+    clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--deep);
+    padding: 100px 48px;
+  }
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.3em;
+    font-size: 0.75rem;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+  .section-heading {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+  .section-heading em { color: var(--red); font-style: normal; }
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    opacity: 0.7;
+    margin-bottom: 16px;
+  }
+  .stat-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 36px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(242,237,228,0.1);
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2.8rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.5; margin-top: 4px; }
+
+  /* Film strip polaroids */
+  .photo-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    transform: rotate(2deg);
+  }
+  .polaroid {
+    background: #1a1010;
+    padding: 12px 12px 32px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    transform: rotate(var(--rot, 0deg));
+    transition: transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .polaroid:hover { transform: rotate(0deg) scale(1.04) !important; z-index: 10; }
+  .polaroid:nth-child(1) { --rot: -3deg; }
+  .polaroid:nth-child(2) { --rot: 2deg; margin-top: 24px; }
+  .polaroid:nth-child(3) { --rot: 1deg; margin-top: -12px; }
+  .polaroid:nth-child(4) { --rot: -2deg; margin-top: 8px; }
+  .polaroid-img {
+    width: 100%;
+    aspect-ratio: 1;
+    background: var(--red-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .polaroid-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(200,16,46,0.3), rgba(0,0,0,0.5));
+  }
+  .polaroid-img svg { opacity: 0.3; }
+  .polaroid-caption {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    margin-top: 10px;
+  }
+  .polaroid-tape {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 18px;
+    background: rgba(212,175,55,0.25);
+    border-radius: 2px;
+  }
+
+  /* EVENTS */
+  #events {
+    background: var(--black);
+    padding: 100px 48px;
+  }
+  .events-inner { max-width: 1100px; margin: 0 auto; }
+  .events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 56px;
+  }
+  .event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .event-card {
+    background: #0f0606;
+    border: 1px solid rgba(200,16,46,0.15);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  }
+  .event-card:hover { border-color: var(--red); transform: translateY(-6px); }
+  .event-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--red);
+    transform: scaleY(0);
+    transition: transform 0.3s;
+    transform-origin: top;
+  }
+  .event-card:hover::before { transform: scaleY(1); }
+  .event-slash {
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(200,16,46,0.15) 50%);
+  }
+  .event-badge {
+    display: inline-block;
+    background: var(--red);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    padding: 4px 12px;
+    margin-bottom: 20px;
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+  .event-price {
+    position: absolute;
+    top: 28px; right: 28px;
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+  }
+  .event-title {
+    font-family: 'Abril Fatface', serif;
+    font-size: 1.8rem;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .event-meta {
+    font-size: 0.78rem;
+    opacity: 0.5;
+    letter-spacing: 0.08em;
+    line-height: 2;
+  }
+  .event-meta strong { color: var(--cream); opacity: 1; }
+
+  /* DARE BOARD */
+  #dare {
+    background: var(--red-dark);
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  #dare::before {
+    content: 'DARE';
+    position: absolute;
+    font-family: 'Abril Fatface', serif;
+    font-size: 20vw;
+    color: rgba(0,0,0,0.15);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .dare-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
+  .dare-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 48px;
+    border: 1px solid rgba(242,237,228,0.2);
+  }
+  .dare-col { border-right: 1px solid rgba(242,237,228,0.2); }
+  .dare-col:last-child { border-right: none; }
+  .dare-col-header {
+    background: rgba(0,0,0,0.3);
+    padding: 16px;
+    text-align: center;
+    font-family: 'Abril Fatface', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    border-bottom: 1px solid rgba(242,237,228,0.2);
+  }
+  .dare-item {
+    padding: 14px 16px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 1px solid rgba(242,237,228,0.1);
+    line-height: 1.4;
+    transition: background 0.2s;
+  }
+  .dare-item:hover { background: rgba(0,0,0,0.2); }
+  .dare-cta {
+    text-align: center;
+    margin-top: 36px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+  }
+
+  /* AUDITIONS */
+  #auditions {
+    background: var(--black);
+    padding: 100px 48px;
+  }
+  .auditions-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .auditions-inner .section-heading { margin-bottom: 12px; }
+  .auditions-inner p { opacity: 0.55; font-size: 0.9rem; line-height: 1.8; max-width: 500px; margin: 0 auto 48px; }
+  .audit-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    text-align: left;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .audit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.5;
+  }
+  .audit-item::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.6rem;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #040404;
+    padding: 60px 48px 40px;
+    border-top: 1px solid rgba(200,16,46,0.2);
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+  .footer-brand {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .footer-brand span { color: var(--red); }
+  .footer-brand small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    font-weight: 400;
+    opacity: 0.4;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .social-links { display: flex; gap: 16px; }
+  .social-link {
+    width: 44px; height: 44px;
+    border: 1px solid rgba(242,237,228,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--cream);
+    font-size: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+  .social-link:hover { border-color: var(--red); background: rgba(200,16,46,0.15); }
+  .footer-copy {
+    width: 100%;
+    text-align: center;
+    font-size: 0.68rem;
+    opacity: 0.25;
+    letter-spacing: 0.1em;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(242,237,228,0.06);
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ANIMATIONS */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 20px 60px; }
+    #about, #events, #dare, #auditions { padding: 60px 20px; }
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .photo-strip { transform: none; }
+    .events-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .dare-grid { grid-template-columns: repeat(2, 1fr); }
+    .dare-col:nth-child(2) { border-right: none; }
+    .dare-col:nth-child(3) { border-right: 1px solid rgba(242,237,228,0.2); }
+    .audit-list { grid-template-columns: 1fr; }
+    footer { padding: 40px 20px 32px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .disco-ball { width: 120px; height: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">QC<span>I</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#dare">Dare Board</a></li>
+    <li><a href="#auditions">Auditions</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Disco ball SVG -->
+  <svg class="disco-ball" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="ball-grad" cx="35%" cy="30%">
+        <stop offset="0%" stop-color="#fff" stop-opacity="0.8"/>
+        <stop offset="60%" stop-color="#aaa" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#333" stop-opacity="0.6"/>
+      </radialGradient>
+      <clipPath id="circle-clip"><circle cx="100" cy="100" r="90"/></clipPath>
+    </defs>
+    <circle cx="100" cy="100" r="90" fill="url(#ball-grad)" stroke="#555" stroke-width="1"/>
+    <g clip-path="url(#circle-clip)" opacity="0.7">
+      <!-- mirror tiles -->
+      <rect x="10" y="50" width="18" height="12" fill="#fff" opacity="0.3" transform="rotate(-20,100,100)"/>
+      <rect x="40" y="20" width="18" height="12" fill="#D4AF37" opacity="0.4" transform="rotate(-10,100,100)"/>
+      <rect x="70" y="10" width="18" height="12" fill="#fff" opacity="0.5"/>
+      <rect x="100" y="15" width="18" height="12" fill="#C8102E" opacity="0.5"/>
+      <rect x="130" y="25" width="18" height="12" fill="#fff" opacity="0.3" transform="rotate(10,100,100)"/>
+      <rect x="155" y="50" width="18" height="12" fill="#D4AF37" opacity="0.4"/>
+      <rect x="20" y="85" width="18" height="12" fill="#C8102E" opacity="0.4"/>
+      <rect x="55" y="75" width="18" height="12" fill="#fff" opacity="0.5"/>
+      <rect x="88" y="80" width="18" height="12" fill="#D4AF37" opacity="0.6"/>
+      <rect x="122" y="78" width="18" height="12" fill="#fff" opacity="0.4"/>
+      <rect x="155" y="85" width="18" height="12" fill="#C8102E" opacity="0.3"/>
+      <rect x="30" y="115" width="18" height="12" fill="#fff" opacity="0.5"/>
+      <rect x="65" y="110" width="18" height="12" fill="#C8102E" opacity="0.4"/>
+      <rect x="98" y="112" width="18" height="12" fill="#D4AF37" opacity="0.5"/>
+      <rect x="132" y="114" width="18" height="12" fill="#fff" opacity="0.3"/>
+      <rect x="50" y="145" width="18" height="12" fill="#D4AF37" opacity="0.4"/>
+      <rect x="83" y="148" width="18" height="12" fill="#fff" opacity="0.5"/>
+      <rect x="116" y="146" width="18" height="12" fill="#C8102E" opacity="0.3"/>
+      <rect x="80" y="175" width="18" height="12" fill="#fff" opacity="0.3"/>
+    </g>
+    <!-- Hanging wire -->
+    <line x1="100" y1="10" x2="100" y2="0" stroke="#888" stroke-width="2"/>
+  </svg>
+
+  <div class="beam" style="--r: -20deg;"></div>
+  <div class="beam" style="--r: 20deg;"></div>
+  <div class="beam" style="--r: 0deg;"></div>
+
+  <div style="position:relative; z-index:2;">
+    <p class="hero-eyebrow">Queen City Ishaare — Est. 2014</p>
+
+    <h1 class="hero-title">
+      <span class="line-red">Bollywood</span>
+      <span>Disco</span>
+      <span class="line-outline">Night</span>
+    </h1>
+
+    <div class="torn-banner">
+      <p>Where Bollywood Meets the Dancefloor</p>
+    </div>
+
+    <p class="hero-sub" style="opacity:0; animation: fade-up 0.8s 0.9s forwards;">
+      UNCC's premiere South Asian dance team — performing across the Southeast with passion, energy, and culture.
+    </p>
+
+    <div class="btn-group">
+      <a href="#auditions" class="btn btn-primary">Audition Now</a>
+      <a href="#events" class="btn btn-outline">Upcoming Shows</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-text reveal">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-heading">More Than <em>Dance.</em> A Family.</h2>
+      <p>Queen City Ishaare is a competitive Bollywood fusion dance team at UNC Charlotte. We blend classical Indian dance with contemporary styles, hip-hop, and filmi choreography to create performances that honor culture and push artistic boundaries.</p>
+      <p>From regional competitions to campus showcases, every performance is a celebration of South Asian artistry and the Queen City spirit.</p>
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Seasons</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">25+</div>
+          <div class="stat-label">Members</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Performances</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-strip reveal reveal-delay-2">
+      <div class="polaroid">
+        <div class="polaroid-tape"></div>
+        <div class="polaroid-img">
+          <svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="none" stroke="#fff" stroke-width="2"/><path d="M20 30 l8 8 l12-14" stroke="#fff" stroke-width="2.5" fill="none"/></svg>
+        </div>
+        <p class="polaroid-caption">NASHA Showcase</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-tape"></div>
+        <div class="polaroid-img">
+          <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,5 55,50 5,50" fill="none" stroke="#D4AF37" stroke-width="2"/><line x1="30" y1="20" x2="30" y2="38" stroke="#D4AF37" stroke-width="2"/><circle cx="30" cy="43" r="2" fill="#D4AF37"/></svg>
+        </div>
+        <p class="polaroid-caption">Jersey Jalwa</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-tape"></div>
+        <div class="polaroid-img">
+          <svg width="60" height="60" viewBox="0 0 60 60"><rect x="10" y="10" width="40" height="40" rx="4" fill="none" stroke="#fff" stroke-width="2"/><circle cx="30" cy="30" r="10" fill="none" stroke="#fff" stroke-width="2"/></svg>
+        </div>
+        <p class="polaroid-caption">Disco Night</p>
+      </div>
+      <div class="polaroid">
+        <div class="polaroid-tape"></div>
+        <div class="polaroid-img">
+          <svg width="60" height="60" viewBox="0 0 60 60"><path d="M10 40 Q30 10 50 40" stroke="#C8102E" stroke-width="2.5" fill="none"/><circle cx="30" cy="28" r="5" fill="#C8102E"/></svg>
+        </div>
+        <p class="polaroid-caption">Fall SZN Recap</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="events-inner">
+    <div class="events-header reveal">
+      <div>
+        <p class="section-label">On Stage</p>
+        <h2 class="section-heading">Upcoming <em>Events</em></h2>
+      </div>
+      <a href="#auditions" class="btn btn-outline" style="font-size:0.8rem; padding: 10px 28px;">See All →</a>
+    </div>
+
+    <div class="event-grid">
+      <div class="event-card reveal reveal-delay-1">
+        <div class="event-slash"></div>
+        <div class="event-badge">Final Tickets</div>
+        <div class="event-price">$10</div>
+        <h3 class="event-title">Bollywood Disco Night</h3>
+        <div class="event-meta">
+          <div><strong>Friday, April 17</strong></div>
+          <div>10 PM – 2 AM</div>
+          <div>Red Chillez · Concord, NC</div>
+        </div>
+      </div>
+
+      <div class="event-card reveal reveal-delay-2">
+        <div class="event-slash"></div>
+        <div class="event-badge">Free</div>
+        <h3 class="event-title">Spring Sweets & Henna</h3>
+        <div class="event-meta">
+          <div><strong>Sunday, April 13</strong></div>
+          <div>11 AM – 5 PM</div>
+          <div>Outside Union · UNCC</div>
+        </div>
+      </div>
+
+      <div class="event-card reveal reveal-delay-3">
+        <div class="event-slash"></div>
+        <div class="event-badge">Coming Soon</div>
+        <h3 class="event-title">Henna Pop Up</h3>
+        <div class="event-meta">
+          <div><strong>Tuesday, March 3</strong></div>
+          <div>1 PM – 5 PM</div>
+          <div>Belk Plaza · UNCC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARE BOARD -->
+<section id="dare">
+  <div class="dare-inner">
+    <div class="reveal">
+      <p class="section-label">Ishaare Dare Board</p>
+      <h2 class="section-heading">How Far Will <em>You Go?</em></h2>
+    </div>
+    <div class="dare-grid reveal reveal-delay-1">
+      <div class="dare-col">
+        <div class="dare-col-header">$3</div>
+        <div class="dare-item">Crack Egg on Head</div>
+        <div class="dare-item">Friend Does Your Makeup</div>
+        <div class="dare-item">2 Shots of Hot Sauce</div>
+        <div class="dare-item">Get Pied</div>
+      </div>
+      <div class="dare-col">
+        <div class="dare-col-header">$4</div>
+        <div class="dare-item">Run & Scream in Public</div>
+        <div class="dare-item">Friend Picks Your Outfit</div>
+        <div class="dare-item">Rap Battle</div>
+        <div class="dare-item">Dropped Out Prank Call to Parents</div>
+      </div>
+      <div class="dare-col">
+        <div class="dare-col-header">$5</div>
+        <div class="dare-item">Freestyle 30 Sec Dance & Post</div>
+        <div class="dare-item">Ice Bucket</div>
+        <div class="dare-item">Ugly Photo on Insta Story</div>
+        <div class="dare-item">Serenade a Stranger</div>
+      </div>
+      <div class="dare-col">
+        <div class="dare-col-header">$7</div>
+        <div class="dare-item">Wax Strip</div>
+        <div class="dare-item">Jump Into a Pool</div>
+        <div class="dare-item">Sing on UNCC Bus</div>
+        <div class="dare-item">Dance Our Set in Middle of Union</div>
+      </div>
+    </div>
+    <p class="dare-cta reveal">$10 = Dare of Your Choice!</p>
+  </div>
+</section>
+
+<!-- AUDITIONS -->
+<section id="auditions">
+  <div class="auditions-inner">
+    <div class="reveal">
+      <p class="section-label">Join the Team</p>
+      <h2 class="section-heading">Spring <em>Auditions</em></h2>
+      <p>Think you have what it takes? Send us a DM to get the info packet or submit a virtual audition. All experience levels welcome.</p>
+    </div>
+    <div class="audit-list reveal reveal-delay-1">
+      <div class="audit-item">Send a DM on Instagram to get the info</div>
+      <div class="audit-item">Virtual auditions accepted</div>
+      <div class="audit-item">Materials sent upon request</div>
+      <div class="audit-item">Deadline: Wednesday, Nov 5th at 11:59 PM</div>
+      <div class="audit-item">All dance backgrounds welcome</div>
+      <div class="audit-item">Details provided after inquiry</div>
+    </div>
+    <div class="btn-group reveal reveal-delay-2" style="justify-content:center;">
+      <a href="https://instagram.com/queencityishaare" target="_blank" class="btn btn-primary">DM Us on Instagram</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      Queen City <span>Ishaare</span>
+      <small>UNCC Bollywood Dance Team · Charlotte, NC</small>
+    </div>
+    <div class="social-links">
+      <a href="https://instagram.com/queencityishaare" target="_blank" class="social-link" title="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" class="social-link" title="TikTok">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.03a8.16 8.16 0 004.77 1.52V7.1a4.85 4.85 0 01-1-.41z"/></svg>
+      </a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 Queen City Ishaare · All Rights Reserved · UNCC</p>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursor.style.background = 'var(--gold)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      cursor.style.background = 'var(--red)';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav background
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.background = window.scrollY > 80 ? 'rgba(8,8,8,0.97)' : 'linear-gradient(to bottom, rgba(8,8,8,0.95), transparent)';
+  });
+</script>
+</body>
+</html>

@@ -47,7 +47,7 @@ export default function CalendarPage() {
                     <span className="rounded-full bg-[rgba(255,106,61,0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-ember)]">
                       {event.kind}
                     </span>
-                    <span className="rounded-full bg-[rgba(25,21,27,0.06)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-night)]">
+                    <span className="rounded-full border border-white/10 bg-[rgba(255,255,255,0.04)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-gold)]">
                       {event.status}
                     </span>
                   </div>

@@ -82,7 +82,7 @@ export default function SupportPage() {
           <div className="glass-panel px-6 py-8 sm:px-10 sm:py-10">
             <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-center">
               <div className="space-y-4">
-                <span className="inline-flex rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-ember)]">
+                <span className="inline-flex rounded-full border border-white/12 bg-[rgba(114,10,14,0.6)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-rose)]">
                   Season message
                 </span>
                 <h2 className="font-display text-4xl leading-none tracking-[-0.04em] text-[var(--color-night)] sm:text-5xl">

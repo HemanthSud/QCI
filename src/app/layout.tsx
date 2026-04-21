@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Syne } from "next/font/google";
+import { Abril_Fatface, Bebas_Neue, DM_Sans } from "next/font/google";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { SiteEffects } from "@/components/site-effects";
 import { siteMeta } from "@/lib/site-data";
 
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const abrilFatface = Abril_Fatface({
+  variable: "--font-abril-fatface",
   subsets: ["latin"],
+  weight: "400",
+});
+
+const bebasNeue = Bebas_Neue({
+  variable: "--font-bebas-neue",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -35,12 +43,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${spaceGrotesk.variable} ${syne.variable}`}
+      className={`${dmSans.variable} ${abrilFatface.variable} ${bebasNeue.variable}`}
       data-scroll-behavior="smooth"
       lang="en"
     >
       <body suppressHydrationWarning>
-        <div className="page-gradient flex min-h-screen flex-col">
+        <SiteEffects />
+        <div className="site-shell flex min-h-screen flex-col">
           <SiteHeader />
           <main className="relative z-10 flex-1">{children}</main>
           <SiteFooter />

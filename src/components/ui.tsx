@@ -27,11 +27,7 @@ type PageHeroProps = {
 };
 
 export function Container({ children, className = "" }: ContainerProps) {
-  return (
-    <div className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`mx-auto w-full max-w-[1100px] px-5 sm:px-8 ${className}`}>{children}</div>;
 }
 
 export function ButtonLink({
@@ -41,14 +37,14 @@ export function ButtonLink({
   className = "",
 }: ButtonLinkProps) {
   const shared =
-    "inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold tracking-[0.18em] uppercase transition duration-300";
+    "inline-flex items-center justify-center px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] transition duration-200";
   const variants = {
     primary:
-      "bg-[var(--color-flame)] text-[var(--color-night)] shadow-[0_20px_60px_rgba(255,106,61,0.28)] hover:-translate-y-0.5 hover:bg-[var(--color-gold)]",
+      "bg-[var(--color-red)] text-[var(--color-cream)] shadow-[0_12px_32px_rgba(200,16,46,0.3)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(200,16,46,0.4)]",
     secondary:
-      "border border-black/10 bg-white/70 text-[var(--color-night)] backdrop-blur hover:-translate-y-0.5 hover:border-[var(--color-flame)] hover:bg-white",
+      "border border-[var(--color-gold)] bg-transparent text-[var(--color-gold)] hover:-translate-y-0.5 hover:bg-[var(--color-gold-dim)] hover:shadow-[0_16px_36px_rgba(212,175,55,0.15)]",
     ghost:
-      "text-[var(--color-night)] hover:bg-white/60",
+      "text-[var(--color-cream)] hover:text-[var(--color-gold)]",
   };
 
   const classes = `${shared} ${variants[variant]} ${className}`;
@@ -80,17 +76,17 @@ export function SectionHeading({
   description,
   align = "left",
 }: SectionHeadingProps) {
-  const alignment = align === "center" ? "items-center text-center" : "items-start";
+  const alignment = align === "center" ? "items-center text-center mx-auto" : "items-start";
 
   return (
-    <div className={`flex max-w-3xl flex-col gap-4 ${alignment}`}>
-      <span className="rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-ember)] shadow-[0_16px_40px_rgba(22,20,25,0.08)]">
+    <div className={`flex max-w-3xl flex-col gap-4 ${alignment} reveal-on-scroll`} data-reveal>
+      <span className="font-accent text-[0.8rem] uppercase tracking-[0.32em] text-[var(--color-red)]">
         {eyebrow}
       </span>
-      <h2 className="font-display text-4xl leading-none tracking-[-0.04em] text-[var(--color-night)] sm:text-5xl">
+      <h2 className="font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
         {title}
       </h2>
-      <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-lg">
+      <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-[1.05rem]">
         {description}
       </p>
     </div>
@@ -104,21 +100,20 @@ export function PageHero({
   actions,
 }: PageHeroProps) {
   return (
-    <section className="relative overflow-hidden py-16 sm:py-24">
+    <section className="relative overflow-hidden py-[4.5rem] sm:py-24">
       <Container>
-        <div className="glass-panel relative overflow-hidden px-6 py-10 sm:px-10 sm:py-14">
-          <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_top,_rgba(255,181,84,0.45),_transparent_65%)]" />
+        <div className="page-hero-shell reveal-on-scroll" data-reveal>
           <div className="relative flex max-w-4xl flex-col gap-6">
-            <span className="rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[var(--color-ember)] w-fit">
+            <span className="font-accent text-[0.82rem] uppercase tracking-[0.32em] text-[var(--color-gold)]">
               {eyebrow}
             </span>
-            <h1 className="font-display text-5xl leading-[0.94] tracking-[-0.05em] text-[var(--color-night)] sm:text-6xl lg:text-7xl">
+            <h1 className="font-display text-5xl leading-[0.95] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
               {title}
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
               {description}
             </p>
-            {actions ? <div className="flex flex-wrap gap-3 pt-2">{actions}</div> : null}
+            {actions ? <div className="flex flex-wrap gap-4 pt-2">{actions}</div> : null}
           </div>
         </div>
       </Container>
