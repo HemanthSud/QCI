@@ -146,9 +146,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[rgba(242,237,228,0.08)] pt-6 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
+        <div className="mt-10 border-t border-[rgba(242,237,228,0.08)] pt-6 text-[0.72rem] uppercase tracking-[0.16em] text-[var(--color-muted)]">
           <p>© 2026 Queen City Ishaare · All Rights Reserved</p>
-          <p>Built with the same editorial layout language as the reference homepage.</p>
         </div>
       </Container>
     </footer>

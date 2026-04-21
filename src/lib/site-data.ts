@@ -16,7 +16,6 @@ export const siteMeta = {
 
 export const navLinks = [
   { href: "/about", label: "About" },
-  { href: "/about#history", label: "History" },
   { href: "/gallery", label: "Gallery" },
   { href: "/calendar", label: "Calendar" },
   { href: "/support", label: "Donate" },
