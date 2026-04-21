@@ -26,12 +26,12 @@ const bebasNeue = Bebas_Neue({
 
 export const metadata: Metadata = {
   title: {
-    default: `${siteMeta.name} | UNC Charlotte Bollywood-Fusion Team`,
+    default: `${siteMeta.name} | ${siteMeta.tagline}`,
     template: `%s | ${siteMeta.name}`,
   },
   description: siteMeta.description,
   openGraph: {
-    title: `${siteMeta.name} | UNC Charlotte Bollywood-Fusion Team`,
+    title: `${siteMeta.name} | ${siteMeta.tagline}`,
     description: siteMeta.description,
   },
 };

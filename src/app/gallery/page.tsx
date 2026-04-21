@@ -64,9 +64,9 @@ export default function GalleryPage() {
                     </div>
 
                     <div className="section-card overflow-hidden p-2 sm:p-3">
-                      <div className="overflow-hidden rounded-[1.35rem] border border-white/8 bg-black">
+                      <div className="overflow-hidden border border-white/8 bg-black">
                         <video
-                          className="aspect-[9/16] w-full bg-black object-cover"
+                          className="aspect-video w-full bg-black object-contain"
                           controls
                           playsInline
                           preload="metadata"

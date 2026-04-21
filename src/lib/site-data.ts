@@ -1,14 +1,17 @@
 export const siteMeta = {
   name: "Queen City Ishaare",
   shortName: "QCI",
+  tagline: "UNC Charlotte's premier Bollywood dance team",
   description:
-    "UNC Charlotte's competitive Bollywood-fusion dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
+    "UNC Charlotte's premier Bollywood dance team, blending South Asian styles, sharp storytelling, and full-cast stage energy.",
   email: "qcishaare25@gmail.com",
   instagram: "https://www.instagram.com/queencity_ishaare/",
-  donateUrl: "https://www.gofundme.com/f/fuel-queen-city-ishaares-competition-season",
+  donateUrl:
+    "https://www.gofundme.com/f/fuel-queen-city-ishaares-competition-season?attribution_id=sl:9afa1931-97ff-4a5a-92d2-661f61d2a6b3&lang=en_US&ts=1767645001&utm_campaign=fp_sharesheet&utm_content=amp17_ta&utm_medium=customer&utm_source=copy_link",
   supportStoryUrl:
     "https://www.gofundme.com/f/support-queen-city-ishaare-help-us-compete-nationwide",
   homeImage: "/team-hero.jpg",
+  logoImage: "/qci-logo.jpg",
 };
 
 export const navLinks = [
@@ -16,7 +19,7 @@ export const navLinks = [
   { href: "/#events", label: "Events" },
   { href: "/gallery", label: "Gallery" },
   { href: "/calendar", label: "Calendar" },
-  { href: "/support", label: "Support" },
+  { href: "/support", label: "Donate" },
 ];
 
 export const danceStyles = [

@@ -83,7 +83,7 @@ export function SectionHeading({
       <span className="font-accent text-[0.8rem] uppercase tracking-[0.32em] text-[var(--color-red)]">
         {eyebrow}
       </span>
-      <h2 className="font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
+      <h2 className="text-balance break-words font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
         {title}
       </h2>
       <p className="max-w-2xl text-base leading-8 text-[var(--color-muted)] sm:text-[1.05rem]">
@@ -107,7 +107,7 @@ export function PageHero({
             <span className="font-accent text-[0.82rem] uppercase tracking-[0.32em] text-[var(--color-gold)]">
               {eyebrow}
             </span>
-            <h1 className="font-display text-5xl leading-[0.95] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
+            <h1 className="text-balance break-words font-display text-5xl leading-[0.98] text-[var(--color-cream)] sm:text-6xl lg:text-7xl">
               {title}
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-[var(--color-muted)]">

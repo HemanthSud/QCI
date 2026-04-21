@@ -1,10 +1,9 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 
+import { GoFundMeEmbed } from "@/components/gofundme-embed";
 import { ButtonLink, Container } from "@/components/ui";
 import {
-  auditionChecklist,
-  dareBoardColumns,
   homeEventHighlights,
   homePhotoStrip,
   homeStoryStats,
@@ -20,12 +19,12 @@ export default function Home() {
 
         <div
           aria-hidden
-          className="beam-animate absolute left-1/2 top-[56px] h-[45vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.5),transparent)]"
+          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.5),transparent)] sm:top-[9rem]"
           style={{ "--beam-rotation": "-20deg" } as CSSProperties}
         />
         <div
           aria-hidden
-          className="beam-animate absolute left-1/2 top-[56px] h-[45vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(200,16,46,0.45),transparent)]"
+          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(200,16,46,0.45),transparent)] sm:top-[9rem]"
           style={{
             "--beam-rotation": "20deg",
             animationDelay: "-1s",
@@ -33,39 +32,39 @@ export default function Home() {
         />
         <div
           aria-hidden
-          className="beam-animate absolute left-1/2 top-[56px] h-[45vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.28),transparent)]"
+          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.28),transparent)] sm:top-[9rem]"
           style={{
             "--beam-rotation": "0deg",
             animationDelay: "-2s",
           } as CSSProperties}
         />
 
-        <Container className="relative z-10 flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center text-center">
+        <Container className="relative z-10 flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center pt-28 text-center sm:pt-24">
           <p
-            className="reveal-on-scroll font-accent text-[0.86rem] uppercase tracking-[0.35em] text-[var(--color-gold)]"
+            className="reveal-on-scroll max-w-full font-accent text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-gold)] sm:text-[0.86rem] sm:tracking-[0.35em]"
             data-reveal
           >
             Queen City Ishaare · Est. 2014
           </p>
 
           <h1
-            className="reveal-on-scroll reveal-delay-1 mt-4 font-display text-[clamp(4rem,14vw,10rem)] leading-[0.88] text-[var(--color-cream)]"
+            className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(3.2rem,10vw,8.8rem)] leading-[0.94] text-[var(--color-cream)] sm:leading-[0.9]"
             data-reveal
           >
             <span className="block text-[var(--color-red)] [text-shadow:0_0_60px_rgba(200,16,46,0.5)]">
               Queen City
             </span>
             <span className="block">Ishaare</span>
-            <span className="block text-transparent [-webkit-text-stroke:2px_var(--color-cream)] opacity-60">
+            <span className="block text-transparent opacity-60 [-webkit-text-stroke:1px_var(--color-cream)] sm:[-webkit-text-stroke:2px_var(--color-cream)]">
               On Stage
             </span>
           </h1>
 
           <div
-            className="reveal-on-scroll reveal-delay-2 mt-6 inline-flex bg-[var(--color-red)] px-8 py-3 [clip-path:polygon(0_8px,12px_0,calc(100%-12px)_0,100%_8px,100%_calc(100%-8px),calc(100%-8px)_100%,8px_100%,0_calc(100%-8px))]"
+            className="reveal-on-scroll reveal-delay-2 mt-6 inline-flex max-w-full bg-[var(--color-red)] px-5 py-3 text-center sm:px-8 [clip-path:polygon(0_8px,12px_0,calc(100%-12px)_0,100%_8px,100%_calc(100%-8px),calc(100%-8px)_100%,8px_100%,0_calc(100%-8px))]"
             data-reveal
           >
-            <p className="font-accent text-[1.05rem] uppercase tracking-[0.25em] text-[var(--color-cream)]">
+            <p className="font-accent text-[0.9rem] uppercase tracking-[0.14em] text-[var(--color-cream)] sm:text-[1.05rem] sm:tracking-[0.25em]">
               Where Bollywood Meets the Big Stage
             </p>
           </div>
@@ -74,13 +73,12 @@ export default function Home() {
             className="reveal-on-scroll reveal-delay-3 mt-6 max-w-xl text-[0.95rem] leading-8 text-[var(--color-muted)] sm:text-base"
             data-reveal
           >
-            UNC Charlotte&apos;s premiere South Asian dance team, blending classical Indian
-            movement with hip-hop, contemporary, and full-cast storytelling built for campus
-            showcases and competition weekends.
+            {siteMeta.tagline}, blending classical Indian movement with hip-hop, contemporary, and
+            full-cast storytelling built for campus showcases and competition weekends.
           </p>
 
           <div className="reveal-on-scroll reveal-delay-3 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
-            <ButtonLink href="/support">Support the Team</ButtonLink>
+            <ButtonLink href="/support">Donate</ButtonLink>
             <ButtonLink href="/gallery" variant="secondary">
               Watch the Archive
             </ButtonLink>
@@ -228,66 +226,9 @@ export default function Home() {
         </Container>
       </section>
 
-      <section className="relative overflow-hidden bg-[var(--color-red-dark)] py-[4.5rem] sm:py-[5.5rem]" id="dare">
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <span className="font-display text-[20vw] leading-none text-black/20">DARE</span>
-        </div>
-
+      <section className="relative overflow-hidden bg-[var(--color-red-dark)] py-[4.5rem] sm:py-[5.5rem]" id="donate">
         <Container className="relative z-10">
-          <div className="reveal-on-scroll max-w-3xl" data-reveal>
-            <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-cream)]">
-              Ishaare Dare Board
-            </p>
-            <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-              How Far Will <span className="text-[var(--color-gold)]">You Go?</span>
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-[rgba(255,255,255,0.78)]">
-              This section mirrors the reference layout almost one-to-one because it was one of the
-              most distinctive ideas in `index.html`: a fundraiser board that feels like part poster
-              wall, part live event challenge grid.
-            </p>
-          </div>
-
-          <div
-            className="reveal-on-scroll reveal-delay-1 mt-12 grid overflow-hidden border border-white/20 bg-[rgba(0,0,0,0.12)] sm:grid-cols-2 xl:grid-cols-4"
-            data-reveal
-          >
-            {dareBoardColumns.map((column, index) => (
-              <div
-                key={column.price}
-                className={`border-white/20 ${
-                  index === 0
-                    ? "border-b sm:border-r xl:border-b-0"
-                    : index === 1
-                      ? "border-b xl:border-b-0 xl:border-r"
-                      : index === 2
-                        ? "sm:border-r"
-                        : ""
-                }`}
-              >
-                <div className="border-b border-white/20 bg-[rgba(0,0,0,0.3)] px-4 py-4 text-center font-display text-4xl text-[var(--color-gold)]">
-                  {column.price}
-                </div>
-                <div>
-                  {column.items.map((item) => (
-                    <p
-                      key={item}
-                      className="border-b border-white/10 px-4 py-4 text-center font-accent text-[0.78rem] uppercase tracking-[0.08em] text-[rgba(242,237,228,0.9)] transition hover:bg-[rgba(0,0,0,0.15)]"
-                    >
-                      {item}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p
-            className="reveal-on-scroll reveal-delay-2 mt-8 text-center font-accent text-2xl uppercase tracking-[0.26em] text-[var(--color-gold)]"
-            data-reveal
-          >
-            $10 = Dare of Your Choice
-          </p>
+          <GoFundMeEmbed />
         </Container>
       </section>
 
@@ -299,29 +240,8 @@ export default function Home() {
                 Join the Team
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Spring <span className="text-[var(--color-red)]">Auditions</span>
+                Spring Auditions <span className="text-[var(--color-red)]">Coming Soon</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)]">
-                The final section keeps the centered structure from the reference homepage and turns
-                it into a cleaner recruitment CTA with a short checklist and direct path to the
-                team&apos;s Instagram.
-              </p>
-            </div>
-
-            <div className="reveal-on-scroll reveal-delay-1 mt-10 grid gap-4 text-left sm:grid-cols-2" data-reveal>
-              {auditionChecklist.map((item) => (
-                <div key={item} className="flex items-start gap-3 text-[0.92rem] leading-7 text-[var(--color-muted)]">
-                  <span className="pt-[0.48rem] text-[0.6rem] text-[var(--color-gold)]">✦</span>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="reveal-on-scroll reveal-delay-2 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
-              <ButtonLink href={siteMeta.instagram}>DM Us on Instagram</ButtonLink>
-              <ButtonLink href="/support" variant="secondary">
-                Back the Season
-              </ButtonLink>
             </div>
           </div>
         </Container>
@@ -332,52 +252,56 @@ export default function Home() {
 
 function HeroDiscoBall() {
   return (
-    <svg
+    <div
       aria-hidden
-      className="rotate-disco absolute left-1/2 top-[-60px] z-[1] h-[120px] w-[120px] -translate-x-1/2 opacity-60 sm:h-[200px] sm:w-[200px]"
-      viewBox="0 0 200 200"
-      xmlns="http://www.w3.org/2000/svg"
+      className="absolute left-1/2 top-[4.5rem] z-[1] h-[120px] w-[120px] -translate-x-1/2 opacity-[0.65] sm:top-16 sm:h-[170px] sm:w-[170px]"
     >
-      <defs>
-        <radialGradient cx="35%" cy="30%" id="hero-ball-gradient">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
-          <stop offset="60%" stopColor="#aaaaaa" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#333333" stopOpacity="0.6" />
-        </radialGradient>
-        <clipPath id="hero-circle-clip">
-          <circle cx="100" cy="100" r="90" />
-        </clipPath>
-      </defs>
-      <circle
-        cx="100"
-        cy="100"
-        fill="url(#hero-ball-gradient)"
-        r="90"
-        stroke="#555"
-        strokeWidth="1"
-      />
-      <g clipPath="url(#hero-circle-clip)" opacity="0.7">
-        <rect fill="#fff" height="12" opacity="0.3" transform="rotate(-20,100,100)" width="18" x="10" y="50" />
-        <rect fill="#D4AF37" height="12" opacity="0.4" transform="rotate(-10,100,100)" width="18" x="40" y="20" />
-        <rect fill="#fff" height="12" opacity="0.5" width="18" x="70" y="10" />
-        <rect fill="#C8102E" height="12" opacity="0.5" width="18" x="100" y="15" />
-        <rect fill="#fff" height="12" opacity="0.3" transform="rotate(10,100,100)" width="18" x="130" y="25" />
-        <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="155" y="50" />
-        <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="20" y="85" />
-        <rect fill="#fff" height="12" opacity="0.5" width="18" x="55" y="75" />
-        <rect fill="#D4AF37" height="12" opacity="0.6" width="18" x="88" y="80" />
-        <rect fill="#fff" height="12" opacity="0.4" width="18" x="122" y="78" />
-        <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="155" y="85" />
-        <rect fill="#fff" height="12" opacity="0.5" width="18" x="30" y="115" />
-        <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="65" y="110" />
-        <rect fill="#D4AF37" height="12" opacity="0.5" width="18" x="98" y="112" />
-        <rect fill="#fff" height="12" opacity="0.3" width="18" x="132" y="114" />
-        <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="50" y="145" />
-        <rect fill="#fff" height="12" opacity="0.5" width="18" x="83" y="148" />
-        <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="116" y="146" />
-        <rect fill="#fff" height="12" opacity="0.3" width="18" x="80" y="175" />
-      </g>
-      <line stroke="#888" strokeWidth="2" x1="100" x2="100" y1="10" y2="0" />
-    </svg>
+      <svg
+        className="rotate-disco h-full w-full"
+        viewBox="0 0 200 200"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <radialGradient cx="35%" cy="30%" id="hero-ball-gradient">
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+            <stop offset="60%" stopColor="#aaaaaa" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#333333" stopOpacity="0.6" />
+          </radialGradient>
+          <clipPath id="hero-circle-clip">
+            <circle cx="100" cy="100" r="90" />
+          </clipPath>
+        </defs>
+        <circle
+          cx="100"
+          cy="100"
+          fill="url(#hero-ball-gradient)"
+          r="90"
+          stroke="#555"
+          strokeWidth="1"
+        />
+        <g clipPath="url(#hero-circle-clip)" opacity="0.7">
+          <rect fill="#fff" height="12" opacity="0.3" transform="rotate(-20,100,100)" width="18" x="10" y="50" />
+          <rect fill="#D4AF37" height="12" opacity="0.4" transform="rotate(-10,100,100)" width="18" x="40" y="20" />
+          <rect fill="#fff" height="12" opacity="0.5" width="18" x="70" y="10" />
+          <rect fill="#C8102E" height="12" opacity="0.5" width="18" x="100" y="15" />
+          <rect fill="#fff" height="12" opacity="0.3" transform="rotate(10,100,100)" width="18" x="130" y="25" />
+          <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="155" y="50" />
+          <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="20" y="85" />
+          <rect fill="#fff" height="12" opacity="0.5" width="18" x="55" y="75" />
+          <rect fill="#D4AF37" height="12" opacity="0.6" width="18" x="88" y="80" />
+          <rect fill="#fff" height="12" opacity="0.4" width="18" x="122" y="78" />
+          <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="155" y="85" />
+          <rect fill="#fff" height="12" opacity="0.5" width="18" x="30" y="115" />
+          <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="65" y="110" />
+          <rect fill="#D4AF37" height="12" opacity="0.5" width="18" x="98" y="112" />
+          <rect fill="#fff" height="12" opacity="0.3" width="18" x="132" y="114" />
+          <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="50" y="145" />
+          <rect fill="#fff" height="12" opacity="0.5" width="18" x="83" y="148" />
+          <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="116" y="146" />
+          <rect fill="#fff" height="12" opacity="0.3" width="18" x="80" y="175" />
+        </g>
+        <line stroke="#888" strokeWidth="2" x1="100" x2="100" y1="10" y2="0" />
+      </svg>
+    </div>
   );
 }

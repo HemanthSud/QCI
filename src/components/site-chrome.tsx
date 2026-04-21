@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -24,13 +25,25 @@ export function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-50" data-scrolled={isScrolled}>
       <Container className="py-5">
-        <div className="flex items-center justify-between gap-6">
-          <Link className="flex items-center gap-3" href="/">
-            <span className="font-accent text-3xl uppercase tracking-[0.22em] text-[var(--color-cream)]">
-              QC<span className="text-[var(--color-red)]">I</span>
+        <div className="flex items-center justify-between gap-4">
+          <Link className="flex min-w-0 items-center gap-3" href="/">
+            <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[rgba(242,237,228,0.18)] bg-black shadow-[0_0_24px_rgba(200,16,46,0.18)]">
+              <Image
+                alt={`${siteMeta.name} logo`}
+                className="h-full w-full object-cover"
+                height={48}
+                priority
+                src={siteMeta.logoImage}
+                width={48}
+              />
             </span>
-            <span className="hidden text-xs uppercase tracking-[0.3em] text-[var(--color-muted)] sm:block">
-              UNC Charlotte Bollywood Team
+            <span className="min-w-0">
+              <span className="block font-accent text-2xl uppercase leading-none tracking-[0.18em] text-[var(--color-cream)] sm:text-3xl">
+                QC<span className="text-[var(--color-red)]">I</span>
+              </span>
+              <span className="hidden max-w-[18rem] truncate text-[0.68rem] uppercase tracking-[0.22em] text-[var(--color-muted)] sm:block">
+                {siteMeta.tagline}
+              </span>
             </span>
           </Link>
 
@@ -51,7 +64,7 @@ export function SiteHeader() {
               <ButtonLink className="hidden sm:inline-flex" href={siteMeta.instagram} variant="ghost">
                 Instagram
               </ButtonLink>
-              <ButtonLink href="/support">Support</ButtonLink>
+              <ButtonLink href="/support">Donate</ButtonLink>
             </div>
           </div>
         </div>
@@ -65,13 +78,24 @@ export function SiteFooter() {
     <footer className="border-t border-[rgba(200,16,46,0.2)] bg-[#040404] pb-10 pt-14">
       <Container>
         <div className="flex flex-wrap items-center justify-between gap-8">
-          <div>
-            <p className="font-display text-4xl leading-none text-[var(--color-cream)]">
-              Queen City <span className="text-[var(--color-red)]">Ishaare</span>
-            </p>
-            <p className="mt-3 font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-muted)]">
-              UNCC Bollywood Dance Team · Charlotte, NC
-            </p>
+          <div className="flex items-center gap-4">
+            <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[rgba(242,237,228,0.18)] bg-black">
+              <Image
+                alt={`${siteMeta.name} logo`}
+                className="h-full w-full object-cover"
+                height={64}
+                src={siteMeta.logoImage}
+                width={64}
+              />
+            </span>
+            <div>
+              <p className="font-display text-4xl leading-none text-[var(--color-cream)]">
+                Queen City <span className="text-[var(--color-red)]">Ishaare</span>
+              </p>
+              <p className="mt-3 font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-muted)]">
+                {siteMeta.tagline} · Charlotte, NC
+              </p>
+            </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -102,7 +126,7 @@ export function SiteFooter() {
                 <path d="m3 7 9 6 9-6" />
               </svg>
             </SocialLink>
-            <SocialLink href={siteMeta.donateUrl} label="Support">
+            <SocialLink href={siteMeta.donateUrl} label="Donate">
               <svg
                 aria-hidden
                 className="h-[18px] w-[18px]"

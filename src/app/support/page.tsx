@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { GoFundMeEmbed } from "@/components/gofundme-embed";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { fundingUses, siteMeta, supportWays } from "@/lib/site-data";
 
@@ -25,6 +26,12 @@ export default function SupportPage() {
         eyebrow="Support Queen City Ishaare"
         title="Help the team train harder, travel farther, and put bigger work on stage."
       />
+
+      <section className="bg-[var(--color-red-dark)] py-12 sm:py-16">
+        <Container>
+          <GoFundMeEmbed />
+        </Container>
+      </section>
 
       <section className="py-8 sm:py-12">
         <Container className="space-y-10">
@@ -101,8 +108,8 @@ export default function SupportPage() {
                 </p>
                 <div className="mt-5 flex flex-col gap-3">
                   <ButtonLink href={siteMeta.donateUrl}>Donate now</ButtonLink>
-                  <ButtonLink href={siteMeta.supportStoryUrl} variant="secondary">
-                    Read a public fundraiser
+                  <ButtonLink href={siteMeta.donateUrl} variant="secondary">
+                    Open GoFundMe campaign
                   </ButtonLink>
                   <ButtonLink href={`mailto:${siteMeta.email}`} variant="ghost">
                     Ask about sponsorships

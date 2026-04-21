@@ -12,6 +12,10 @@
   --color-cream: #f2ede4;
   --color-gold: #d4af37;
   --color-gold-dim: rgba(212, 175, 55, 0.15);
+  --color-night: #f2ede4;
+  --color-flame: #c8102e;
+  --color-ember: #ff6f60;
+  --color-rose: #f3b5ac;
   --color-muted: rgba(242, 237, 228, 0.72);
   --color-muted-strong: rgba(242, 237, 228, 0.88);
   --color-border: rgba(242, 237, 228, 0.12);
@@ -254,71 +258,6 @@ video {
   animation: bounce 2s ease-in-out infinite;
 }
 
-.custom-cursor,
-.custom-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: none;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-
-.custom-cursor {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: var(--color-red);
-  transition:
-    width 200ms ease,
-    height 200ms ease,
-    background-color 200ms ease;
-}
-
-.custom-cursor-ring {
-  width: 36px;
-  height: 36px;
-  border: 1.5px solid var(--color-gold);
-  border-radius: 999px;
-  transition:
-    width 200ms ease,
-    height 200ms ease,
-    border-color 200ms ease;
-}
-
-.custom-cursor[data-active="true"] {
-  width: 20px;
-  height: 20px;
-  background: var(--color-gold);
-}
-
-.custom-cursor-ring[data-active="true"] {
-  width: 46px;
-  height: 46px;
-  border-color: rgba(242, 237, 228, 0.8);
-}
-
-@media (pointer: fine) and (hover: hover) {
-  body {
-    cursor: none;
-  }
-
-  a,
-  button,
-  input,
-  textarea,
-  select,
-  label {
-    cursor: none;
-  }
-
-  .custom-cursor,
-  .custom-cursor-ring {
-    display: block;
-  }
-}
-
 @keyframes fade-rise {
   from {
     opacity: 0;
@@ -344,11 +283,11 @@ video {
 
 @keyframes disco-spin {
   from {
-    transform: translateX(-50%) rotate(0deg);
+    transform: rotate(0deg);
   }
 
   to {
-    transform: translateX(-50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
