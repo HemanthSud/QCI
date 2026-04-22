@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-context";
 import { SiteEditorPanel } from "@/components/site-editor-panel";
 import { Container } from "@/components/ui";
-import { elevatedMemberProfiles, isElevatedMember } from "@/lib/authz";
+import { elevatedMemberProfiles, getElevatedMemberProfile, isElevatedMember } from "@/lib/authz";
 import { siteMeta } from "@/lib/site-data";
 
 const absenceFormUrl = process.env.NEXT_PUBLIC_QCI_ABSENCE_FORM_URL;
@@ -100,9 +100,8 @@ export default function MembersPage() {
   const profileName =
     typeof user.user_metadata.full_name === "string" ? user.user_metadata.full_name.trim() : "";
   const isElevated = isElevatedMember(user);
-  const memberName = isElevated
-    ? elevatedMemberProfiles.hemanth.displayName
-    : profileName || user.email;
+  const elevatedProfile = getElevatedMemberProfile(user);
+  const memberName = elevatedProfile?.displayName ?? (profileName || user.email);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -182,7 +181,12 @@ export default function MembersPage() {
         </Container>
       </section>
 
-      {isElevated ? <ElevatedMemberDashboard email={user.email ?? ""} /> : null}
+      {isElevated ? (
+        <ElevatedMemberDashboard
+          displayName={elevatedProfile?.displayName ?? "Elevated member"}
+          email={user.email ?? ""}
+        />
+      ) : null}
 
       <section className="pb-20 sm:pb-24">
         <Container className="space-y-8">
@@ -275,10 +279,11 @@ export default function MembersPage() {
 }
 
 type ElevatedMemberDashboardProps = {
+  displayName: string;
   email: string;
 };
 
-function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
+function ElevatedMemberDashboard({ displayName, email }: ElevatedMemberDashboardProps) {
   const formHref = absenceFormUrl || `mailto:${siteMeta.email}?subject=Absence%20Form`;
 
   return (
@@ -291,10 +296,10 @@ function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
                 Elevated access
               </p>
               <h2 className="mt-4 font-display text-4xl leading-none text-[var(--color-cream)] sm:text-5xl">
-                Hemanth dashboard.
+                {displayName} dashboard.
               </h2>
               <p className="mt-5 max-w-xl text-sm leading-7 text-[var(--color-muted)] sm:text-base">
-                A dedicated view for Hemanth Sudhaharan with the portal shortcuts and team ops
+                A dedicated elevated view with the portal shortcuts, site editor, and team ops
                 context that matter most.
               </p>
               <p className="mt-6 break-words text-sm font-semibold text-[var(--color-gold)]">
