@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
-import { ElevatedGalleryCarousel } from "@/components/elevated-gallery-carousel";
-import { ImageMarquee } from "@/components/image-marquee";
+import { EditableGallerySections } from "@/components/editable-gallery-sections";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
-import { jalwaImages, nashaImages, siteMeta, videoTimelineEntries } from "@/lib/site-data";
+import { siteMeta, videoTimelineEntries } from "@/lib/site-data";
+import { createDefaultSiteEditorContent } from "@/lib/site-editor";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 const recapVideo = videoTimelineEntries.find((entry) => entry.year === "2026");
+const fallbackEditorContent = createDefaultSiteEditorContent();
 
 export default function GalleryPage() {
   return (
@@ -61,21 +62,8 @@ export default function GalleryPage() {
       </section>
 
       <section className="py-16 sm:py-20">
-        <Container className="space-y-14">
-          <div className="space-y-8">
-            <SectionHeading eyebrow="Photos" title="Jersey Jalwa" />
-            <ImageMarquee images={jalwaImages} />
-          </div>
-
-          <div className="space-y-8">
-            <SectionHeading eyebrow="Photos" title="NASHA Showcase" />
-            <ImageMarquee images={nashaImages} reverse />
-          </div>
-
-          <div className="space-y-8">
-            <SectionHeading eyebrow="Elevated uploads" title="Hemanth's carousel" />
-            <ElevatedGalleryCarousel />
-          </div>
+        <Container>
+          <EditableGallerySections fallbackSections={fallbackEditorContent.gallerySections} />
         </Container>
       </section>
     </>

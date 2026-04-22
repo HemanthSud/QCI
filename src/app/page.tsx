@@ -1,12 +1,13 @@
-import Image from "next/image";
-
+import { EditableHomePhotoStrip } from "@/components/editable-home-photo-strip";
 import { GoFundMeEmbed } from "@/components/gofundme-embed";
 import { ButtonLink, Container } from "@/components/ui";
 import {
   homeEventHighlights,
-  homePhotoStrip,
   homeStoryStats,
 } from "@/lib/site-data";
+import { createDefaultSiteEditorContent } from "@/lib/site-editor";
+
+const fallbackEditorContent = createDefaultSiteEditorContent();
 
 export default function Home() {
   return (
@@ -90,36 +91,7 @@ export default function Home() {
             </div>
 
             <div className="reveal-on-scroll reveal-delay-1" data-reveal>
-              <div className="grid grid-cols-2 gap-4 sm:gap-5 [transform:rotate(2deg)]">
-                {homePhotoStrip.map((frame, index) => (
-                  <article
-                    key={`${frame.caption}-${index}`}
-                    className={`relative overflow-hidden bg-[#1a1010] p-3 shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0 ${
-                      index === 0
-                        ? "rotate-[-3deg]"
-                        : index === 1
-                          ? "mt-6 rotate-[2deg]"
-                          : index === 2
-                            ? "-mt-3 rotate-[1deg]"
-                            : "mt-2 rotate-[-2deg]"
-                    }`}
-                  >
-                    <span className="absolute left-1/2 top-[-6px] h-[18px] w-10 -translate-x-1/2 rounded-sm bg-[rgba(212,175,55,0.25)]" />
-                    <div className="relative aspect-square overflow-hidden bg-[var(--color-red-dark)]">
-                      <Image
-                        alt={frame.caption}
-                        className="h-full w-full object-cover"
-                        height={3926}
-                        sizes="(min-width: 1024px) 20vw, 44vw"
-                        src={frame.src}
-                        style={{ objectPosition: frame.position }}
-                        width={5889}
-                      />
-                      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(200,16,46,0.16),rgba(0,0,0,0.42))]" />
-                    </div>
-                  </article>
-                ))}
-              </div>
+              <EditableHomePhotoStrip fallbackImages={fallbackEditorContent.homePhotoStrip} />
             </div>
           </div>
         </Container>

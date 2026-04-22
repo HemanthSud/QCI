@@ -26,3 +26,9 @@ Never put the signup code or a Supabase service role/secret key in a `NEXT_PUBLI
 - Upload authorization checks the user's Supabase access token server-side before writing to Storage.
 - The Storage bucket stays private; public gallery reads use short-lived signed URLs from the server.
 - Keep `QCI_GALLERY_BUCKET` server-only unless the bucket name is intentionally public.
+
+## Site Editor
+
+- The site editor stores drafts, published content, and published versions in the private gallery bucket.
+- Only elevated accounts can save drafts, upload editor images, publish, or restore versions.
+- Public pages read only the published editor document through a server route.

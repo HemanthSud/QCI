@@ -1,11 +1,17 @@
 "use client";
 
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
+
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 
 import { navLinks, siteMeta } from "@/lib/site-data";
 import { useAuth } from "@/components/auth-context";
+import {
+  fetchPublishedSiteEditorContent,
+  readSiteEditorPreview,
+  subscribeToSiteEditorChanges,
+} from "@/lib/site-editor-client";
 
 import { Container } from "./ui";
 
@@ -44,6 +50,7 @@ function subscribeToTheme(callback: () => void) {
 
 export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const logoImage = useEditableLogoImage();
   const theme = useSyncExternalStore<Theme>(subscribeToTheme, readTheme, () => "dark");
   const { user, loading } = useAuth();
 
@@ -76,13 +83,10 @@ export function SiteHeader() {
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link className="flex min-w-0 items-center gap-3" href="/">
             <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--logo-bg)] shadow-[0_0_24px_rgba(200,16,46,0.18)]">
-              <Image
+              <img
                 alt={`${siteMeta.name} logo`}
                 className="h-full w-full object-cover"
-                height={48}
-                priority
-                src={siteMeta.logoImage}
-                width={48}
+                src={logoImage}
               />
             </span>
             <span className="min-w-0">
@@ -134,18 +138,18 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const logoImage = useEditableLogoImage();
+
   return (
     <footer className="border-t border-[var(--color-border)] bg-[var(--footer-bg)] pb-10 pt-14">
       <Container>
         <div className="flex flex-wrap items-center justify-between gap-8">
           <div className="flex items-center gap-4">
             <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--logo-bg)]">
-              <Image
+              <img
                 alt={`${siteMeta.name} logo`}
                 className="h-full w-full object-cover"
-                height={64}
-                src={siteMeta.logoImage}
-                width={64}
+                src={logoImage}
               />
             </span>
             <div>
@@ -207,6 +211,44 @@ export function SiteFooter() {
       </Container>
     </footer>
   );
+}
+
+function useEditableLogoImage() {
+  const [logoImage, setLogoImage] = useState(siteMeta.logoImage);
+
+  useEffect(() => {
+    let isActive = true;
+    let publishedLogo = siteMeta.logoImage;
+
+    const applyCurrentLogo = () => {
+      const previewLogo = readSiteEditorPreview()?.imageSlots.find((slot) => slot.id === "site-logo")
+        ?.image.src;
+
+      setLogoImage(previewLogo ?? publishedLogo);
+    };
+
+    const loadLogo = async () => {
+      const content = await fetchPublishedSiteEditorContent();
+
+      publishedLogo =
+        content?.imageSlots.find((slot) => slot.id === "site-logo")?.image.src ?? siteMeta.logoImage;
+
+      if (isActive) {
+        applyCurrentLogo();
+      }
+    };
+
+    const unsubscribe = subscribeToSiteEditorChanges(applyCurrentLogo);
+
+    loadLogo();
+
+    return () => {
+      isActive = false;
+      unsubscribe();
+    };
+  }, []);
+
+  return logoImage;
 }
 
 type SocialLinkProps = {
