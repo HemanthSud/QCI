@@ -391,10 +391,11 @@ function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
               className="grid gap-4"
               onSubmit={async (event) => {
                 event.preventDefault();
+                const form = event.currentTarget;
                 setUploadError("");
                 setUploadNotice("");
 
-                const formData = new FormData(event.currentTarget);
+                const formData = new FormData(form);
                 const image = formData.get("image");
 
                 if (!(image instanceof File) || image.size === 0) {
@@ -440,7 +441,7 @@ function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
                     );
                   }
 
-                  event.currentTarget.reset();
+                  form.reset();
                   setUploadNotice("Image uploaded to the gallery carousel.");
                 } catch (err) {
                   setUploadError(err instanceof Error ? err.message : "Image could not be uploaded.");
