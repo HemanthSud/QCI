@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/components/auth-context";
 import { Container } from "@/components/ui";
-import { isSpecialMember, specialMemberProfiles } from "@/lib/authz";
+import { elevatedMemberProfiles, isElevatedMember } from "@/lib/authz";
 import { siteMeta } from "@/lib/site-data";
 
 const absenceFormUrl = process.env.NEXT_PUBLIC_QCI_ABSENCE_FORM_URL;
@@ -34,11 +34,11 @@ const portalLinks = [
 const fundraisingItems = ["Donations", "Sponsor leads", "Event sales", "Dares"];
 const productionItems = ["Clean-up", "Props", "Costumes", "Media"];
 
-const specialDashboardStats = [
+const elevatedDashboardStats = [
   {
     label: "Access tier",
-    value: "Special",
-    detail: "Personal member dashboard enabled for this account.",
+    value: "Elevated",
+    detail: "Elevated dashboard enabled for this account.",
   },
   {
     label: "Portal",
@@ -52,7 +52,7 @@ const specialDashboardStats = [
   },
 ] as const;
 
-const specialFocusItems = [
+const elevatedFocusItems = [
   "Check upcoming competition details before team travel.",
   "Keep fundraising and production point categories visible.",
   "Use the team inbox for urgent portal updates or form changes.",
@@ -98,10 +98,10 @@ export default function MembersPage() {
     : "Session active";
   const profileName =
     typeof user.user_metadata.full_name === "string" ? user.user_metadata.full_name.trim() : "";
-  const memberName = isSpecialMember(user)
-    ? specialMemberProfiles.hemanth.displayName
+  const isElevated = isElevatedMember(user);
+  const memberName = isElevated
+    ? elevatedMemberProfiles.hemanth.displayName
     : profileName || user.email;
-  const showSpecialDashboard = isSpecialMember(user);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -181,7 +181,7 @@ export default function MembersPage() {
         </Container>
       </section>
 
-      {showSpecialDashboard ? <SpecialMemberDashboard email={user.email ?? ""} /> : null}
+      {isElevated ? <ElevatedMemberDashboard email={user.email ?? ""} /> : null}
 
       <section className="pb-20 sm:pb-24">
         <Container className="space-y-8">
@@ -273,11 +273,11 @@ export default function MembersPage() {
   );
 }
 
-type SpecialMemberDashboardProps = {
+type ElevatedMemberDashboardProps = {
   email: string;
 };
 
-function SpecialMemberDashboard({ email }: SpecialMemberDashboardProps) {
+function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
   const formHref = absenceFormUrl || `mailto:${siteMeta.email}?subject=Absence%20Form`;
 
   return (
@@ -287,7 +287,7 @@ function SpecialMemberDashboard({ email }: SpecialMemberDashboardProps) {
           <div className="grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
             <div className="bg-[linear-gradient(135deg,rgba(200,16,46,0.28),rgba(212,175,55,0.12),rgba(8,8,8,0.15))] p-6 sm:p-8">
               <p className="font-accent text-[0.78rem] uppercase tracking-[0.3em] text-[var(--color-gold)]">
-                Special member
+                Elevated access
               </p>
               <h2 className="mt-4 font-display text-4xl leading-none text-[var(--color-cream)] sm:text-5xl">
                 Hemanth dashboard.
@@ -297,12 +297,12 @@ function SpecialMemberDashboard({ email }: SpecialMemberDashboardProps) {
                 context that matter most.
               </p>
               <p className="mt-6 break-words text-sm font-semibold text-[var(--color-gold)]">
-                {email || specialMemberProfiles.hemanth.email}
+                {email || elevatedMemberProfiles.hemanth.email}
               </p>
             </div>
 
             <div className="grid gap-4 p-6 sm:grid-cols-3 sm:p-8">
-              {specialDashboardStats.map((item) => (
+              {elevatedDashboardStats.map((item) => (
                 <article
                   className="border border-[var(--color-border)] bg-[rgba(255,255,255,0.03)] p-5"
                   key={item.label}
@@ -326,7 +326,7 @@ function SpecialMemberDashboard({ email }: SpecialMemberDashboardProps) {
               Priority board
             </p>
             <div className="mt-6 grid gap-4">
-              {specialFocusItems.map((item, index) => (
+              {elevatedFocusItems.map((item, index) => (
                 <div
                   className="grid grid-cols-[2.75rem_1fr] gap-4 border-b border-white/10 pb-4 text-sm"
                   key={item}
