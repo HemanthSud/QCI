@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import Image from "next/image";
 
 import { GoFundMeEmbed } from "@/components/gofundme-embed";
@@ -15,28 +14,6 @@ export default function Home() {
       <section className="relative min-h-[100svh] overflow-hidden px-0 pb-20 pt-32 sm:pb-24 sm:pt-40" id="top">
         <div className="hero-radial absolute inset-0" />
         <HeroDiscoBall />
-
-        <div
-          aria-hidden
-          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.5),transparent)] sm:top-[9rem]"
-          style={{ "--beam-rotation": "-20deg" } as CSSProperties}
-        />
-        <div
-          aria-hidden
-          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(200,16,46,0.45),transparent)] sm:top-[9rem]"
-          style={{
-            "--beam-rotation": "20deg",
-            animationDelay: "-1s",
-          } as CSSProperties}
-        />
-        <div
-          aria-hidden
-          className="beam-animate absolute left-1/2 top-[9.25rem] h-[38vh] w-px -translate-x-1/2 origin-top bg-[linear-gradient(to_bottom,rgba(212,175,55,0.28),transparent)] sm:top-[9rem]"
-          style={{
-            "--beam-rotation": "0deg",
-            animationDelay: "-2s",
-          } as CSSProperties}
-        />
 
         <Container className="relative z-10 flex min-h-[calc(100svh-7rem)] flex-col items-center justify-center pt-28 text-center sm:pt-24">
           <p
@@ -230,56 +207,12 @@ export default function Home() {
 
 function HeroDiscoBall() {
   return (
-    <div
+    <iframe
       aria-hidden
-      className="absolute left-1/2 top-[4.5rem] z-[1] h-[120px] w-[120px] -translate-x-1/2 opacity-[0.65] sm:top-16 sm:h-[170px] sm:w-[170px]"
-    >
-      <svg
-        className="rotate-disco h-full w-full"
-        viewBox="0 0 200 200"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <radialGradient cx="35%" cy="30%" id="hero-ball-gradient">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
-            <stop offset="60%" stopColor="#aaaaaa" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#333333" stopOpacity="0.6" />
-          </radialGradient>
-          <clipPath id="hero-circle-clip">
-            <circle cx="100" cy="100" r="90" />
-          </clipPath>
-        </defs>
-        <circle
-          cx="100"
-          cy="100"
-          fill="url(#hero-ball-gradient)"
-          r="90"
-          stroke="#555"
-          strokeWidth="1"
-        />
-        <g clipPath="url(#hero-circle-clip)" opacity="0.7">
-          <rect fill="#fff" height="12" opacity="0.3" transform="rotate(-20,100,100)" width="18" x="10" y="50" />
-          <rect fill="#D4AF37" height="12" opacity="0.4" transform="rotate(-10,100,100)" width="18" x="40" y="20" />
-          <rect fill="#fff" height="12" opacity="0.5" width="18" x="70" y="10" />
-          <rect fill="#C8102E" height="12" opacity="0.5" width="18" x="100" y="15" />
-          <rect fill="#fff" height="12" opacity="0.3" transform="rotate(10,100,100)" width="18" x="130" y="25" />
-          <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="155" y="50" />
-          <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="20" y="85" />
-          <rect fill="#fff" height="12" opacity="0.5" width="18" x="55" y="75" />
-          <rect fill="#D4AF37" height="12" opacity="0.6" width="18" x="88" y="80" />
-          <rect fill="#fff" height="12" opacity="0.4" width="18" x="122" y="78" />
-          <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="155" y="85" />
-          <rect fill="#fff" height="12" opacity="0.5" width="18" x="30" y="115" />
-          <rect fill="#C8102E" height="12" opacity="0.4" width="18" x="65" y="110" />
-          <rect fill="#D4AF37" height="12" opacity="0.5" width="18" x="98" y="112" />
-          <rect fill="#fff" height="12" opacity="0.3" width="18" x="132" y="114" />
-          <rect fill="#D4AF37" height="12" opacity="0.4" width="18" x="50" y="145" />
-          <rect fill="#fff" height="12" opacity="0.5" width="18" x="83" y="148" />
-          <rect fill="#C8102E" height="12" opacity="0.3" width="18" x="116" y="146" />
-          <rect fill="#fff" height="12" opacity="0.3" width="18" x="80" y="175" />
-        </g>
-        <line stroke="#888" strokeWidth="2" x1="100" x2="100" y1="10" y2="0" />
-      </svg>
-    </div>
+      className="pointer-events-none absolute inset-0 z-[2] h-full w-full border-0"
+      src="/disco-ball.html?mode=hero"
+      tabIndex={-1}
+      title="Animated disco ball nightclub backdrop"
+    />
   );
 }

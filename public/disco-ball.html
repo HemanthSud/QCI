@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Three.js Disco Ball</title>
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #080808;
+      }
+
+      body {
+        color-scheme: dark;
+      }
+
+      body.theme-light {
+        background: #fff8ef;
+        color-scheme: light;
+      }
+
+      #scene {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(circle at 50% 46%, rgba(42, 5, 16, 0.64), transparent 34%),
+          radial-gradient(circle at 14% 14%, rgba(200, 16, 46, 0.34), transparent 31%),
+          radial-gradient(circle at 84% 18%, rgba(212, 175, 55, 0.2), transparent 33%),
+          linear-gradient(180deg, #100808 0%, #080808 58%, #040404 100%);
+      }
+
+      body.theme-light #scene {
+        background:
+          radial-gradient(circle at 50% 45%, rgba(255, 224, 205, 0.92), transparent 35%),
+          radial-gradient(circle at 15% 15%, rgba(182, 14, 42, 0.18), transparent 32%),
+          radial-gradient(circle at 84% 18%, rgba(138, 100, 15, 0.16), transparent 34%),
+          linear-gradient(180deg, #fff8ef 0%, #fff2e6 58%, #f7e6da 100%);
+      }
+
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .club-haze,
+      .club-vignette,
+      .club-floor {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .club-haze {
+        mix-blend-mode: screen;
+        opacity: 0.46;
+        background:
+          repeating-linear-gradient(
+            100deg,
+            rgba(242, 237, 228, 0.032) 0 1px,
+            transparent 1px 22px
+          ),
+          radial-gradient(ellipse at 50% 48%, rgba(212, 175, 55, 0.13), transparent 48%);
+        animation: haze-drift 9s ease-in-out infinite alternate;
+      }
+
+      .club-floor {
+        top: 54%;
+        opacity: 0.58;
+        mix-blend-mode: screen;
+        background:
+          radial-gradient(ellipse at 35% 100%, rgba(200, 16, 46, 0.32), transparent 42%),
+          radial-gradient(ellipse at 66% 100%, rgba(212, 175, 55, 0.24), transparent 44%),
+          linear-gradient(180deg, transparent 0%, rgba(242, 237, 228, 0.035) 74%, transparent 100%);
+        filter: blur(8px);
+      }
+
+      .club-vignette {
+        background:
+          radial-gradient(circle at 50% 42%, transparent 0 36%, rgba(0, 0, 0, 0.4) 69%, rgba(0, 0, 0, 0.84) 100%),
+          linear-gradient(180deg, rgba(8, 8, 8, 0.48), transparent 36%, rgba(4, 4, 4, 0.58));
+      }
+
+      body.theme-light .club-haze {
+        mix-blend-mode: multiply;
+        opacity: 0.34;
+        background:
+          repeating-linear-gradient(
+            100deg,
+            rgba(139, 11, 31, 0.035) 0 1px,
+            transparent 1px 22px
+          ),
+          radial-gradient(ellipse at 50% 48%, rgba(138, 100, 15, 0.12), transparent 48%);
+      }
+
+      body.theme-light .club-floor {
+        opacity: 0.36;
+        mix-blend-mode: multiply;
+        background:
+          radial-gradient(ellipse at 35% 100%, rgba(182, 14, 42, 0.2), transparent 42%),
+          radial-gradient(ellipse at 66% 100%, rgba(138, 100, 15, 0.18), transparent 44%),
+          linear-gradient(180deg, transparent 0%, rgba(40, 17, 17, 0.035) 74%, transparent 100%);
+      }
+
+      body.theme-light .club-vignette {
+        background:
+          radial-gradient(circle at 50% 42%, transparent 0 38%, rgba(40, 17, 17, 0.08) 72%, rgba(40, 17, 17, 0.18) 100%),
+          linear-gradient(180deg, rgba(255, 248, 239, 0.12), transparent 38%, rgba(40, 17, 17, 0.1));
+      }
+
+      @keyframes haze-drift {
+        from {
+          transform: translate3d(-1.5rem, -0.7rem, 0) scale(1.02);
+        }
+
+        to {
+          transform: translate3d(1.5rem, 0.7rem, 0) scale(1.05);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .club-haze {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scene" aria-hidden="true"></div>
+    <div class="club-haze" aria-hidden="true"></div>
+    <div class="club-floor" aria-hidden="true"></div>
+    <div class="club-vignette" aria-hidden="true"></div>
+
+    <script type="module">
+      import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+      const host = document.getElementById("scene");
+      const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const sceneParams = new URLSearchParams(window.location.search);
+      const heroMode = sceneParams.get("mode") === "hero";
+      const themeSettings = {
+        dark: {
+          clear: 0x080808,
+          fog: 0x080808,
+          fogDensity: 0.065,
+          exposure: 1.2,
+          core: 0x080808,
+          cable: 0xd8dce8,
+          cableEmissive: 0xd4af37,
+          cableEmissiveIntensity: 0.08,
+          cap: 0xd8c78c,
+          capEmissive: 0xd4af37,
+          capEmissiveIntensity: 0.04,
+          ambientSky: 0xd4af37,
+          ambientGround: 0x120707,
+          ambientIntensity: 1.28,
+          fill: 0xf2ede4,
+          fillIntensity: 1.45,
+          redSpot: 0xc8102e,
+          redSpotIntensity: 110,
+          goldSpot: 0xd4af37,
+          goldSpotIntensity: 96,
+          redBeamOpacity: 0.3,
+          goldBeamOpacity: 0.24,
+          glint: 0xf2ede4,
+          glintMultiplier: 1,
+          tileTint: 0xffffff,
+          tileTintScale: 1,
+          tileEmissiveBase: 0.025,
+          tileEmissiveLift: 0.48,
+          tileEnvMapIntensity: 1.9,
+          tilePalette: [0xf2ede4, 0xd4af37, 0xf3b5ac, 0xc8102e, 0x8b0b1f, 0xff6f60, 0xd8c78c, 0xf7f1df],
+          dustOpacity: 0.62,
+          reflectionStops: ["#c8102e", "#100808", "#f2ede4", "#2a0510", "#d4af37"],
+          reflectionPrimary: "rgba(242,237,228,0.72)",
+          reflectionAccent: "rgba(212,175,55,0.26)",
+        },
+        light: {
+          clear: 0xfff8ef,
+          fog: 0xfff1e5,
+          fogDensity: 0.042,
+          exposure: 0.9,
+          core: 0x281111,
+          cable: 0x8a640f,
+          cableEmissive: 0xb60e2a,
+          cableEmissiveIntensity: 0.035,
+          cap: 0x8a640f,
+          capEmissive: 0xb60e2a,
+          capEmissiveIntensity: 0.025,
+          ambientSky: 0xffe0cd,
+          ambientGround: 0x8b0b1f,
+          ambientIntensity: 0.82,
+          fill: 0xffffff,
+          fillIntensity: 0.78,
+          redSpot: 0xb60e2a,
+          redSpotIntensity: 86,
+          goldSpot: 0x8a640f,
+          goldSpotIntensity: 76,
+          redBeamOpacity: 0.18,
+          goldBeamOpacity: 0.15,
+          glint: 0xf2e0c9,
+          glintMultiplier: 0.42,
+          tileTint: 0xf7e6da,
+          tileTintScale: 0.24,
+          tileEmissiveBase: 0.006,
+          tileEmissiveLift: 0.18,
+          tileEnvMapIntensity: 1.18,
+          tilePalette: [0xe4d2c2, 0xb58318, 0xd9918a, 0xb60e2a, 0x6e0818, 0x8a1e18, 0xbfa14f, 0x281111],
+          dustOpacity: 0.38,
+          reflectionStops: ["#b60e2a", "#fff8ef", "#fffaf2", "#f3d8d2", "#8a640f"],
+          reflectionPrimary: "rgba(40,17,17,0.26)",
+          reflectionAccent: "rgba(138,100,15,0.24)",
+        },
+      };
+      let activeThemeName = readSiteTheme();
+      let activeTheme = themeSettings[activeThemeName];
+      let reduceMotion = reducedMotionQuery.matches;
+
+      applyThemeClass(activeThemeName);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: false,
+        powerPreference: "high-performance",
+      });
+
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setClearColor(activeTheme.clear, 1);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = activeTheme.exposure;
+      host.appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(activeTheme.fog, activeTheme.fogDensity);
+
+      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 80);
+      camera.position.set(0, 0, 7.6);
+      camera.lookAt(0, 0, 0);
+
+      scene.environment = createNightclubReflection(activeTheme);
+
+      const ball = new THREE.Group();
+      scene.add(ball);
+
+      const tileRadius = heroMode ? 0.52 : 1.32;
+      const core = new THREE.Mesh(
+        new THREE.SphereGeometry(tileRadius * 0.985, 48, 28),
+        new THREE.MeshStandardMaterial({
+          color: activeTheme.core,
+          metalness: 0.75,
+          roughness: 0.5,
+          envMapIntensity: 0.7,
+        }),
+      );
+      ball.add(core);
+
+      const tiles = createMirrorTiles(tileRadius);
+      tiles.forEach((tile) => ball.add(tile.mesh));
+
+      const rig = new THREE.Group();
+      scene.add(rig);
+      rig.add(ball);
+
+      const cableMaterial = new THREE.MeshStandardMaterial({
+        color: activeTheme.cable,
+        emissive: activeTheme.cableEmissive,
+        emissiveIntensity: activeTheme.cableEmissiveIntensity,
+        metalness: 0.9,
+        roughness: 0.22,
+      });
+      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 2.15, 12), cableMaterial);
+      cable.position.y = tileRadius + 1.07;
+      rig.add(cable);
+
+      const cap = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.19, 0.24, 0.08, 32),
+        new THREE.MeshStandardMaterial({
+          color: activeTheme.cap,
+          emissive: activeTheme.capEmissive,
+          emissiveIntensity: activeTheme.capEmissiveIntensity,
+          metalness: 0.85,
+          roughness: 0.18,
+        }),
+      );
+      cap.position.y = tileRadius + 2.17;
+      rig.add(cap);
+
+      const ambience = new THREE.HemisphereLight(activeTheme.ambientSky, activeTheme.ambientGround, activeTheme.ambientIntensity);
+      scene.add(ambience);
+
+      const cameraFill = new THREE.DirectionalLight(activeTheme.fill, activeTheme.fillIntensity);
+      cameraFill.position.set(0, 0.9, 5.5);
+      scene.add(cameraFill);
+
+      const redTarget = new THREE.Object3D();
+      const goldTarget = new THREE.Object3D();
+      scene.add(redTarget, goldTarget);
+
+      const redSpot = new THREE.SpotLight(activeTheme.redSpot, activeTheme.redSpotIntensity, 13, Math.PI * 0.16, 0.55, 1.15);
+      redSpot.position.set(-3.2, 3.15, 3.1);
+      redSpot.target = redTarget;
+      scene.add(redSpot);
+
+      const goldSpot = new THREE.SpotLight(activeTheme.goldSpot, activeTheme.goldSpotIntensity, 13, Math.PI * 0.16, 0.58, 1.1);
+      goldSpot.position.set(3.2, 3.05, 3.0);
+      goldSpot.target = goldTarget;
+      scene.add(goldSpot);
+
+      const redBeam = createBeam(activeTheme.redSpot, activeTheme.redBeamOpacity);
+      const goldBeam = createBeam(activeTheme.goldSpot, activeTheme.goldBeamOpacity);
+      scene.add(redBeam, goldBeam);
+
+      const dust = createLightDust();
+      scene.add(dust);
+
+      const clock = new THREE.Clock();
+      let elapsedTime = 0;
+      const stillTime = 7.4;
+      const tempNormal = new THREE.Vector3();
+      const redVector = new THREE.Vector3();
+      const goldVector = new THREE.Vector3();
+      const redColor = new THREE.Color(activeTheme.redSpot);
+      const goldColor = new THREE.Color(activeTheme.goldSpot);
+      const creamColor = new THREE.Color(activeTheme.glint);
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        const delta = reduceMotion ? 0 : Math.min(clock.getDelta(), 0.033);
+        elapsedTime += delta;
+        const elapsed = reduceMotion ? stillTime : elapsedTime;
+
+        if (!reduceMotion) {
+          ball.rotation.y += delta * 0.36;
+          ball.rotation.x = Math.sin(elapsed * 0.36) * 0.045;
+          rig.rotation.z = Math.sin(elapsed * 0.26) * 0.018;
+        } else {
+          ball.rotation.set(0, 0.72, 0);
+          rig.rotation.set(0, 0, 0);
+        }
+
+        redTarget.position.set(
+          Math.sin(elapsed * 0.54) * 0.85,
+          Math.cos(elapsed * 0.4) * 0.28,
+          Math.sin(elapsed * 0.31) * 0.22,
+        );
+        goldTarget.position.set(
+          Math.sin(elapsed * 0.47 + 2.2) * 0.82,
+          Math.cos(elapsed * 0.36 + 1.1) * 0.25,
+          Math.cos(elapsed * 0.29) * 0.24,
+        );
+        redTarget.updateMatrixWorld();
+        goldTarget.updateMatrixWorld();
+
+        alignBeam(redBeam, redSpot.position, redTarget.position, elapsed, 0);
+        alignBeam(goldBeam, goldSpot.position, goldTarget.position, elapsed, 1.8);
+
+        redVector.copy(redSpot.position).normalize();
+        goldVector.copy(goldSpot.position).normalize();
+
+        tiles.forEach((tile) => {
+          tempNormal.copy(tile.normal).applyQuaternion(ball.quaternion).normalize();
+          const redCatch = Math.pow(Math.max(0, tempNormal.dot(redVector)), 6);
+          const goldCatch = Math.pow(Math.max(0, tempNormal.dot(goldVector)), 6);
+          const frontCatch = Math.pow(Math.max(0, tempNormal.z), 10);
+          const pulse = 0.5 + 0.5 * Math.sin(elapsed * tile.speed + tile.phase);
+          const glint = Math.min(1, frontCatch * 0.72 + redCatch * 0.72 + goldCatch * 0.72 + pulse * 0.16);
+
+          tile.material.color.copy(tile.baseColor);
+          if (redCatch > goldCatch) {
+            tile.material.color.lerp(redColor, Math.min(0.62, redCatch * 0.9));
+            tile.material.emissive.copy(redColor);
+          } else {
+            tile.material.color.lerp(goldColor, Math.min(0.58, goldCatch * 0.88));
+            tile.material.emissive.copy(goldColor);
+          }
+          tile.material.color.lerp(creamColor, glint * tile.flash * activeTheme.glintMultiplier);
+          tile.material.emissiveIntensity = activeTheme.tileEmissiveBase + glint * activeTheme.tileEmissiveLift;
+        });
+
+        dust.rotation.y = elapsed * 0.025;
+        dust.rotation.z = Math.sin(elapsed * 0.14) * 0.04;
+
+        renderer.render(scene, camera);
+      }
+
+      function createBaseTileColor(theme, colorIndex, tintAmount) {
+        return new THREE.Color(theme.tilePalette[colorIndex]).lerp(new THREE.Color(theme.tileTint), tintAmount * theme.tileTintScale);
+      }
+
+      function createMirrorTiles(radius) {
+        const result = [];
+        const latBands = 18;
+        const epsilon = 0.12;
+
+        for (let row = 0; row < latBands; row += 1) {
+          const phiA = epsilon + (row / latBands) * (Math.PI - epsilon * 2);
+          const phiB = epsilon + ((row + 1) / latBands) * (Math.PI - epsilon * 2);
+          const midPhi = (phiA + phiB) * 0.5;
+          const columns = Math.max(10, Math.round(44 * Math.sin(midPhi)));
+          const stagger = row % 2 === 0 ? 0 : Math.PI / columns;
+
+          for (let column = 0; column < columns; column += 1) {
+            const thetaStep = (Math.PI * 2) / columns;
+            const thetaA = column * thetaStep + stagger + thetaStep * 0.06;
+            const thetaB = column * thetaStep + stagger + thetaStep * 0.91;
+            const tilePhiA = THREE.MathUtils.lerp(phiA, phiB, 0.08);
+            const tilePhiB = THREE.MathUtils.lerp(phiA, phiB, 0.92);
+            const points = [
+              sphericalPoint(radius, tilePhiA, thetaA),
+              sphericalPoint(radius, tilePhiA, thetaB),
+              sphericalPoint(radius, tilePhiB, thetaB),
+              sphericalPoint(radius, tilePhiB, thetaA),
+            ];
+            const center = sphericalPoint(radius, midPhi, column * thetaStep + stagger + thetaStep * 0.5);
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute(
+              "position",
+              new THREE.Float32BufferAttribute(
+                [
+                  points[0].x,
+                  points[0].y,
+                  points[0].z,
+                  points[1].x,
+                  points[1].y,
+                  points[1].z,
+                  points[2].x,
+                  points[2].y,
+                  points[2].z,
+                  points[3].x,
+                  points[3].y,
+                  points[3].z,
+                ],
+                3,
+              ),
+            );
+            geometry.setIndex([0, 1, 2, 0, 2, 3]);
+            geometry.computeVertexNormals();
+
+            const colorIndex = (row * 5 + column * 3) % activeTheme.tilePalette.length;
+            const tintAmount = 0.12 + ((row + column) % 5) * 0.04;
+            const baseColor = createBaseTileColor(activeTheme, colorIndex, tintAmount);
+            const material = new THREE.MeshPhysicalMaterial({
+              color: baseColor,
+              emissive: baseColor,
+              emissiveIntensity: 0.035,
+              metalness: 1,
+              roughness: 0.08 + ((row + column) % 4) * 0.035,
+              clearcoat: 1,
+              clearcoatRoughness: 0.045,
+              reflectivity: 1,
+              envMapIntensity: activeTheme.tileEnvMapIntensity,
+              side: THREE.DoubleSide,
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.renderOrder = 3;
+
+            result.push({
+              mesh,
+              material,
+              baseColor,
+              colorIndex,
+              tintAmount,
+              normal: center.clone().normalize(),
+              phase: row * 0.73 + column * 0.41,
+              speed: 1.2 + ((row + column) % 7) * 0.13,
+              flash: 0.36 + ((row * 11 + column) % 6) * 0.08,
+            });
+          }
+        }
+
+        return result;
+      }
+
+      function sphericalPoint(radius, phi, theta) {
+        return new THREE.Vector3(
+          radius * Math.sin(phi) * Math.cos(theta),
+          radius * Math.cos(phi),
+          radius * Math.sin(phi) * Math.sin(theta),
+        );
+      }
+
+      function createBeam(color, opacity) {
+        const geometry = new THREE.ConeGeometry(1.35, 5.8, 64, 1, true);
+        geometry.translate(0, -2.9, 0);
+        const material = new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.renderOrder = 1;
+        mesh.userData.baseOpacity = opacity;
+        return mesh;
+      }
+
+      function alignBeam(mesh, origin, target, elapsed, phase) {
+        const direction = new THREE.Vector3().subVectors(target, origin).normalize();
+        mesh.position.copy(origin);
+        mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, -1, 0), direction);
+        mesh.scale.setScalar(1 + Math.sin(elapsed * 0.9 + phase) * 0.055);
+        mesh.material.opacity = mesh.userData.baseOpacity * (0.86 + Math.sin(elapsed * 1.1 + phase) * 0.14);
+      }
+
+      function createLightDust() {
+        const count = 180;
+        const positions = new Float32Array(count * 3);
+        const colors = new Float32Array(count * 3);
+        const color = new THREE.Color();
+
+        for (let index = 0; index < count; index += 1) {
+          positions[index * 3] = (Math.random() - 0.5) * 8.4;
+          positions[index * 3 + 1] = (Math.random() - 0.5) * 5.6;
+          positions[index * 3 + 2] = -2.5 - Math.random() * 3.2;
+          if (index % 3 === 0) {
+            color.setHSL(0.97 + Math.random() * 0.025, 0.72, 0.6);
+          } else {
+            color.setHSL(0.11 + Math.random() * 0.035, 0.68, 0.58);
+          }
+          colors[index * 3] = color.r;
+          colors[index * 3 + 1] = color.g;
+          colors[index * 3 + 2] = color.b;
+        }
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+        return new THREE.Points(
+          geometry,
+          new THREE.PointsMaterial({
+            size: 0.025,
+            transparent: true,
+            opacity: activeTheme.dustOpacity,
+            vertexColors: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+          }),
+        );
+      }
+
+      function createNightclubReflection(theme) {
+        const canvas = document.createElement("canvas");
+        canvas.width = 512;
+        canvas.height = 256;
+        const context = canvas.getContext("2d");
+        const gradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, theme.reflectionStops[0]);
+        gradient.addColorStop(0.23, theme.reflectionStops[1]);
+        gradient.addColorStop(0.52, theme.reflectionStops[2]);
+        gradient.addColorStop(0.76, theme.reflectionStops[3]);
+        gradient.addColorStop(1, theme.reflectionStops[4]);
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        for (let index = 0; index < 80; index += 1) {
+          context.fillStyle = index % 3 === 0 ? theme.reflectionPrimary : theme.reflectionAccent;
+          context.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 8 + Math.random() * 38, 1 + Math.random() * 4);
+        }
+
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        texture.colorSpace = THREE.SRGBColorSpace;
+        return texture;
+      }
+
+      function readSiteTheme() {
+        const forcedTheme = sceneParams.get("theme");
+        if (forcedTheme === "light" || forcedTheme === "dark") {
+          return forcedTheme;
+        }
+
+        try {
+          if (window.parent && window.parent !== window) {
+            const parentTheme = window.parent.document.documentElement.dataset.theme;
+            if (parentTheme === "light" || parentTheme === "dark") {
+              return parentTheme;
+            }
+          }
+        } catch (error) {
+          // Cross-origin embedding falls back to local storage.
+        }
+
+        try {
+          return window.localStorage.getItem("qci-theme") === "light" ? "light" : "dark";
+        } catch (error) {
+          return "dark";
+        }
+      }
+
+      function applyThemeClass(themeName) {
+        document.body.classList.toggle("theme-light", themeName === "light");
+      }
+
+      function syncTheme() {
+        const nextThemeName = readSiteTheme();
+        if (nextThemeName === activeThemeName) {
+          return;
+        }
+
+        activeThemeName = nextThemeName;
+        activeTheme = themeSettings[activeThemeName];
+        applySceneTheme(activeThemeName);
+      }
+
+      function watchSiteTheme() {
+        window.addEventListener("storage", (event) => {
+          if (!event.key || event.key === "qci-theme") {
+            syncTheme();
+          }
+        });
+
+        try {
+          if (window.parent && window.parent !== window) {
+            const parentRoot = window.parent.document.documentElement;
+            new MutationObserver(syncTheme).observe(parentRoot, {
+              attributes: true,
+              attributeFilter: ["data-theme"],
+            });
+          }
+        } catch (error) {
+          // The standalone component keeps working even outside the site.
+        }
+      }
+
+      function applySceneTheme(themeName) {
+        const theme = themeSettings[themeName];
+        applyThemeClass(themeName);
+
+        renderer.setClearColor(theme.clear, 1);
+        renderer.toneMappingExposure = theme.exposure;
+        scene.fog.color.setHex(theme.fog);
+        scene.fog.density = theme.fogDensity;
+
+        if (scene.environment) {
+          scene.environment.dispose();
+        }
+        scene.environment = createNightclubReflection(theme);
+
+        core.material.color.setHex(theme.core);
+        core.material.needsUpdate = true;
+
+        cableMaterial.color.setHex(theme.cable);
+        cableMaterial.emissive.setHex(theme.cableEmissive);
+        cableMaterial.emissiveIntensity = theme.cableEmissiveIntensity;
+
+        cap.material.color.setHex(theme.cap);
+        cap.material.emissive.setHex(theme.capEmissive);
+        cap.material.emissiveIntensity = theme.capEmissiveIntensity;
+
+        ambience.color.setHex(theme.ambientSky);
+        ambience.groundColor.setHex(theme.ambientGround);
+        ambience.intensity = theme.ambientIntensity;
+
+        cameraFill.color.setHex(theme.fill);
+        cameraFill.intensity = theme.fillIntensity;
+
+        redSpot.color.setHex(theme.redSpot);
+        redSpot.intensity = theme.redSpotIntensity;
+        goldSpot.color.setHex(theme.goldSpot);
+        goldSpot.intensity = theme.goldSpotIntensity;
+
+        redBeam.material.color.setHex(theme.redSpot);
+        redBeam.userData.baseOpacity = theme.redBeamOpacity;
+        goldBeam.material.color.setHex(theme.goldSpot);
+        goldBeam.userData.baseOpacity = theme.goldBeamOpacity;
+
+        redColor.setHex(theme.redSpot);
+        goldColor.setHex(theme.goldSpot);
+        creamColor.setHex(theme.glint);
+
+        tiles.forEach((tile) => {
+          tile.baseColor.copy(createBaseTileColor(theme, tile.colorIndex, tile.tintAmount));
+          tile.material.envMapIntensity = theme.tileEnvMapIntensity;
+          tile.material.emissive.copy(tile.baseColor);
+          tile.material.needsUpdate = true;
+        });
+
+        dust.material.opacity = theme.dustOpacity;
+        refreshDustColors(themeName);
+      }
+
+      function refreshDustColors(themeName) {
+        const colors = dust.geometry.attributes.color;
+        const color = new THREE.Color();
+
+        for (let index = 0; index < colors.count; index += 1) {
+          if (themeName === "light") {
+            if (index % 3 === 0) {
+              color.setHSL(0.97 + Math.random() * 0.02, 0.58, 0.44);
+            } else {
+              color.setHSL(0.11 + Math.random() * 0.03, 0.58, 0.42);
+            }
+          } else if (index % 3 === 0) {
+            color.setHSL(0.97 + Math.random() * 0.025, 0.72, 0.6);
+          } else {
+            color.setHSL(0.11 + Math.random() * 0.035, 0.68, 0.58);
+          }
+
+          colors.setXYZ(index, color.r, color.g, color.b);
+        }
+
+        colors.needsUpdate = true;
+      }
+
+      function resize() {
+        const width = window.innerWidth || 1;
+        const height = window.innerHeight || 1;
+        renderer.setSize(width, height, false);
+        camera.aspect = width / height;
+        camera.fov = width < 640 ? 42 : 36;
+        camera.position.z = width < 640 ? (heroMode ? 8.4 : 10.2) : 7.6;
+        rig.position.y = heroMode ? (width < 640 ? 1.7 : 1.85) : 0;
+        camera.updateProjectionMatrix();
+      }
+
+      window.addEventListener("resize", resize);
+      reducedMotionQuery.addEventListener("change", (event) => {
+        reduceMotion = event.matches;
+      });
+
+      applySceneTheme(activeThemeName);
+      watchSiteTheme();
+      resize();
+      animate();
+    </script>
+  </body>
+</html>
