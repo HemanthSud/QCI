@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/components/auth-context";
 import { Container } from "@/components/ui";
+import { isSpecialMember, specialMemberProfiles } from "@/lib/authz";
 import { siteMeta } from "@/lib/site-data";
 
 const absenceFormUrl = process.env.NEXT_PUBLIC_QCI_ABSENCE_FORM_URL;
@@ -32,6 +33,30 @@ const portalLinks = [
 
 const fundraisingItems = ["Donations", "Sponsor leads", "Event sales", "Dares"];
 const productionItems = ["Clean-up", "Props", "Costumes", "Media"];
+
+const specialDashboardStats = [
+  {
+    label: "Access tier",
+    value: "Special",
+    detail: "Personal member dashboard enabled for this account.",
+  },
+  {
+    label: "Portal",
+    value: "Live",
+    detail: "Member links, forms, and comp details are ready from one place.",
+  },
+  {
+    label: "Ops focus",
+    value: "QCI",
+    detail: "Quick view for team logistics, fundraising, and production work.",
+  },
+] as const;
+
+const specialFocusItems = [
+  "Check upcoming competition details before team travel.",
+  "Keep fundraising and production point categories visible.",
+  "Use the team inbox for urgent portal updates or form changes.",
+] as const;
 
 export default function MembersPage() {
   const { user, loading, signOut } = useAuth();
@@ -71,10 +96,12 @@ export default function MembersPage() {
         timeStyle: "short",
       }).format(new Date(user.last_sign_in_at))
     : "Session active";
-  const memberName =
-    typeof user.user_metadata.full_name === "string" && user.user_metadata.full_name.trim()
-      ? user.user_metadata.full_name
-      : user.email;
+  const profileName =
+    typeof user.user_metadata.full_name === "string" ? user.user_metadata.full_name.trim() : "";
+  const memberName = isSpecialMember(user)
+    ? specialMemberProfiles.hemanth.displayName
+    : profileName || user.email;
+  const showSpecialDashboard = isSpecialMember(user);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -153,6 +180,8 @@ export default function MembersPage() {
           </div>
         </Container>
       </section>
+
+      {showSpecialDashboard ? <SpecialMemberDashboard email={user.email ?? ""} /> : null}
 
       <section className="pb-20 sm:pb-24">
         <Container className="space-y-8">
@@ -241,6 +270,106 @@ export default function MembersPage() {
         </Container>
       </section>
     </>
+  );
+}
+
+type SpecialMemberDashboardProps = {
+  email: string;
+};
+
+function SpecialMemberDashboard({ email }: SpecialMemberDashboardProps) {
+  const formHref = absenceFormUrl || `mailto:${siteMeta.email}?subject=Absence%20Form`;
+
+  return (
+    <section className="pb-20 sm:pb-24">
+      <Container className="space-y-8">
+        <div className="section-card overflow-hidden p-0">
+          <div className="grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
+            <div className="bg-[linear-gradient(135deg,rgba(200,16,46,0.28),rgba(212,175,55,0.12),rgba(8,8,8,0.15))] p-6 sm:p-8">
+              <p className="font-accent text-[0.78rem] uppercase tracking-[0.3em] text-[var(--color-gold)]">
+                Special member
+              </p>
+              <h2 className="mt-4 font-display text-4xl leading-none text-[var(--color-cream)] sm:text-5xl">
+                Hemanth dashboard.
+              </h2>
+              <p className="mt-5 max-w-xl text-sm leading-7 text-[var(--color-muted)] sm:text-base">
+                A dedicated view for Hemanth Sudhaharan with the portal shortcuts and team ops
+                context that matter most.
+              </p>
+              <p className="mt-6 break-words text-sm font-semibold text-[var(--color-gold)]">
+                {email || specialMemberProfiles.hemanth.email}
+              </p>
+            </div>
+
+            <div className="grid gap-4 p-6 sm:grid-cols-3 sm:p-8">
+              {specialDashboardStats.map((item) => (
+                <article
+                  className="border border-[var(--color-border)] bg-[rgba(255,255,255,0.03)] p-5"
+                  key={item.label}
+                >
+                  <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-muted)]">
+                    {item.label}
+                  </p>
+                  <p className="mt-3 font-display text-4xl leading-none text-[var(--color-night)]">
+                    {item.value}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-[var(--color-muted)]">{item.detail}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_0.85fr]">
+          <article className="section-card p-6 sm:p-8">
+            <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
+              Priority board
+            </p>
+            <div className="mt-6 grid gap-4">
+              {specialFocusItems.map((item, index) => (
+                <div
+                  className="grid grid-cols-[2.75rem_1fr] gap-4 border-b border-white/10 pb-4 text-sm"
+                  key={item}
+                >
+                  <span className="font-display text-3xl leading-none text-[var(--color-gold)]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="leading-7 text-[var(--color-muted-strong)]">{item}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="section-card p-6 sm:p-8">
+            <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
+              Fast lane
+            </p>
+            <div className="mt-6 grid gap-3">
+              <Link
+                className="border border-[var(--color-border)] px-4 py-3 font-accent text-[0.9rem] uppercase tracking-[0.18em] text-[var(--color-gold)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-dim)]"
+                href="/members/comp"
+              >
+                Comp details
+              </Link>
+              <a
+                className="border border-[var(--color-border)] px-4 py-3 font-accent text-[0.9rem] uppercase tracking-[0.18em] text-[var(--color-gold)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-dim)]"
+                href={formHref}
+                rel={formHref.startsWith("http") ? "noreferrer" : undefined}
+                target={formHref.startsWith("http") ? "_blank" : undefined}
+              >
+                Absence form
+              </a>
+              <a
+                className="border border-[var(--color-border)] px-4 py-3 font-accent text-[0.9rem] uppercase tracking-[0.18em] text-[var(--color-gold)] transition hover:border-[var(--color-gold)] hover:bg-[var(--color-gold-dim)]"
+                href={`mailto:${siteMeta.email}?subject=Member%20Portal%20Update`}
+              >
+                Email team inbox
+              </a>
+            </div>
+          </article>
+        </div>
+      </Container>
+    </section>
   );
 }
 
