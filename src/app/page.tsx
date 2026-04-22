@@ -1,4 +1,5 @@
 import { EditableHomePhotoStrip } from "@/components/editable-home-photo-strip";
+import { EditableText } from "@/components/editable-text";
 import { GoFundMeEmbed } from "@/components/gofundme-embed";
 import { ButtonLink, Container } from "@/components/ui";
 import {
@@ -21,16 +22,31 @@ export default function Home() {
             className="reveal-on-scroll max-w-full font-accent text-[0.8rem] uppercase tracking-[0.22em] text-[var(--color-gold)] sm:text-[0.95rem] sm:tracking-[0.35em]"
             data-reveal
           >
-            Queen City Ishaare · Est. 2015
+            <EditableText fallback="Queen City Ishaare · Est. 2015" id="home-hero-eyebrow" />
           </p>
 
           <h1
             className="reveal-on-scroll reveal-delay-1 mt-4 max-w-full break-words font-display text-[clamp(2.55rem,7vw,6.6rem)] leading-[1.06] text-[var(--color-cream)] sm:leading-[1.02]"
             data-reveal
           >
-            <span className="block">UNCC&apos;s Premier</span>
-            <span className="block">Bollywood Fusion</span>
-            <span className="block">Dance Team</span>
+            <EditableText
+              as="span"
+              className="block"
+              fallback="UNCC's Premier"
+              id="home-hero-title-line-1"
+            />
+            <EditableText
+              as="span"
+              className="block"
+              fallback="Bollywood Fusion"
+              id="home-hero-title-line-2"
+            />
+            <EditableText
+              as="span"
+              className="block"
+              fallback="Dance Team"
+              id="home-hero-title-line-3"
+            />
           </h1>
 
           <div
@@ -38,17 +54,17 @@ export default function Home() {
             data-reveal
           >
             <p className="font-accent text-[0.9rem] uppercase tracking-[0.14em] text-[var(--color-cream)] sm:text-[1.05rem] sm:tracking-[0.25em]">
-              Where Bollywood Meets the Big Stage
+              <EditableText fallback="Where Bollywood Meets the Big Stage" id="home-hero-kicker" />
             </p>
           </div>
 
-          <p
+          <EditableText
+            as="p"
             className="reveal-on-scroll reveal-delay-3 mt-6 max-w-xl text-[0.95rem] leading-8 text-[var(--color-muted)] sm:text-base"
             data-reveal
-          >
-            Queen City Ishaare brings Bollywood, hip-hop, contemporary, and South Asian stage
-            energy together for campus showcases, community events, and competition weekends.
-          </p>
+            fallback="Queen City Ishaare brings Bollywood, hip-hop, contemporary, and South Asian stage energy together for campus showcases, community events, and competition weekends."
+            id="home-hero-description"
+          />
 
           <div className="reveal-on-scroll reveal-delay-3 mt-10 flex flex-wrap justify-center gap-4" data-reveal>
             <ButtonLink href="/support">Donate</ButtonLink>
@@ -66,15 +82,17 @@ export default function Home() {
           <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div className="reveal-on-scroll" data-reveal>
               <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
-                About
+                <EditableText fallback="About" id="home-about-eyebrow" />
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Bollywood fusion at UNCC.
+                <EditableText fallback="Bollywood fusion at UNCC." id="home-about-title" />
               </h2>
-              <p className="mt-6 max-w-xl text-base leading-8 text-[var(--color-muted)]">
-                Queen City Ishaare is UNCC&apos;s competitive Bollywood fusion team, built for
-                campus stages, community shows, and competition weekends.
-              </p>
+              <EditableText
+                as="p"
+                className="mt-6 max-w-xl text-base leading-8 text-[var(--color-muted)]"
+                fallback="Queen City Ishaare is UNCC's competitive Bollywood fusion team, built for campus stages, community shows, and competition weekends."
+                id="home-about-body"
+              />
 
               <div className="mt-9 flex flex-wrap gap-8 border-t border-white/10 pt-8">
                 {homeStoryStats.map((item) => (
@@ -102,14 +120,17 @@ export default function Home() {
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div className="reveal-on-scroll" data-reveal>
               <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
-                On Stage
+                <EditableText fallback="On Stage" id="home-events-eyebrow" />
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Comps this year.
+                <EditableText fallback="Comps this year." id="home-events-title" />
               </h2>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)]">
-                The main competition stops and showcase moments for this season.
-              </p>
+              <EditableText
+                as="p"
+                className="mt-4 max-w-2xl text-base leading-8 text-[var(--color-muted)]"
+                fallback="The main competition stops and showcase moments for this season."
+                id="home-events-body"
+              />
             </div>
 
             <div className="reveal-on-scroll reveal-delay-1" data-reveal>
@@ -164,10 +185,16 @@ export default function Home() {
           <div className="mx-auto max-w-4xl text-center">
             <div className="reveal-on-scroll" data-reveal>
               <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
-                Join the Team
+                <EditableText fallback="Join the Team" id="home-auditions-eyebrow" />
               </p>
               <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
-                Fall Auditions <span className="text-[var(--color-red)]">Coming Soon</span>
+                <EditableText fallback="Fall Auditions" id="home-auditions-title" />{" "}
+                <EditableText
+                  as="span"
+                  className="text-[var(--color-red)]"
+                  fallback="Coming Soon"
+                  id="home-auditions-highlight"
+                />
               </h2>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { homePhotoStrip, jalwaImages, nashaImages, siteMeta } from "@/lib/site-data";
+import { calendarBuckets, homePhotoStrip, jalwaImages, nashaImages, siteMeta } from "@/lib/site-data";
 
 export type EditableImage = {
   alt: string;
@@ -22,15 +22,54 @@ export type EditableImageSlot = {
   label: string;
 };
 
+export type EditableCalendarBucket = {
+  description: string;
+  id: string;
+  title: string;
+};
+
+export type EditableCalendarEvent = {
+  date: string;
+  description: string;
+  id: string;
+  kind: string;
+  location: string;
+  status: string;
+  title: string;
+};
+
+export type EditableCalendarContent = {
+  buckets: EditableCalendarBucket[];
+  emptyBody: string;
+  emptyTitle: string;
+  eventTypesEyebrow: string;
+  eventTypesTitle: string;
+  events: EditableCalendarEvent[];
+  heroEyebrow: string;
+  heroTitle: string;
+  upcomingEyebrow: string;
+  upcomingTitle: string;
+};
+
+export type EditableTextBlock = {
+  group: string;
+  id: string;
+  label: string;
+  multiline?: boolean;
+  value: string;
+};
+
 export type EditableThemeMode = "dark" | "light";
 
 export type EditableTheme = Record<EditableThemeMode, Record<string, string>>;
 
 export type SiteEditorContent = {
+  calendar: EditableCalendarContent;
   gallerySections: EditableGallerySection[];
   homePhotoStrip: EditableImage[];
   imageSlots: EditableImageSlot[];
   schemaVersion: 1;
+  textBlocks: EditableTextBlock[];
   theme: EditableTheme;
   updatedAt: string;
 };
@@ -111,8 +150,150 @@ function makeGalleryImage(prefix: string, label: string, image: { alt: string; s
   } satisfies EditableImage;
 }
 
+const defaultTextBlocks: EditableTextBlock[] = [
+  {
+    group: "Home hero",
+    id: "home-hero-eyebrow",
+    label: "Hero eyebrow",
+    value: "Queen City Ishaare · Est. 2015",
+  },
+  {
+    group: "Home hero",
+    id: "home-hero-title-line-1",
+    label: "Hero title line 1",
+    value: "UNCC's Premier",
+  },
+  {
+    group: "Home hero",
+    id: "home-hero-title-line-2",
+    label: "Hero title line 2",
+    value: "Bollywood Fusion",
+  },
+  {
+    group: "Home hero",
+    id: "home-hero-title-line-3",
+    label: "Hero title line 3",
+    value: "Dance Team",
+  },
+  {
+    group: "Home hero",
+    id: "home-hero-kicker",
+    label: "Hero ribbon",
+    value: "Where Bollywood Meets the Big Stage",
+  },
+  {
+    group: "Home hero",
+    id: "home-hero-description",
+    label: "Hero description",
+    multiline: true,
+    value:
+      "Queen City Ishaare brings Bollywood, hip-hop, contemporary, and South Asian stage energy together for campus showcases, community events, and competition weekends.",
+  },
+  {
+    group: "Home about",
+    id: "home-about-eyebrow",
+    label: "About eyebrow",
+    value: "About",
+  },
+  {
+    group: "Home about",
+    id: "home-about-title",
+    label: "About title",
+    value: "Bollywood fusion at UNCC.",
+  },
+  {
+    group: "Home about",
+    id: "home-about-body",
+    label: "About body",
+    multiline: true,
+    value:
+      "Queen City Ishaare is UNCC's competitive Bollywood fusion team, built for campus stages, community shows, and competition weekends.",
+  },
+  {
+    group: "Home events",
+    id: "home-events-eyebrow",
+    label: "Events eyebrow",
+    value: "On Stage",
+  },
+  {
+    group: "Home events",
+    id: "home-events-title",
+    label: "Events title",
+    value: "Comps this year.",
+  },
+  {
+    group: "Home events",
+    id: "home-events-body",
+    label: "Events body",
+    value: "The main competition stops and showcase moments for this season.",
+  },
+  {
+    group: "Home auditions",
+    id: "home-auditions-eyebrow",
+    label: "Auditions eyebrow",
+    value: "Join the Team",
+  },
+  {
+    group: "Home auditions",
+    id: "home-auditions-title",
+    label: "Auditions title",
+    value: "Fall Auditions",
+  },
+  {
+    group: "Home auditions",
+    id: "home-auditions-highlight",
+    label: "Auditions highlighted text",
+    value: "Coming Soon",
+  },
+  {
+    group: "Gallery",
+    id: "gallery-hero-eyebrow",
+    label: "Gallery hero eyebrow",
+    value: "Gallery",
+  },
+  {
+    group: "Gallery",
+    id: "gallery-hero-title",
+    label: "Gallery hero title",
+    value: "2026 recap and photos.",
+  },
+  {
+    group: "Gallery",
+    id: "gallery-recap-eyebrow",
+    label: "Recap eyebrow",
+    value: "Season recap",
+  },
+  {
+    group: "Gallery",
+    id: "gallery-recap-title",
+    label: "Recap title",
+    value: "2026",
+  },
+];
+
+function makeBucketId(value: string, index: number) {
+  const slug = value.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase();
+
+  return slug ? `calendar-${slug}` : `calendar-bucket-${index + 1}`;
+}
+
 export function createDefaultSiteEditorContent(): SiteEditorContent {
   return {
+    calendar: {
+      buckets: calendarBuckets.map((bucket, index) => ({
+        ...bucket,
+        id: makeBucketId(bucket.title, index),
+      })),
+      emptyBody: "For bookings or updates, use email or Instagram.",
+      emptyTitle: "Dates will be posted once they are confirmed.",
+      eventTypesEyebrow: "Event types",
+      eventTypesTitle: "What may show up here.",
+      events: [],
+      heroEyebrow: "Calendar",
+      heroTitle: "No upcoming events yet.",
+      upcomingEyebrow: "Upcoming",
+      upcomingTitle: "Calendar is clear right now.",
+    },
     gallerySections: [
       {
         eyebrow: "Photos",
@@ -155,6 +336,7 @@ export function createDefaultSiteEditorContent(): SiteEditorContent {
       },
     ],
     schemaVersion: 1,
+    textBlocks: defaultTextBlocks,
     theme: defaultTheme,
     updatedAt: new Date(0).toISOString(),
   };
@@ -192,6 +374,98 @@ function normalizeTheme(value: unknown): EditableTheme {
   }
 
   return theme;
+}
+
+function normalizeTextBlocks(value: unknown, fallback: EditableTextBlock[]) {
+  const incoming = Array.isArray(value) ? (value as Partial<EditableTextBlock>[]) : [];
+
+  return fallback.map((block) => {
+    const incomingBlock = incoming.find((item) => item.id === block.id);
+
+    return {
+      ...block,
+      value:
+        typeof incomingBlock?.value === "string" ? incomingBlock.value.trim() : block.value,
+    };
+  });
+}
+
+function normalizeCalendar(value: unknown, fallback: EditableCalendarContent): EditableCalendarContent {
+  const incoming = value as Partial<EditableCalendarContent> | undefined;
+  const incomingBuckets = Array.isArray(incoming?.buckets) ? incoming.buckets : fallback.buckets;
+  const incomingEvents = Array.isArray(incoming?.events) ? incoming.events : fallback.events;
+
+  return {
+    buckets: incomingBuckets.map((bucket, index) => ({
+      description:
+        typeof bucket.description === "string" ? bucket.description.trim() : "",
+      id:
+        typeof bucket.id === "string" && bucket.id.trim()
+          ? bucket.id.trim()
+          : makeBucketId(bucket.title ?? "", index),
+      title:
+        typeof bucket.title === "string" && bucket.title.trim()
+          ? bucket.title.trim()
+          : `Event type ${index + 1}`,
+    })),
+    emptyBody:
+      typeof incoming?.emptyBody === "string" && incoming.emptyBody.trim()
+        ? incoming.emptyBody.trim()
+        : fallback.emptyBody,
+    emptyTitle:
+      typeof incoming?.emptyTitle === "string" && incoming.emptyTitle.trim()
+        ? incoming.emptyTitle.trim()
+        : fallback.emptyTitle,
+    eventTypesEyebrow:
+      typeof incoming?.eventTypesEyebrow === "string" && incoming.eventTypesEyebrow.trim()
+        ? incoming.eventTypesEyebrow.trim()
+        : fallback.eventTypesEyebrow,
+    eventTypesTitle:
+      typeof incoming?.eventTypesTitle === "string" && incoming.eventTypesTitle.trim()
+        ? incoming.eventTypesTitle.trim()
+        : fallback.eventTypesTitle,
+    events: incomingEvents.map((event, index) => ({
+      date: typeof event.date === "string" ? event.date.trim() : "",
+      description: typeof event.description === "string" ? event.description.trim() : "",
+      id:
+        typeof event.id === "string" && event.id.trim()
+          ? event.id.trim()
+          : `calendar-event-${index + 1}`,
+      kind: typeof event.kind === "string" && event.kind.trim() ? event.kind.trim() : "Event",
+      location: typeof event.location === "string" ? event.location.trim() : "",
+      status: typeof event.status === "string" ? event.status.trim() : "",
+      title:
+        typeof event.title === "string" && event.title.trim()
+          ? event.title.trim()
+          : `Calendar event ${index + 1}`,
+    })),
+    heroEyebrow:
+      typeof incoming?.heroEyebrow === "string" && incoming.heroEyebrow.trim()
+        ? incoming.heroEyebrow.trim()
+        : fallback.heroEyebrow,
+    heroTitle:
+      typeof incoming?.heroTitle === "string" && incoming.heroTitle.trim()
+        ? incoming.heroTitle.trim()
+        : fallback.heroTitle,
+    upcomingEyebrow:
+      typeof incoming?.upcomingEyebrow === "string" && incoming.upcomingEyebrow.trim()
+        ? incoming.upcomingEyebrow.trim()
+        : fallback.upcomingEyebrow,
+    upcomingTitle:
+      typeof incoming?.upcomingTitle === "string" && incoming.upcomingTitle.trim()
+        ? incoming.upcomingTitle.trim()
+        : fallback.upcomingTitle,
+  };
+}
+
+export function getEditableTextValue(
+  content: Pick<SiteEditorContent, "textBlocks"> | null | undefined,
+  id: string,
+  fallback: string,
+) {
+  const value = content?.textBlocks.find((block) => block.id === id)?.value;
+
+  return typeof value === "string" && value.trim() ? value : fallback;
 }
 
 export function normalizeSiteEditorContent(value: unknown): SiteEditorContent {
@@ -238,12 +512,14 @@ export function normalizeSiteEditorContent(value: unknown): SiteEditorContent {
     : fallback.imageSlots;
 
   return {
+    calendar: normalizeCalendar(incoming?.calendar, fallback.calendar),
     gallerySections,
     homePhotoStrip: normalizedHomePhotoStrip.length
       ? normalizedHomePhotoStrip
       : fallback.homePhotoStrip,
     imageSlots: normalizedImageSlots,
     schemaVersion: 1,
+    textBlocks: normalizeTextBlocks(incoming?.textBlocks, fallback.textBlocks),
     theme: normalizeTheme(incoming?.theme),
     updatedAt:
       typeof incoming?.updatedAt === "string" && incoming.updatedAt

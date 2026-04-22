@@ -13,15 +13,15 @@ type ButtonLinkProps = {
 };
 
 type SectionHeadingProps = {
-  eyebrow: string;
-  title: string;
+  eyebrow: React.ReactNode;
+  title: React.ReactNode;
   description?: string;
   align?: "left" | "center";
 };
 
 type PageHeroProps = {
-  eyebrow: string;
-  title: string;
+  eyebrow: React.ReactNode;
+  title: React.ReactNode;
   description?: string;
   actions?: React.ReactNode;
 };

@@ -7,8 +7,11 @@ import type React from "react";
 
 import { getSupabaseClient } from "@/lib/supabase-client";
 import {
+  type EditableCalendarBucket,
+  type EditableCalendarEvent,
   type EditableGallerySection,
   type EditableImage,
+  type EditableTextBlock,
   type EditableThemeMode,
   type SiteEditorContent,
   type SiteEditorVersion,
@@ -34,7 +37,11 @@ type EditorActionResponse = {
   versions?: SiteEditorVersion[];
 };
 
-type EditorTab = "gallery" | "home" | "site" | "colors";
+type EditorTab = "gallery" | "home" | "site" | "calendar" | "text" | "colors";
+type ToastState = {
+  message: string;
+  tone: "success" | "error";
+};
 
 const defaultContent = createDefaultSiteEditorContent();
 
@@ -61,6 +68,26 @@ function makeEmptySection() {
   } satisfies EditableGallerySection;
 }
 
+function makeEmptyCalendarBucket() {
+  return {
+    description: "Describe this event type.",
+    id: `calendar-bucket-${crypto.randomUUID()}`,
+    title: "New event type",
+  } satisfies EditableCalendarBucket;
+}
+
+function makeEmptyCalendarEvent() {
+  return {
+    date: "Date TBD",
+    description: "",
+    id: `calendar-event-${crypto.randomUUID()}`,
+    kind: "Event",
+    location: "",
+    status: "",
+    title: "New calendar event",
+  } satisfies EditableCalendarEvent;
+}
+
 function isHexColor(value: string) {
   return /^#[0-9a-f]{6}$/i.test(value);
 }
@@ -73,6 +100,7 @@ export function SiteEditorPanel() {
   const [notice, setNotice] = useState("");
   const [selectedImageIds, setSelectedImageIds] = useState<string[]>([]);
   const [tab, setTab] = useState<EditorTab>("gallery");
+  const [toast, setToast] = useState<ToastState | null>(null);
   const [versions, setVersions] = useState<SiteEditorVersion[]>([]);
   const [versionPath, setVersionPath] = useState("");
 
@@ -117,6 +145,30 @@ export function SiteEditorPanel() {
     void Promise.resolve().then(() => loadEditor());
   }, []);
 
+  const showToast = (message: string, tone: ToastState["tone"] = "success") => {
+    setToast({ message, tone });
+  };
+
+  useEffect(() => {
+    if (!toast) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => setToast(null), 3200);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [toast]);
+
+  const showNotice = (message: string, tone: ToastState["tone"] = "success") => {
+    setNotice(message);
+    showToast(message, tone);
+  };
+
+  const showError = (message: string) => {
+    setError(message);
+    showToast(message, "error");
+  };
+
   const updateDraft = (updater: (content: SiteEditorContent) => SiteEditorContent) => {
     setDraft((current) =>
       normalizeSiteEditorContent({
@@ -156,9 +208,9 @@ export function SiteEditorPanel() {
         setDraft(normalizeSiteEditorContent(result.draft));
       }
 
-      setNotice("Draft saved.");
+      showNotice("Draft saved.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Draft could not be saved.");
+      showError(err instanceof Error ? err.message : "Draft could not be saved.");
     }
   };
 
@@ -179,9 +231,9 @@ export function SiteEditorPanel() {
         setVersionPath(result.versions[0]?.path ?? "");
       }
 
-      setNotice("Published. The public site now uses this version.");
+      showNotice("Published. The public site now uses this version.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Draft could not be published.");
+      showError(err instanceof Error ? err.message : "Draft could not be published.");
     }
   };
 
@@ -198,15 +250,15 @@ export function SiteEditorPanel() {
         writeSiteEditorPreview(nextDraft);
       }
 
-      setNotice("Draft reverted to the current published site.");
+      showNotice("Draft reverted to the current published site.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Draft could not be reverted.");
+      showError(err instanceof Error ? err.message : "Draft could not be reverted.");
     }
   };
 
   const restoreVersion = async () => {
     if (!versionPath) {
-      setError("Choose a version to restore.");
+      showError("Choose a version to restore.");
       return;
     }
 
@@ -222,9 +274,9 @@ export function SiteEditorPanel() {
         writeSiteEditorPreview(nextDraft);
       }
 
-      setNotice("Version restored into the draft. Publish when it looks right.");
+      showNotice("Version restored into the draft. Publish when it looks right.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Version could not be restored.");
+      showError(err instanceof Error ? err.message : "Version could not be restored.");
     }
   };
 
@@ -281,9 +333,9 @@ export function SiteEditorPanel() {
         };
       });
 
-      setNotice(`${uploadedImages.length} image${uploadedImages.length === 1 ? "" : "s"} added.`);
+      showNotice(`${uploadedImages.length} image${uploadedImages.length === 1 ? "" : "s"} added.`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Images could not be uploaded.");
+      showError(err instanceof Error ? err.message : "Images could not be uploaded.");
     }
   };
 
@@ -329,9 +381,9 @@ export function SiteEditorPanel() {
             : slot,
         ),
       }));
-      setNotice("Site image updated in the draft.");
+      showNotice("Site image updated in the draft.");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Site image could not be uploaded.");
+      showError(err instanceof Error ? err.message : "Site image could not be uploaded.");
     }
   };
 
@@ -343,6 +395,7 @@ export function SiteEditorPanel() {
 
   const removeSelectedImages = () => {
     if (selectedImageIds.length === 0) {
+      showError("Select one or more images first.");
       return;
     }
 
@@ -369,18 +422,18 @@ export function SiteEditorPanel() {
       };
     });
     setSelectedImageIds([]);
-    setNotice("Selected images removed from the draft.");
+    showNotice("Selected images removed from the draft.");
   };
 
   const previewDraft = () => {
     writeSiteEditorPreview(draft);
-    setNotice("Preview enabled in this browser.");
-    window.open("/gallery?preview=site-editor", "_blank", "noopener,noreferrer");
+    showNotice("Preview enabled in this browser.");
+    window.open("/?preview=site-editor", "_blank", "noopener,noreferrer");
   };
 
   const clearPreview = () => {
     clearSiteEditorPreview();
-    setNotice("Preview cleared.");
+    showNotice("Preview cleared.");
   };
 
   if (loading) {
@@ -395,13 +448,26 @@ export function SiteEditorPanel() {
 
   return (
     <article className="section-card p-6 sm:p-8">
+      {toast ? (
+        <div
+          className={`fixed bottom-5 right-5 z-[80] max-w-sm border px-5 py-4 text-sm font-semibold shadow-[0_18px_60px_rgba(0,0,0,0.42)] ${
+            toast.tone === "error"
+              ? "border-[var(--color-rose)] bg-[var(--color-deep)] text-[var(--color-rose)]"
+              : "border-[var(--color-gold)] bg-[var(--color-deep)] text-[var(--color-gold)]"
+          }`}
+          role="status"
+        >
+          {toast.message}
+        </div>
+      ) : null}
+
       <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
         <div className="max-w-2xl">
           <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
             Site editor
           </p>
           <h3 className="mt-4 font-display text-4xl leading-none text-[var(--color-night)]">
-            Images, sections, preview, publish.
+            Images, text, calendar, preview, publish.
           </h3>
           <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
             Edit the draft, preview it in this browser, publish when it looks right, or restore a
@@ -430,6 +496,12 @@ export function SiteEditorPanel() {
         <TabButton active={tab === "site"} onClick={() => setTab("site")}>
           Site images
         </TabButton>
+        <TabButton active={tab === "calendar"} onClick={() => setTab("calendar")}>
+          Calendar
+        </TabButton>
+        <TabButton active={tab === "text"} onClick={() => setTab("text")}>
+          Text
+        </TabButton>
         <TabButton active={tab === "colors"} onClick={() => setTab("colors")}>
           Colors
         </TabButton>
@@ -455,6 +527,7 @@ export function SiteEditorPanel() {
             }));
             setActiveSectionId(section.id);
             setSelectedImageIds([]);
+            showNotice("New gallery section added and selected.");
           }}
           onChangeActiveSection={(sectionId) => {
             setActiveSectionId(sectionId);
@@ -462,8 +535,12 @@ export function SiteEditorPanel() {
           }}
           onRemoveSection={() => {
             if (!activeSection || draft.gallerySections.length <= 1) {
+              showError("Keep at least one gallery section.");
               return;
             }
+
+            const nextSectionId =
+              draft.gallerySections.find((section) => section.id !== activeSection.id)?.id ?? "";
 
             updateDraft((content) => ({
               ...content,
@@ -471,8 +548,9 @@ export function SiteEditorPanel() {
                 (section) => section.id !== activeSection.id,
               ),
             }));
-            setActiveSectionId(draft.gallerySections.find((section) => section.id !== activeSection.id)?.id ?? "");
+            setActiveSectionId(nextSectionId);
             setSelectedImageIds([]);
+            showNotice("Gallery section removed from the draft.");
           }}
           onRemoveSelected={removeSelectedImages}
           onSelectImage={toggleImageSelection}
@@ -507,6 +585,97 @@ export function SiteEditorPanel() {
             }));
           }}
           selectedImageIds={selectedImageIds}
+        />
+      ) : null}
+
+      {tab === "calendar" ? (
+        <CalendarEditor
+          calendar={draft.calendar}
+          onAddBucket={() => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                buckets: [...content.calendar.buckets, makeEmptyCalendarBucket()],
+              },
+            }));
+            showNotice("New calendar section added.");
+          }}
+          onAddEvent={() => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                events: [...content.calendar.events, makeEmptyCalendarEvent()],
+              },
+            }));
+            showNotice("New calendar event added.");
+          }}
+          onRemoveBucket={(bucketId) => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                buckets: content.calendar.buckets.filter((bucket) => bucket.id !== bucketId),
+              },
+            }));
+            showNotice("Calendar section removed from the draft.");
+          }}
+          onRemoveEvent={(eventId) => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                events: content.calendar.events.filter((event) => event.id !== eventId),
+              },
+            }));
+            showNotice("Calendar event removed from the draft.");
+          }}
+          onUpdateBucket={(bucketId, updates) => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                buckets: content.calendar.buckets.map((bucket) =>
+                  bucket.id === bucketId ? { ...bucket, ...updates } : bucket,
+                ),
+              },
+            }));
+          }}
+          onUpdateCalendar={(updates) => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                ...updates,
+              },
+            }));
+          }}
+          onUpdateEvent={(eventId, updates) => {
+            updateDraft((content) => ({
+              ...content,
+              calendar: {
+                ...content.calendar,
+                events: content.calendar.events.map((event) =>
+                  event.id === eventId ? { ...event, ...updates } : event,
+                ),
+              },
+            }));
+          }}
+        />
+      ) : null}
+
+      {tab === "text" ? (
+        <TextEditor
+          blocks={draft.textBlocks}
+          onUpdateTextBlock={(blockId, value) => {
+            updateDraft((content) => ({
+              ...content,
+              textBlocks: content.textBlocks.map((block) =>
+                block.id === blockId ? { ...block, value } : block,
+              ),
+            }));
+          }}
         />
       ) : null}
 
@@ -570,6 +739,216 @@ export function SiteEditorPanel() {
   );
 }
 
+type CalendarEditorProps = {
+  calendar: SiteEditorContent["calendar"];
+  onAddBucket: () => void;
+  onAddEvent: () => void;
+  onRemoveBucket: (bucketId: string) => void;
+  onRemoveEvent: (eventId: string) => void;
+  onUpdateBucket: (bucketId: string, updates: Partial<EditableCalendarBucket>) => void;
+  onUpdateCalendar: (updates: Partial<SiteEditorContent["calendar"]>) => void;
+  onUpdateEvent: (eventId: string, updates: Partial<EditableCalendarEvent>) => void;
+};
+
+function CalendarEditor({
+  calendar,
+  onAddBucket,
+  onAddEvent,
+  onRemoveBucket,
+  onRemoveEvent,
+  onUpdateBucket,
+  onUpdateCalendar,
+  onUpdateEvent,
+}: CalendarEditorProps) {
+  return (
+    <div className="mt-8 space-y-8">
+      <div className="border border-[var(--color-border)] bg-black/20 p-4">
+        <p className="font-accent text-[0.78rem] uppercase tracking-[0.24em] text-[var(--color-gold)]">
+          Calendar page text
+        </p>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <EditorTextField
+            label="Hero eyebrow"
+            onChange={(value) => onUpdateCalendar({ heroEyebrow: value })}
+            value={calendar.heroEyebrow}
+          />
+          <EditorTextField
+            label="Hero title"
+            onChange={(value) => onUpdateCalendar({ heroTitle: value })}
+            value={calendar.heroTitle}
+          />
+          <EditorTextField
+            label="Upcoming eyebrow"
+            onChange={(value) => onUpdateCalendar({ upcomingEyebrow: value })}
+            value={calendar.upcomingEyebrow}
+          />
+          <EditorTextField
+            label="Upcoming title"
+            onChange={(value) => onUpdateCalendar({ upcomingTitle: value })}
+            value={calendar.upcomingTitle}
+          />
+          <EditorTextArea
+            label="Empty state title"
+            onChange={(value) => onUpdateCalendar({ emptyTitle: value })}
+            value={calendar.emptyTitle}
+          />
+          <EditorTextArea
+            label="Empty state body"
+            onChange={(value) => onUpdateCalendar({ emptyBody: value })}
+            value={calendar.emptyBody}
+          />
+          <EditorTextField
+            label="Event type eyebrow"
+            onChange={(value) => onUpdateCalendar({ eventTypesEyebrow: value })}
+            value={calendar.eventTypesEyebrow}
+          />
+          <EditorTextField
+            label="Event type title"
+            onChange={(value) => onUpdateCalendar({ eventTypesTitle: value })}
+            value={calendar.eventTypesTitle}
+          />
+        </div>
+      </div>
+
+      <div className="border border-[var(--color-border)] bg-black/20 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-accent text-[0.78rem] uppercase tracking-[0.24em] text-[var(--color-gold)]">
+            Calendar sections
+          </p>
+          <EditorButton onClick={onAddBucket}>Add section</EditorButton>
+        </div>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {calendar.buckets.map((bucket) => (
+            <div className="border border-white/10 p-4" key={bucket.id}>
+              <EditorTextField
+                label="Section title"
+                onChange={(value) => onUpdateBucket(bucket.id, { title: value })}
+                value={bucket.title}
+              />
+              <div className="mt-3">
+                <EditorTextArea
+                  label="Section description"
+                  onChange={(value) => onUpdateBucket(bucket.id, { description: value })}
+                  value={bucket.description}
+                />
+              </div>
+              <div className="mt-4">
+                <EditorButton onClick={() => onRemoveBucket(bucket.id)}>Remove section</EditorButton>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="border border-[var(--color-border)] bg-black/20 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="font-accent text-[0.78rem] uppercase tracking-[0.24em] text-[var(--color-gold)]">
+            Calendar events
+          </p>
+          <EditorButton onClick={onAddEvent}>Add event</EditorButton>
+        </div>
+        <div className="mt-4 grid gap-4">
+          {calendar.events.length ? (
+            calendar.events.map((event) => (
+              <div className="border border-white/10 p-4" key={event.id}>
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <EditorTextField
+                    label="Event title"
+                    onChange={(value) => onUpdateEvent(event.id, { title: value })}
+                    value={event.title}
+                  />
+                  <EditorTextField
+                    label="Date"
+                    onChange={(value) => onUpdateEvent(event.id, { date: value })}
+                    value={event.date}
+                  />
+                  <EditorTextField
+                    label="Type"
+                    onChange={(value) => onUpdateEvent(event.id, { kind: value })}
+                    value={event.kind}
+                  />
+                  <EditorTextField
+                    label="Location"
+                    onChange={(value) => onUpdateEvent(event.id, { location: value })}
+                    value={event.location}
+                  />
+                  <EditorTextField
+                    label="Status"
+                    onChange={(value) => onUpdateEvent(event.id, { status: value })}
+                    value={event.status}
+                  />
+                </div>
+                <div className="mt-4">
+                  <EditorTextArea
+                    label="Description"
+                    onChange={(value) => onUpdateEvent(event.id, { description: value })}
+                    value={event.description}
+                  />
+                </div>
+                <div className="mt-4">
+                  <EditorButton onClick={() => onRemoveEvent(event.id)}>Remove event</EditorButton>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="border border-dashed border-[var(--color-border)] p-5 text-sm text-[var(--color-muted)]">
+              No calendar events in this draft.
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type TextEditorProps = {
+  blocks: EditableTextBlock[];
+  onUpdateTextBlock: (blockId: string, value: string) => void;
+};
+
+function TextEditor({ blocks, onUpdateTextBlock }: TextEditorProps) {
+  const groupedBlocks = useMemo(() => {
+    const groups = new Map<string, EditableTextBlock[]>();
+
+    for (const block of blocks) {
+      groups.set(block.group, [...(groups.get(block.group) ?? []), block]);
+    }
+
+    return Array.from(groups.entries());
+  }, [blocks]);
+
+  return (
+    <div className="mt-8 grid gap-5 lg:grid-cols-2">
+      {groupedBlocks.map(([group, groupBlocks]) => (
+        <div className="border border-[var(--color-border)] bg-black/20 p-4" key={group}>
+          <p className="font-accent text-[0.78rem] uppercase tracking-[0.24em] text-[var(--color-gold)]">
+            {group}
+          </p>
+          <div className="mt-4 grid gap-4">
+            {groupBlocks.map((block) =>
+              block.multiline ? (
+                <EditorTextArea
+                  key={block.id}
+                  label={block.label}
+                  onChange={(value) => onUpdateTextBlock(block.id, value)}
+                  value={block.value}
+                />
+              ) : (
+                <EditorTextField
+                  key={block.id}
+                  label={block.label}
+                  onChange={(value) => onUpdateTextBlock(block.id, value)}
+                  value={block.value}
+                />
+              ),
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 type SiteImageSlotEditorProps = {
   onReplaceImage: (slotId: string, file: File | null | undefined) => void;
   onUpdateImage: (slotId: string, updates: Partial<EditableImage>) => void;
@@ -610,6 +989,38 @@ function SiteImageSlotEditor({ onReplaceImage, onUpdateImage, slots }: SiteImage
         </div>
       ))}
     </div>
+  );
+}
+
+type EditorTextFieldProps = {
+  label: string;
+  onChange: (value: string) => void;
+  value: string;
+};
+
+function EditorTextField({ label, onChange, value }: EditorTextFieldProps) {
+  return (
+    <label className="grid gap-2 text-sm text-[var(--color-muted)]">
+      {label}
+      <input
+        className="border border-[var(--color-border)] bg-[rgba(255,255,255,0.04)] px-4 py-3 text-sm text-[var(--color-cream)]"
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      />
+    </label>
+  );
+}
+
+function EditorTextArea({ label, onChange, value }: EditorTextFieldProps) {
+  return (
+    <label className="grid gap-2 text-sm text-[var(--color-muted)]">
+      {label}
+      <textarea
+        className="min-h-28 resize-y border border-[var(--color-border)] bg-[rgba(255,255,255,0.04)] px-4 py-3 text-sm leading-7 text-[var(--color-cream)]"
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      />
+    </label>
   );
 }
 
@@ -689,12 +1100,19 @@ function GallerySectionEditor({
       <aside className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <p className="font-accent text-[0.78rem] uppercase tracking-[0.22em] text-[var(--color-gold)]">
-            Sections
+            Gallery sections
           </p>
-          <button className="text-sm font-semibold text-[var(--color-gold)]" onClick={onAddSection} type="button">
-            Add
+          <button
+            className="text-sm font-semibold text-[var(--color-gold)]"
+            onClick={onAddSection}
+            type="button"
+          >
+            Add section
           </button>
         </div>
+        <p className="text-xs leading-6 text-[var(--color-muted)]">
+          Choose a section, then add or select photos inside it.
+        </p>
         {draft.gallerySections.map((section) => (
           <button
             className={`block w-full border px-4 py-3 text-left text-sm transition ${
@@ -717,6 +1135,17 @@ function GallerySectionEditor({
       <div>
         {activeSection ? (
           <>
+            <div className="mb-5 border border-[var(--color-border)] bg-black/20 p-4">
+              <p className="font-accent text-[0.74rem] uppercase tracking-[0.22em] text-[var(--color-rose)]">
+                Editing section
+              </p>
+              <p className="mt-2 font-display text-3xl leading-none text-[var(--color-night)]">
+                {activeSection.title}
+              </p>
+              <p className="mt-2 text-sm text-[var(--color-muted)]">
+                {activeSection.images.length} image{activeSection.images.length === 1 ? "" : "s"} in this section.
+              </p>
+            </div>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="grid gap-2 text-sm text-[var(--color-muted)]">
                 Section title
@@ -842,6 +1271,14 @@ function SelectableImageGrid({
   renderFields,
   selectedImageIds,
 }: SelectableImageGridProps) {
+  if (images.length === 0) {
+    return (
+      <p className="mt-6 border border-dashed border-[var(--color-border)] p-5 text-sm text-[var(--color-muted)]">
+        No images in this section yet.
+      </p>
+    );
+  }
+
   return (
     <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {images.map((image) => {

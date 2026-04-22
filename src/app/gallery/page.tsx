@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 
 import { EditableGallerySections } from "@/components/editable-gallery-sections";
+import { EditableText } from "@/components/editable-text";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { siteMeta, videoTimelineEntries } from "@/lib/site-data";
 import { createDefaultSiteEditorContent } from "@/lib/site-editor";
@@ -19,13 +20,16 @@ export default function GalleryPage() {
     <>
       <PageHero
         actions={<ButtonLink href={siteMeta.instagram}>See Instagram</ButtonLink>}
-        eyebrow="Gallery"
-        title="2026 recap and photos."
+        eyebrow={<EditableText fallback="Gallery" id="gallery-hero-eyebrow" />}
+        title={<EditableText fallback="2026 recap and photos." id="gallery-hero-title" />}
       />
 
       <section className="py-8 sm:py-12">
         <Container className="space-y-10">
-          <SectionHeading eyebrow="Season recap" title="2026" />
+          <SectionHeading
+            eyebrow={<EditableText fallback="Season recap" id="gallery-recap-eyebrow" />}
+            title={<EditableText fallback="2026" id="gallery-recap-title" />}
+          />
 
           <article className="section-card overflow-hidden p-0">
             <div className="relative overflow-hidden bg-black">
