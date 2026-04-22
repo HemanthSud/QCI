@@ -4,20 +4,20 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth-context";
 
-const SIGN_UP_ACCESS_CODE = process.env.NEXT_PUBLIC_QCI_SIGNUP_CODE ?? "QCI2026";
-
 export default function AuthPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [accessCode, setAccessCode] = useState("");
+  const [verifiedAccessCode, setVerifiedAccessCode] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [isSignUpUnlocked, setIsSignUpUnlocked] = useState(false);
   const [showAccessCodePrompt, setShowAccessCodePrompt] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
+  const [accessCodeLoading, setAccessCodeLoading] = useState(false);
   const { loading: authLoading, signIn, signUp, user } = useAuth();
   const router = useRouter();
 
@@ -51,11 +51,14 @@ export default function AuthPage() {
     try {
       if (isSignUp) {
         await signUp(email, password, {
+          accessCode: verifiedAccessCode,
           firstName: trimmedFirstName,
           lastName: trimmedLastName,
         });
-        setNotice("Account created. Check your email to confirm it, then sign in.");
+        setNotice("Account created. You can sign in now.");
         setIsSignUp(false);
+        setIsSignUpUnlocked(false);
+        setVerifiedAccessCode("");
         setFirstName("");
         setLastName("");
         setPassword("");
@@ -70,20 +73,42 @@ export default function AuthPage() {
     }
   };
 
-  const handleUnlockSignUp = (event: React.FormEvent) => {
+  const handleUnlockSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
     setNotice("");
 
-    if (accessCode.trim().toLowerCase() !== SIGN_UP_ACCESS_CODE.trim().toLowerCase()) {
-      setError("That access code does not match. Ask QCI leadership for the current code.");
-      return;
-    }
+    setAccessCodeLoading(true);
 
-    setIsSignUpUnlocked(true);
-    setIsSignUp(true);
-    setShowAccessCodePrompt(false);
-    setAccessCode("");
+    try {
+      const trimmedAccessCode = accessCode.trim();
+      const response = await fetch("/api/auth/signup-code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessCode: trimmedAccessCode }),
+      });
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          typeof result?.error === "string"
+            ? result.error
+            : "That access code does not match. Ask QCI leadership for the current code.",
+        );
+      }
+
+      setVerifiedAccessCode(trimmedAccessCode);
+      setIsSignUpUnlocked(true);
+      setIsSignUp(true);
+      setShowAccessCodePrompt(false);
+      setAccessCode("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not verify the access code.");
+    } finally {
+      setAccessCodeLoading(false);
+    }
   };
 
   const handleSwitchToSignIn = () => {
@@ -135,9 +160,10 @@ export default function AuthPage() {
             </div>
             <button
               type="submit"
+              disabled={accessCodeLoading}
               className="w-full bg-[var(--color-red)] hover:bg-[var(--color-red-dark)] text-white font-bold py-2 px-4 rounded-lg transition"
             >
-              Unlock sign up
+              {accessCodeLoading ? "Checking..." : "Unlock sign up"}
             </button>
           </form>
         )}

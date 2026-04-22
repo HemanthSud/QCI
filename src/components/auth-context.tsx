@@ -1,7 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { User } from "@supabase/supabase-js";
+import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
+import { isQciMember } from "@/lib/authz";
 import { getSupabaseClient } from "@/lib/supabase-client";
 
 interface AuthContextType {
@@ -11,7 +12,7 @@ interface AuthContextType {
   signUp: (
     email: string,
     password: string,
-    profile: { firstName: string; lastName: string },
+    profile: { accessCode: string; firstName: string; lastName: string },
   ) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -39,13 +40,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        setUser(session?.user ?? null);
+        const sessionUser = session?.user ?? null;
+
+        if (sessionUser && !isQciMember(sessionUser)) {
+          await supabase.auth.signOut();
+          setUser(null);
+          setAuthError("This account is not approved for the QCI members portal.");
+          return;
+        }
+
+        setUser(sessionUser);
         setAuthError(null);
 
         const {
           data: { subscription: authSubscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
-          setUser(session?.user ?? null);
+        } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
+          const nextUser = session?.user ?? null;
+
+          if (nextUser && !isQciMember(nextUser)) {
+            setUser(null);
+            setAuthError("This account is not approved for the QCI members portal.");
+            void supabase.auth.signOut();
+            return;
+          }
+
+          setUser(nextUser);
           setAuthError(null);
         });
 
@@ -75,21 +94,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (
     email: string,
     password: string,
-    profile: { firstName: string; lastName: string },
+    profile: { accessCode: string; firstName: string; lastName: string },
   ) => {
-    const supabase = getSupabaseClient();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          first_name: profile.firstName,
-          last_name: profile.lastName,
-          full_name: `${profile.firstName} ${profile.lastName}`.trim(),
-        },
+    const response = await fetch("/api/auth/sign-up", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        accessCode: profile.accessCode,
+        email,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        password,
+      }),
     });
-    if (error) throw error;
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(
+        typeof result?.error === "string" ? result.error : "Account could not be created.",
+      );
+    }
   };
 
   const signIn = async (email: string, password: string) => {
@@ -99,6 +126,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password,
     });
     if (error) throw error;
+
+    if (data.user && !isQciMember(data.user)) {
+      await supabase.auth.signOut();
+      setUser(null);
+      throw new Error("This account is not approved for the QCI members portal.");
+    }
+
     setUser(data.user ?? null);
     setAuthError(null);
   };

@@ -24,5 +24,5 @@ export function isElevatedMember(user: User | null | undefined) {
 }
 
 export function isQciMember(user: User | null | undefined) {
-  return Boolean(user?.id);
+  return user?.app_metadata?.qci_member === true || isElevatedMember(user);
 }

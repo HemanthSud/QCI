@@ -1,6 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
-let supabase: ReturnType<typeof createClient> | null = null;
+let supabase: ReturnType<typeof createBrowserClient> | null = null;
 
 export function getSupabaseClient() {
   if (supabase) {
@@ -19,6 +19,6 @@ export function getSupabaseClient() {
     );
   }
 
-  supabase = createClient(supabaseUrl, supabaseKey);
+  supabase = createBrowserClient(supabaseUrl, supabaseKey);
   return supabase;
 }
