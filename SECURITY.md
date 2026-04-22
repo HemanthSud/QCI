@@ -19,3 +19,10 @@ Never put the signup code or a Supabase service role/secret key in a `NEXT_PUBLI
 - Do not use `user_metadata` for authorization decisions because users can edit it.
 - Store future private member data in tables protected by RLS or behind server routes.
 - Add budget alerts/caps in Supabase and any third-party services used by the site.
+
+## Elevated Gallery Uploads
+
+- Elevated gallery uploads are accepted only through server API routes.
+- Upload authorization checks the user's Supabase access token server-side before writing to Storage.
+- The Storage bucket stays private; public gallery reads use short-lived signed URLs from the server.
+- Keep `QCI_GALLERY_BUCKET` server-only unless the bucket name is intentionally public.

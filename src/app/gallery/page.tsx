@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import { ElevatedGalleryCarousel } from "@/components/elevated-gallery-carousel";
 import { ImageMarquee } from "@/components/image-marquee";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { jalwaImages, nashaImages, siteMeta, videoTimelineEntries } from "@/lib/site-data";
@@ -69,6 +70,11 @@ export default function GalleryPage() {
           <div className="space-y-8">
             <SectionHeading eyebrow="Photos" title="NASHA Showcase" />
             <ImageMarquee images={nashaImages} reverse />
+          </div>
+
+          <div className="space-y-8">
+            <SectionHeading eyebrow="Elevated uploads" title="Hemanth's carousel" />
+            <ElevatedGalleryCarousel />
           </div>
         </Container>
       </section>

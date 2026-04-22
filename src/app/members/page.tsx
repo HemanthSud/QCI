@@ -8,6 +8,7 @@ import { useAuth } from "@/components/auth-context";
 import { Container } from "@/components/ui";
 import { elevatedMemberProfiles, isElevatedMember } from "@/lib/authz";
 import { siteMeta } from "@/lib/site-data";
+import { getSupabaseClient } from "@/lib/supabase-client";
 
 const absenceFormUrl = process.env.NEXT_PUBLIC_QCI_ABSENCE_FORM_URL;
 const feedbackFormUrl = process.env.NEXT_PUBLIC_QCI_ANONYMOUS_FEEDBACK_FORM_URL;
@@ -279,6 +280,9 @@ type ElevatedMemberDashboardProps = {
 
 function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
   const formHref = absenceFormUrl || `mailto:${siteMeta.email}?subject=Absence%20Form`;
+  const [uploadError, setUploadError] = useState("");
+  const [uploadNotice, setUploadNotice] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   return (
     <section className="pb-20 sm:pb-24">
@@ -368,6 +372,105 @@ function ElevatedMemberDashboard({ email }: ElevatedMemberDashboardProps) {
             </div>
           </article>
         </div>
+
+        <article className="section-card p-6 sm:p-8">
+          <div className="grid gap-6 lg:grid-cols-[0.75fr_1fr] lg:items-center">
+            <div>
+              <p className="font-accent text-[0.78rem] uppercase tracking-[0.28em] text-[var(--color-rose)]">
+                Gallery upload
+              </p>
+              <h3 className="mt-4 font-display text-4xl leading-none text-[var(--color-night)]">
+                Add to the gallery.
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
+                Uploaded images publish to Hemanth&apos;s carousel on the public gallery page.
+              </p>
+            </div>
+
+            <form
+              className="grid gap-4"
+              onSubmit={async (event) => {
+                event.preventDefault();
+                setUploadError("");
+                setUploadNotice("");
+
+                const formData = new FormData(event.currentTarget);
+                const image = formData.get("image");
+
+                if (!(image instanceof File) || image.size === 0) {
+                  setUploadError("Choose an image before uploading.");
+                  return;
+                }
+
+                if (image.size > 8 * 1024 * 1024) {
+                  setUploadError("Choose an image under 8 MB.");
+                  return;
+                }
+
+                setUploading(true);
+
+                try {
+                  const supabase = getSupabaseClient();
+                  const {
+                    data: { session },
+                    error,
+                  } = await supabase.auth.getSession();
+
+                  if (error || !session?.access_token) {
+                    throw new Error("Sign in again before uploading.");
+                  }
+
+                  const uploadFormData = new FormData();
+                  uploadFormData.append("image", image);
+
+                  const response = await fetch("/api/gallery/elevated", {
+                    body: uploadFormData,
+                    headers: {
+                      Authorization: `Bearer ${session.access_token}`,
+                    },
+                    method: "POST",
+                  });
+                  const result = await response.json().catch(() => null);
+
+                  if (!response.ok) {
+                    throw new Error(
+                      typeof result?.error === "string"
+                        ? result.error
+                        : "Image could not be uploaded.",
+                    );
+                  }
+
+                  event.currentTarget.reset();
+                  setUploadNotice("Image uploaded to the gallery carousel.");
+                } catch (err) {
+                  setUploadError(err instanceof Error ? err.message : "Image could not be uploaded.");
+                } finally {
+                  setUploading(false);
+                }
+              }}
+            >
+              <input
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="w-full border border-[var(--color-border)] bg-[rgba(255,255,255,0.04)] px-4 py-3 text-sm text-[var(--color-muted-strong)] file:mr-4 file:border-0 file:bg-[var(--color-red)] file:px-4 file:py-2 file:font-accent file:text-xs file:uppercase file:tracking-[0.16em] file:text-[var(--color-on-red)]"
+                name="image"
+                type="file"
+              />
+              <button
+                className="inline-flex items-center justify-center bg-[var(--color-red)] px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] text-[var(--color-on-red)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)]"
+                disabled={uploading}
+                type="submit"
+              >
+                {uploading ? "Uploading" : "Upload image"}
+              </button>
+              {uploadNotice ? (
+                <p className="text-sm font-semibold text-[var(--color-gold)]">{uploadNotice}</p>
+              ) : null}
+              {uploadError ? (
+                <p className="text-sm font-semibold text-[var(--color-rose)]">{uploadError}</p>
+              ) : null}
+            </form>
+          </div>
+        </article>
       </Container>
     </section>
   );
