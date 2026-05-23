@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { aboutPillars, historyTimeline, videoTimelineEntries } from "@/lib/site-data";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "About",
-  description: "Learn about Queen City Ishaare, UNCC's Bollywood fusion dance team.",
-};
+  description:
+    "Learn about Queen City Ishaare, UNC Charlotte's Bollywood fusion dance team, including QCI history, performance style, competition milestones, and student-led culture.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

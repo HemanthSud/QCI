@@ -5,12 +5,15 @@ import { EditableGallerySections } from "@/components/editable-gallery-sections"
 import { EditableText } from "@/components/editable-text";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { siteMeta, videoTimelineEntries } from "@/lib/site-data";
+import { createPageMetadata } from "@/lib/seo";
 import { createDefaultSiteEditorContent } from "@/lib/site-editor";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Gallery",
-  description: "Explore Queen City Ishaare's current season recap and photo gallery.",
-};
+  description:
+    "Explore Queen City Ishaare photos, performance videos, competition recaps, and showcase moments from UNC Charlotte's Bollywood fusion dance team.",
+  path: "/gallery",
+});
 
 const recapVideo = videoTimelineEntries.find((entry) => entry.year === "2026");
 const fallbackEditorContent = createDefaultSiteEditorContent();

@@ -3,11 +3,14 @@ import type { Metadata } from "next";
 import { GoFundMeEmbed } from "@/components/gofundme-embed";
 import { ButtonLink, Container, PageHero, SectionHeading } from "@/components/ui";
 import { fundingUses, siteMeta, supportWays } from "@/lib/site-data";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Support Us",
-  description: "Support Queen City Ishaare through donations, bookings, and sponsorships.",
-};
+  description:
+    "Support Queen City Ishaare with donations, bookings, and sponsorships that help fund competition fees, travel, costumes, and production for QCI's season.",
+  path: "/support",
+});
 
 export default function SupportPage() {
   return (

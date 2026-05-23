@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import { EditableHomePhotoStrip } from "@/components/editable-home-photo-strip";
 import { EditableText } from "@/components/editable-text";
 import { GoFundMeEmbed } from "@/components/gofundme-embed";
@@ -6,9 +8,17 @@ import {
   homeEventHighlights,
   homeStoryStats,
 } from "@/lib/site-data";
+import { createPageMetadata } from "@/lib/seo";
 import { createDefaultSiteEditorContent } from "@/lib/site-editor";
 
 const fallbackEditorContent = createDefaultSiteEditorContent();
+
+export const metadata: Metadata = createPageMetadata({
+  title: "UNC Charlotte Bollywood Fusion Dance Team",
+  description:
+    "Queen City Ishaare is UNC Charlotte's premier Bollywood fusion dance team, performing South Asian dance, hip-hop, and contemporary sets across Charlotte and the collegiate circuit.",
+  path: "/",
+});
 
 export default function Home() {
   return (
