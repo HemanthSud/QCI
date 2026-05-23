@@ -147,7 +147,7 @@ export default function Home() {
                 className="section-card group reveal-on-scroll relative overflow-hidden p-8 transition duration-300 hover:-translate-y-1.5 hover:border-[var(--color-red)]"
                 data-reveal
               >
-                <div className="absolute right-0 top-0 h-16 w-16 bg-[linear-gradient(135deg,transparent_50%,rgba(200,16,46,0.15)_50%)]" />
+                <div className="absolute right-0 top-0 h-16 w-16 bg-[linear-gradient(135deg,transparent_50%,rgba(0,80,53,0.16)_50%)]" />
                 <div
                   className={`absolute left-0 top-0 h-full w-1 origin-top bg-[var(--color-red)] transition duration-300 ${
                     index === 0 ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"

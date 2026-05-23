@@ -11,7 +11,7 @@ export const siteMeta = {
   supportStoryUrl:
     "https://www.gofundme.com/f/support-queen-city-ishaare-help-us-compete-nationwide",
   homeImage: "/team-hero.jpg",
-  logoImage: "/qci-logo.jpg",
+  logoImage: "/qci-logo.svg",
 };
 
 export const navLinks = [

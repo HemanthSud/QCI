@@ -87,20 +87,20 @@ export const editableThemeTokens = [
   { key: "--color-foreground", label: "Foreground" },
   { key: "--color-black", label: "Base" },
   { key: "--color-deep", label: "Deep Surface" },
-  { key: "--color-red", label: "Primary Red" },
-  { key: "--color-red-dark", label: "Deep Red" },
-  { key: "--color-on-red", label: "Text On Red" },
+  { key: "--color-red", label: "Charlotte Green" },
+  { key: "--color-red-dark", label: "Deep Green" },
+  { key: "--color-on-red", label: "Text On Primary" },
   { key: "--color-cream", label: "Cream/Text" },
-  { key: "--color-gold", label: "Gold" },
+  { key: "--color-gold", label: "Niner Gold" },
   { key: "--color-night", label: "Card Text" },
-  { key: "--color-flame", label: "Flame" },
-  { key: "--color-ember", label: "Ember" },
-  { key: "--color-rose", label: "Rose" },
+  { key: "--color-flame", label: "Gold Accent" },
+  { key: "--color-ember", label: "Jasper Accent" },
+  { key: "--color-rose", label: "Support Accent" },
   { key: "--footer-bg", label: "Footer" },
   { key: "--logo-bg", label: "Logo Backing" },
 ] as const;
 
-const defaultTheme: EditableTheme = {
+const legacyDefaultTheme: EditableTheme = {
   dark: {
     "--color-background": "#080808",
     "--color-foreground": "#f2ede4",
@@ -134,6 +134,80 @@ const defaultTheme: EditableTheme = {
     "--color-rose": "#8b0b1f",
     "--footer-bg": "#fff1e5",
     "--logo-bg": "#120707",
+  },
+};
+
+const previousBlueDefaultTheme: EditableTheme = {
+  dark: {
+    "--color-background": "#05090d",
+    "--color-foreground": "#f3f5f7",
+    "--color-black": "#05090d",
+    "--color-deep": "#071426",
+    "--color-red": "#d8b45f",
+    "--color-red-dark": "#061b31",
+    "--color-on-red": "#06111c",
+    "--color-cream": "#f3f5f7",
+    "--color-gold": "#e8cf86",
+    "--color-night": "#f3f5f7",
+    "--color-flame": "#f1d98e",
+    "--color-ember": "#b8c4d1",
+    "--color-rose": "#d8dde3",
+    "--footer-bg": "#030609",
+    "--logo-bg": "#05090d",
+  },
+  light: {
+    "--color-background": "#eef4f8",
+    "--color-foreground": "#071426",
+    "--color-black": "#eef4f8",
+    "--color-deep": "#dfe8ef",
+    "--color-red": "#b88932",
+    "--color-red-dark": "#d9e0e7",
+    "--color-on-red": "#06111c",
+    "--color-cream": "#071426",
+    "--color-gold": "#8f6824",
+    "--color-night": "#071426",
+    "--color-flame": "#9f762c",
+    "--color-ember": "#536579",
+    "--color-rose": "#33485f",
+    "--footer-bg": "#dfe8ef",
+    "--logo-bg": "#05090d",
+  },
+};
+
+const defaultTheme: EditableTheme = {
+  dark: {
+    "--color-background": "#101820",
+    "--color-foreground": "#ffffff",
+    "--color-black": "#101820",
+    "--color-deep": "#005035",
+    "--color-red": "#005035",
+    "--color-red-dark": "#003d2b",
+    "--color-on-red": "#ffffff",
+    "--color-cream": "#ffffff",
+    "--color-gold": "#a49665",
+    "--color-night": "#ffffff",
+    "--color-flame": "#a49665",
+    "--color-ember": "#f1e6b2",
+    "--color-rose": "#f1e6b2",
+    "--footer-bg": "#101820",
+    "--logo-bg": "#05090d",
+  },
+  light: {
+    "--color-background": "#ffffff",
+    "--color-foreground": "#101820",
+    "--color-black": "#ffffff",
+    "--color-deep": "#f1e6b2",
+    "--color-red": "#005035",
+    "--color-red-dark": "#e6eddf",
+    "--color-on-red": "#ffffff",
+    "--color-cream": "#101820",
+    "--color-gold": "#7d7046",
+    "--color-night": "#101820",
+    "--color-flame": "#a49665",
+    "--color-ember": "#005035",
+    "--color-rose": "#005035",
+    "--footer-bg": "#f1e6b2",
+    "--logo-bg": "#05090d",
   },
 };
 
@@ -368,7 +442,15 @@ function normalizeTheme(value: unknown): EditableTheme {
       const nextValue = incoming?.[mode]?.[token.key];
 
       if (typeof nextValue === "string" && nextValue.trim()) {
-        theme[mode][token.key] = nextValue.trim();
+        const trimmedValue = nextValue.trim();
+        const legacyValue = legacyDefaultTheme[mode][token.key];
+        const previousBlueValue = previousBlueDefaultTheme[mode][token.key];
+
+        theme[mode][token.key] =
+          trimmedValue.toLowerCase() === legacyValue.toLowerCase() ||
+          trimmedValue.toLowerCase() === previousBlueValue.toLowerCase()
+            ? defaultTheme[mode][token.key]
+            : trimmedValue;
       }
     }
   }

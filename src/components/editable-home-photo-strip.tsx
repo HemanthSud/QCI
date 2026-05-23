@@ -51,7 +51,7 @@ export function EditableHomePhotoStrip({ fallbackImages }: EditableHomePhotoStri
       {images.slice(0, 4).map((frame, index) => (
         <article
           key={frame.id}
-          className={`relative overflow-hidden bg-[#1a1010] p-3 shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0 ${
+          className={`relative overflow-hidden bg-[#101820] p-3 shadow-[0_8px_40px_rgba(0,0,0,0.6)] transition duration-300 hover:z-10 hover:scale-[1.03] hover:rotate-0 ${
             index === 0
               ? "rotate-[-3deg]"
               : index === 1
@@ -61,7 +61,7 @@ export function EditableHomePhotoStrip({ fallbackImages }: EditableHomePhotoStri
                   : "mt-2 rotate-[-2deg]"
           }`}
         >
-          <span className="absolute left-1/2 top-[-6px] h-[18px] w-10 -translate-x-1/2 rounded-sm bg-[rgba(212,175,55,0.25)]" />
+          <span className="absolute left-1/2 top-[-6px] h-[18px] w-10 -translate-x-1/2 rounded-sm bg-[rgba(164,150,101,0.28)]" />
           <div className="relative aspect-square overflow-hidden bg-[var(--color-red-dark)]">
             <img
               alt={frame.alt}
@@ -69,7 +69,7 @@ export function EditableHomePhotoStrip({ fallbackImages }: EditableHomePhotoStri
               src={frame.src}
               style={{ objectPosition: frame.position || undefined }}
             />
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(200,16,46,0.16),rgba(0,0,0,0.42))]" />
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,80,53,0.24),rgba(0,0,0,0.42))]" />
           </div>
         </article>
       ))}

@@ -136,7 +136,7 @@ export default function AuthPage() {
         <h1 className="text-4xl font-bold mb-2 text-center font-abril-fatface">
           {isSignUp ? "Join QCI Members" : "Members Login"}
         </h1>
-        <p className="text-center text-gray-600 mb-8">
+        <p className="text-center text-[var(--color-muted)] mb-8">
           {isSignUp
             ? "Create an account to access exclusive member content"
             : "Sign in to access exclusive member content"}
@@ -144,7 +144,7 @@ export default function AuthPage() {
 
         {!isSignUp && showAccessCodePrompt && (
           <form
-            className="mb-6 space-y-4 rounded-lg border border-[rgba(212,175,55,0.45)] bg-[rgba(212,175,55,0.08)] p-4"
+            className="mb-6 space-y-4 rounded-lg border border-[rgba(164,150,101,0.45)] bg-[rgba(164,150,101,0.1)] p-4"
             onSubmit={handleUnlockSignUp}
           >
             <div>
@@ -154,14 +154,14 @@ export default function AuthPage() {
                 required
                 value={accessCode}
                 onChange={(event) => setAccessCode(event.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--field-bg)] px-4 py-2 text-[var(--color-cream)] placeholder:text-[var(--field-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
                 placeholder="Enter code"
               />
             </div>
             <button
               type="submit"
               disabled={accessCodeLoading}
-              className="w-full bg-[var(--color-red)] hover:bg-[var(--color-red-dark)] text-white font-bold py-2 px-4 rounded-lg transition"
+              className="w-full rounded-lg bg-[var(--color-red)] px-4 py-2 font-bold text-[var(--color-on-red)] transition hover:bg-[var(--color-gold)]"
             >
               {accessCodeLoading ? "Checking..." : "Unlock sign up"}
             </button>
@@ -177,7 +177,7 @@ export default function AuthPage() {
           }
         >
           {isSignUp && (
-            <aside className="rounded-lg border border-[rgba(212,175,55,0.28)] bg-[rgba(212,175,55,0.08)] p-5">
+            <aside className="rounded-lg border border-[rgba(164,150,101,0.3)] bg-[rgba(164,150,101,0.1)] p-5">
               <p className="font-accent text-[0.78rem] uppercase tracking-[0.26em] text-[var(--color-gold)]">
                 Member profile
               </p>
@@ -188,7 +188,7 @@ export default function AuthPage() {
                 Your name is saved with your Supabase account profile so the portal can identify
                 members cleanly.
               </p>
-              <div className="mt-6 rounded-lg bg-[rgba(200,16,46,0.16)] p-4 text-sm leading-7 text-[var(--color-cream)]">
+              <div className="mt-6 rounded-lg bg-[rgba(0,80,53,0.18)] p-4 text-sm leading-7 text-[var(--color-cream)]">
                 Access code accepted. Complete the member account details to finish sign up.
               </div>
             </aside>
@@ -204,7 +204,7 @@ export default function AuthPage() {
                     required
                     value={firstName}
                     onChange={(event) => setFirstName(event.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                    className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--field-bg)] px-4 py-2 text-[var(--color-cream)] placeholder:text-[var(--field-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
                     placeholder="First name"
                   />
                 </div>
@@ -216,7 +216,7 @@ export default function AuthPage() {
                     required
                     value={lastName}
                     onChange={(event) => setLastName(event.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                    className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--field-bg)] px-4 py-2 text-[var(--color-cream)] placeholder:text-[var(--field-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
                     placeholder="Last name"
                   />
                 </div>
@@ -230,7 +230,7 @@ export default function AuthPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--field-bg)] px-4 py-2 text-[var(--color-cream)] placeholder:text-[var(--field-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
                 placeholder="your@email.com"
               />
             </div>
@@ -242,19 +242,19 @@ export default function AuthPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-red)]"
+                className="w-full rounded-lg border border-[var(--color-border)] bg-[var(--field-bg)] px-4 py-2 text-[var(--color-cream)] placeholder:text-[var(--field-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--color-gold)]"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              <div className="rounded border border-[var(--color-rose)] bg-[rgba(0,80,53,0.1)] p-3 text-[var(--color-rose)]">
                 {error}
               </div>
             )}
 
             {notice && (
-              <div className="rounded border border-[rgba(212,175,55,0.45)] bg-[rgba(212,175,55,0.12)] p-3 text-[var(--color-gold)]">
+              <div className="rounded border border-[rgba(164,150,101,0.45)] bg-[rgba(164,150,101,0.12)] p-3 text-[var(--color-gold)]">
                 {notice}
               </div>
             )}
@@ -262,7 +262,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[var(--color-red)] hover:bg-[var(--color-red-dark)] disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded-lg transition"
+              className="w-full rounded-lg bg-[var(--color-red)] px-4 py-2 font-bold text-[var(--color-on-red)] transition hover:bg-[var(--color-gold)] disabled:bg-[rgba(255,255,255,0.3)]"
             >
               {loading ? "Loading..." : isSignUp ? "Create Member Account" : "Sign In"}
             </button>

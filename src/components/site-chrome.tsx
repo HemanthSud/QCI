@@ -82,7 +82,7 @@ export function SiteHeader() {
       <Container className="py-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <Link className="flex min-w-0 items-center gap-3" href="/">
-            <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--logo-bg)] shadow-[0_0_24px_rgba(200,16,46,0.18)]">
+            <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-[var(--color-border)] bg-[var(--logo-bg)] shadow-[0_0_24px_rgba(164,150,101,0.24)]">
               <img
                 alt={`${siteMeta.name} logo`}
                 className="h-full w-full object-cover"
@@ -105,7 +105,7 @@ export function SiteHeader() {
                 key={item.href}
                 className={`shrink-0 border px-3 py-2 font-accent text-[0.72rem] uppercase tracking-[0.16em] transition sm:px-4 sm:text-[0.78rem] md:text-[0.82rem] ${
                   item.label === "Donate"
-                    ? "border-[var(--color-red)] bg-[var(--color-red)] text-[var(--color-on-red)] shadow-[0_10px_28px_rgba(200,16,46,0.26)]"
+                    ? "border-[var(--color-red)] bg-[var(--color-red)] text-[var(--color-on-red)] shadow-[0_10px_28px_rgba(0,80,53,0.34)]"
                     : "border-[var(--color-border)] bg-[var(--nav-bg)] text-[var(--nav-text)] hover:border-[var(--color-gold)] hover:text-[var(--color-gold)]"
                 }`}
                 href={item.href}
@@ -221,8 +221,9 @@ function useEditableLogoImage() {
     let publishedLogo = siteMeta.logoImage;
 
     const applyCurrentLogo = () => {
-      const previewLogo = readSiteEditorPreview()?.imageSlots.find((slot) => slot.id === "site-logo")
-        ?.image.src;
+      const previewLogo = resolveLogoImage(
+        readSiteEditorPreview()?.imageSlots.find((slot) => slot.id === "site-logo")?.image.src,
+      );
 
       setLogoImage(previewLogo ?? publishedLogo);
     };
@@ -231,7 +232,8 @@ function useEditableLogoImage() {
       const content = await fetchPublishedSiteEditorContent();
 
       publishedLogo =
-        content?.imageSlots.find((slot) => slot.id === "site-logo")?.image.src ?? siteMeta.logoImage;
+        resolveLogoImage(content?.imageSlots.find((slot) => slot.id === "site-logo")?.image.src) ??
+        siteMeta.logoImage;
 
       if (isActive) {
         applyCurrentLogo();
@@ -251,6 +253,14 @@ function useEditableLogoImage() {
   return logoImage;
 }
 
+function resolveLogoImage(src?: string) {
+  if (!src || src === "/qci-logo.jpg" || src === "qci-logo.jpg") {
+    return siteMeta.logoImage;
+  }
+
+  return src;
+}
+
 type SocialLinkProps = {
   children: React.ReactNode;
   href: string;
@@ -263,7 +273,7 @@ function SocialLink({ children, href, label }: SocialLinkProps) {
   return (
     <a
       aria-label={label}
-      className="inline-flex h-11 w-11 items-center justify-center border border-[var(--color-border)] text-[var(--color-cream)] transition hover:border-[var(--color-red)] hover:bg-[rgba(200,16,46,0.15)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)]"
+      className="inline-flex h-11 w-11 items-center justify-center border border-[var(--color-border)] text-[var(--color-cream)] transition hover:border-[var(--color-red)] hover:bg-[rgba(0,80,53,0.16)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)]"
       href={href}
       rel={isExternal ? "noreferrer" : undefined}
       target={isExternal ? "_blank" : undefined}

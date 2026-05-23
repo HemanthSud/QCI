@@ -11,7 +11,7 @@
         height: 100%;
         margin: 0;
         overflow: hidden;
-        background: #080808;
+        background: #101820;
       }
 
       body {
@@ -19,7 +19,7 @@
       }
 
       body.theme-light {
-        background: #fff8ef;
+        background: #ffffff;
         color-scheme: light;
       }
 
@@ -27,18 +27,18 @@
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(circle at 50% 46%, rgba(42, 5, 16, 0.64), transparent 34%),
-          radial-gradient(circle at 14% 14%, rgba(200, 16, 46, 0.34), transparent 31%),
-          radial-gradient(circle at 84% 18%, rgba(212, 175, 55, 0.2), transparent 33%),
-          linear-gradient(180deg, #100808 0%, #080808 58%, #040404 100%);
+          radial-gradient(circle at 50% 46%, rgba(0, 80, 53, 0.58), transparent 34%),
+          radial-gradient(circle at 14% 14%, rgba(0, 80, 53, 0.36), transparent 31%),
+          radial-gradient(circle at 84% 18%, rgba(164, 150, 101, 0.24), transparent 33%),
+          linear-gradient(180deg, #005035 0%, #101820 58%, #071014 100%);
       }
 
       body.theme-light #scene {
         background:
-          radial-gradient(circle at 50% 45%, rgba(255, 224, 205, 0.92), transparent 35%),
-          radial-gradient(circle at 15% 15%, rgba(182, 14, 42, 0.18), transparent 32%),
-          radial-gradient(circle at 84% 18%, rgba(138, 100, 15, 0.16), transparent 34%),
-          linear-gradient(180deg, #fff8ef 0%, #fff2e6 58%, #f7e6da 100%);
+          radial-gradient(circle at 50% 45%, rgba(241, 230, 178, 0.58), transparent 35%),
+          radial-gradient(circle at 15% 15%, rgba(0, 80, 53, 0.14), transparent 32%),
+          radial-gradient(circle at 84% 18%, rgba(164, 150, 101, 0.18), transparent 34%),
+          linear-gradient(180deg, #ffffff 0%, #f1e6b2 58%, #ffffff 100%);
       }
 
       canvas {
@@ -61,10 +61,10 @@
         background:
           repeating-linear-gradient(
             100deg,
-            rgba(242, 237, 228, 0.032) 0 1px,
+            rgba(255, 255, 255, 0.032) 0 1px,
             transparent 1px 22px
           ),
-          radial-gradient(ellipse at 50% 48%, rgba(212, 175, 55, 0.13), transparent 48%);
+          radial-gradient(ellipse at 50% 48%, rgba(164, 150, 101, 0.16), transparent 48%);
         animation: haze-drift 9s ease-in-out infinite alternate;
       }
 
@@ -73,16 +73,16 @@
         opacity: 0.58;
         mix-blend-mode: screen;
         background:
-          radial-gradient(ellipse at 35% 100%, rgba(200, 16, 46, 0.32), transparent 42%),
-          radial-gradient(ellipse at 66% 100%, rgba(212, 175, 55, 0.24), transparent 44%),
-          linear-gradient(180deg, transparent 0%, rgba(242, 237, 228, 0.035) 74%, transparent 100%);
+          radial-gradient(ellipse at 35% 100%, rgba(0, 80, 53, 0.34), transparent 42%),
+          radial-gradient(ellipse at 66% 100%, rgba(164, 150, 101, 0.24), transparent 44%),
+          linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.035) 74%, transparent 100%);
         filter: blur(8px);
       }
 
       .club-vignette {
         background:
           radial-gradient(circle at 50% 42%, transparent 0 36%, rgba(0, 0, 0, 0.4) 69%, rgba(0, 0, 0, 0.84) 100%),
-          linear-gradient(180deg, rgba(8, 8, 8, 0.48), transparent 36%, rgba(4, 4, 4, 0.58));
+          linear-gradient(180deg, rgba(16, 24, 32, 0.48), transparent 36%, rgba(7, 16, 20, 0.58));
       }
 
       body.theme-light .club-haze {
@@ -91,25 +91,25 @@
         background:
           repeating-linear-gradient(
             100deg,
-            rgba(139, 11, 31, 0.035) 0 1px,
+            rgba(0, 80, 53, 0.035) 0 1px,
             transparent 1px 22px
           ),
-          radial-gradient(ellipse at 50% 48%, rgba(138, 100, 15, 0.12), transparent 48%);
+          radial-gradient(ellipse at 50% 48%, rgba(164, 150, 101, 0.12), transparent 48%);
       }
 
       body.theme-light .club-floor {
         opacity: 0.36;
         mix-blend-mode: multiply;
         background:
-          radial-gradient(ellipse at 35% 100%, rgba(182, 14, 42, 0.2), transparent 42%),
-          radial-gradient(ellipse at 66% 100%, rgba(138, 100, 15, 0.18), transparent 44%),
-          linear-gradient(180deg, transparent 0%, rgba(40, 17, 17, 0.035) 74%, transparent 100%);
+          radial-gradient(ellipse at 35% 100%, rgba(0, 80, 53, 0.18), transparent 42%),
+          radial-gradient(ellipse at 66% 100%, rgba(164, 150, 101, 0.18), transparent 44%),
+          linear-gradient(180deg, transparent 0%, rgba(16, 24, 32, 0.035) 74%, transparent 100%);
       }
 
       body.theme-light .club-vignette {
         background:
-          radial-gradient(circle at 50% 42%, transparent 0 38%, rgba(40, 17, 17, 0.08) 72%, rgba(40, 17, 17, 0.18) 100%),
-          linear-gradient(180deg, rgba(255, 248, 239, 0.12), transparent 38%, rgba(40, 17, 17, 0.1));
+          radial-gradient(circle at 50% 42%, transparent 0 38%, rgba(16, 24, 32, 0.08) 72%, rgba(16, 24, 32, 0.18) 100%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 38%, rgba(16, 24, 32, 0.1));
       }
 
       @keyframes haze-drift {
@@ -144,76 +144,76 @@
       const heroMode = sceneParams.get("mode") === "hero";
       const themeSettings = {
         dark: {
-          clear: 0x080808,
-          fog: 0x080808,
+          clear: 0x101820,
+          fog: 0x101820,
           fogDensity: 0.065,
           exposure: 1.2,
-          core: 0x080808,
+          core: 0x101820,
           cable: 0xd8dce8,
-          cableEmissive: 0xd4af37,
+          cableEmissive: 0xa49665,
           cableEmissiveIntensity: 0.08,
           cap: 0xd8c78c,
-          capEmissive: 0xd4af37,
+          capEmissive: 0xa49665,
           capEmissiveIntensity: 0.04,
-          ambientSky: 0xd4af37,
-          ambientGround: 0x120707,
+          ambientSky: 0xa49665,
+          ambientGround: 0x005035,
           ambientIntensity: 1.28,
-          fill: 0xf2ede4,
+          fill: 0xffffff,
           fillIntensity: 1.45,
-          redSpot: 0xc8102e,
-          redSpotIntensity: 110,
-          goldSpot: 0xd4af37,
+          redSpot: 0x005035,
+          redSpotIntensity: 96,
+          goldSpot: 0xa49665,
           goldSpotIntensity: 96,
-          redBeamOpacity: 0.3,
+          redBeamOpacity: 0.28,
           goldBeamOpacity: 0.24,
-          glint: 0xf2ede4,
+          glint: 0xffffff,
           glintMultiplier: 1,
           tileTint: 0xffffff,
           tileTintScale: 1,
           tileEmissiveBase: 0.025,
           tileEmissiveLift: 0.48,
           tileEnvMapIntensity: 1.9,
-          tilePalette: [0xf2ede4, 0xd4af37, 0xf3b5ac, 0xc8102e, 0x8b0b1f, 0xff6f60, 0xd8c78c, 0xf7f1df],
+          tilePalette: [0xffffff, 0xa49665, 0xf1e6b2, 0x005035, 0x003d2b, 0x101820, 0xd8c78c, 0xfff4c8],
           dustOpacity: 0.62,
-          reflectionStops: ["#c8102e", "#100808", "#f2ede4", "#2a0510", "#d4af37"],
-          reflectionPrimary: "rgba(242,237,228,0.72)",
-          reflectionAccent: "rgba(212,175,55,0.26)",
+          reflectionStops: ["#005035", "#101820", "#ffffff", "#003d2b", "#a49665"],
+          reflectionPrimary: "rgba(255,255,255,0.72)",
+          reflectionAccent: "rgba(164,150,101,0.28)",
         },
         light: {
-          clear: 0xfff8ef,
-          fog: 0xfff1e5,
+          clear: 0xffffff,
+          fog: 0xf1e6b2,
           fogDensity: 0.042,
           exposure: 0.9,
-          core: 0x281111,
-          cable: 0x8a640f,
-          cableEmissive: 0xb60e2a,
+          core: 0x101820,
+          cable: 0x7d7046,
+          cableEmissive: 0x005035,
           cableEmissiveIntensity: 0.035,
-          cap: 0x8a640f,
-          capEmissive: 0xb60e2a,
+          cap: 0x7d7046,
+          capEmissive: 0x005035,
           capEmissiveIntensity: 0.025,
-          ambientSky: 0xffe0cd,
-          ambientGround: 0x8b0b1f,
+          ambientSky: 0xf1e6b2,
+          ambientGround: 0x005035,
           ambientIntensity: 0.82,
           fill: 0xffffff,
           fillIntensity: 0.78,
-          redSpot: 0xb60e2a,
-          redSpotIntensity: 86,
-          goldSpot: 0x8a640f,
+          redSpot: 0x005035,
+          redSpotIntensity: 72,
+          goldSpot: 0x7d7046,
           goldSpotIntensity: 76,
           redBeamOpacity: 0.18,
           goldBeamOpacity: 0.15,
-          glint: 0xf2e0c9,
+          glint: 0xffffff,
           glintMultiplier: 0.42,
-          tileTint: 0xf7e6da,
+          tileTint: 0xf1e6b2,
           tileTintScale: 0.24,
           tileEmissiveBase: 0.006,
           tileEmissiveLift: 0.18,
           tileEnvMapIntensity: 1.18,
-          tilePalette: [0xe4d2c2, 0xb58318, 0xd9918a, 0xb60e2a, 0x6e0818, 0x8a1e18, 0xbfa14f, 0x281111],
+          tilePalette: [0xffffff, 0xa49665, 0xf1e6b2, 0x005035, 0x003d2b, 0x101820, 0xcaa24e, 0x101820],
           dustOpacity: 0.38,
-          reflectionStops: ["#b60e2a", "#fff8ef", "#fffaf2", "#f3d8d2", "#8a640f"],
-          reflectionPrimary: "rgba(40,17,17,0.26)",
-          reflectionAccent: "rgba(138,100,15,0.24)",
+          reflectionStops: ["#005035", "#ffffff", "#fffaf2", "#f1e6b2", "#7d7046"],
+          reflectionPrimary: "rgba(16,24,32,0.26)",
+          reflectionAccent: "rgba(164,150,101,0.24)",
         },
       };
       let activeThemeName = readSiteTheme();

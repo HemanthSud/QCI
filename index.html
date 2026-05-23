@@ -7,13 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #080808;
-    --deep: #100808;
-    --red: #C8102E;
-    --red-dark: #8B0B1F;
-    --cream: #F2EDE4;
-    --gold: #D4AF37;
-    --gold-dim: rgba(212,175,55,0.15);
+    --black: #101820;
+    --deep: #005035;
+    --red: #005035;
+    --red-dark: #003D2B;
+    --cream: #FFFFFF;
+    --gold: #A49665;
+    --jasper: #F1E6B2;
+    --gold-dim: rgba(164,150,101,0.18);
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,7 +25,7 @@
     background: var(--black);
     color: var(--cream);
     font-family: 'DM Sans', sans-serif;
-    overflow-x: hidden
+    overflow-x: hidden;
     cursor: none;
   }
 
@@ -74,11 +75,21 @@
     background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
   }
   .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.4rem;
     letter-spacing: 0.2em;
     color: var(--cream);
     text-decoration: none;
+  }
+  .nav-logo img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.24);
+    box-shadow: 0 0 24px rgba(164,150,101,0.24);
   }
   .nav-logo span { color: var(--red); }
   .nav-links { display: flex; gap: 36px; list-style: none; }
@@ -110,7 +121,7 @@
   .hero-bg {
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 40%, #2a0510 0%, var(--black) 70%);
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #005035 0%, var(--black) 70%);
   }
 
   /* Disco ball */
@@ -137,12 +148,12 @@
     width: 2px;
     height: 45vh;
     transform-origin: top center;
-    background: linear-gradient(to bottom, rgba(212,175,55,0.5), transparent);
+    background: linear-gradient(to bottom, rgba(164,150,101,0.5), transparent);
     animation: beam-sweep 3s ease-in-out infinite alternate;
     pointer-events: none;
   }
-  .beam:nth-child(2) { animation-delay: -1s; transform: rotate(30deg); background: linear-gradient(to bottom, rgba(200,16,46,0.4), transparent); }
-  .beam:nth-child(3) { animation-delay: -2s; transform: rotate(-30deg); background: linear-gradient(to bottom, rgba(212,175,55,0.3), transparent); }
+  .beam:nth-child(2) { animation-delay: -1s; transform: rotate(30deg); background: linear-gradient(to bottom, rgba(0,80,53,0.4), transparent); }
+  .beam:nth-child(3) { animation-delay: -2s; transform: rotate(-30deg); background: linear-gradient(to bottom, rgba(164,150,101,0.3), transparent); }
   @keyframes beam-sweep {
     from { opacity: 0.2; transform: rotate(var(--r, 0deg)) scaleX(1); }
     to { opacity: 0.7; transform: rotate(calc(var(--r, 0deg) + 20deg)) scaleX(2); }
@@ -172,7 +183,7 @@
     display: block;
     color: var(--red);
     -webkit-text-stroke: 2px var(--red);
-    text-shadow: 0 0 60px rgba(200,16,46,0.5);
+    text-shadow: 0 0 60px rgba(0,80,53,0.52);
   }
   .hero-title .line-outline {
     display: block;
@@ -230,8 +241,8 @@
   }
   .btn-primary { background: var(--red); color: var(--cream); }
   .btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); clip-path: none; }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(200,16,46,0.4); }
-  .btn-outline:hover { background: var(--gold-dim); box-shadow: 0 12px 32px rgba(212,175,55,0.2); }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,80,53,0.42); }
+  .btn-outline:hover { background: var(--gold-dim); box-shadow: 0 12px 32px rgba(164,150,101,0.22); }
 
   /* Scroll indicator */
   .scroll-hint {
@@ -326,7 +337,7 @@
     transform: rotate(2deg);
   }
   .polaroid {
-    background: #1a1010;
+    background: #101820;
     padding: 12px 12px 32px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.6);
     transform: rotate(var(--rot, 0deg));
@@ -353,7 +364,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(200,16,46,0.3), rgba(0,0,0,0.5));
+    background: linear-gradient(135deg, rgba(0,80,53,0.34), rgba(0,0,0,0.5));
   }
   .polaroid-img svg { opacity: 0.3; }
   .polaroid-caption {
@@ -371,7 +382,7 @@
     transform: translateX(-50%);
     width: 40px;
     height: 18px;
-    background: rgba(212,175,55,0.25);
+    background: rgba(164,150,101,0.28);
     border-radius: 2px;
   }
 
@@ -393,8 +404,8 @@
     gap: 24px;
   }
   .event-card {
-    background: #0f0606;
-    border: 1px solid rgba(200,16,46,0.15);
+    background: #101820;
+    border: 1px solid rgba(255,255,255,0.14);
     padding: 32px;
     position: relative;
     overflow: hidden;
@@ -418,7 +429,7 @@
     position: absolute;
     top: 0; right: 0;
     width: 60px; height: 60px;
-    background: linear-gradient(135deg, transparent 50%, rgba(200,16,46,0.15) 50%);
+    background: linear-gradient(135deg, transparent 50%, rgba(0,80,53,0.16) 50%);
   }
   .event-badge {
     display: inline-block;
@@ -550,9 +561,9 @@
 
   /* FOOTER */
   footer {
-    background: #040404;
+    background: #101820;
     padding: 60px 48px 40px;
-    border-top: 1px solid rgba(200,16,46,0.2);
+    border-top: 1px solid rgba(255,255,255,0.14);
   }
   .footer-inner {
     max-width: 1100px;
@@ -592,7 +603,7 @@
     transition: border-color 0.2s, background 0.2s;
     clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
   }
-  .social-link:hover { border-color: var(--red); background: rgba(200,16,46,0.15); }
+  .social-link:hover { border-color: var(--red); background: rgba(0,80,53,0.16); }
   .footer-copy {
     width: 100%;
     text-align: center;
@@ -651,7 +662,10 @@
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#hero">QC<span>I</span></a>
+  <a class="nav-logo" href="#hero">
+    <img src="public/qci-logo.svg" alt="Queen City Ishaare logo">
+    <span>QCI</span>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#events">Events</a></li>
@@ -678,23 +692,23 @@
     <g clip-path="url(#circle-clip)" opacity="0.7">
       <!-- mirror tiles -->
       <rect x="10" y="50" width="18" height="12" fill="#fff" opacity="0.3" transform="rotate(-20,100,100)"/>
-      <rect x="40" y="20" width="18" height="12" fill="#D4AF37" opacity="0.4" transform="rotate(-10,100,100)"/>
+      <rect x="40" y="20" width="18" height="12" fill="#A49665" opacity="0.4" transform="rotate(-10,100,100)"/>
       <rect x="70" y="10" width="18" height="12" fill="#fff" opacity="0.5"/>
-      <rect x="100" y="15" width="18" height="12" fill="#C8102E" opacity="0.5"/>
+      <rect x="100" y="15" width="18" height="12" fill="#005035" opacity="0.5"/>
       <rect x="130" y="25" width="18" height="12" fill="#fff" opacity="0.3" transform="rotate(10,100,100)"/>
-      <rect x="155" y="50" width="18" height="12" fill="#D4AF37" opacity="0.4"/>
-      <rect x="20" y="85" width="18" height="12" fill="#C8102E" opacity="0.4"/>
+      <rect x="155" y="50" width="18" height="12" fill="#A49665" opacity="0.4"/>
+      <rect x="20" y="85" width="18" height="12" fill="#005035" opacity="0.4"/>
       <rect x="55" y="75" width="18" height="12" fill="#fff" opacity="0.5"/>
-      <rect x="88" y="80" width="18" height="12" fill="#D4AF37" opacity="0.6"/>
+      <rect x="88" y="80" width="18" height="12" fill="#A49665" opacity="0.6"/>
       <rect x="122" y="78" width="18" height="12" fill="#fff" opacity="0.4"/>
-      <rect x="155" y="85" width="18" height="12" fill="#C8102E" opacity="0.3"/>
+      <rect x="155" y="85" width="18" height="12" fill="#005035" opacity="0.3"/>
       <rect x="30" y="115" width="18" height="12" fill="#fff" opacity="0.5"/>
-      <rect x="65" y="110" width="18" height="12" fill="#C8102E" opacity="0.4"/>
-      <rect x="98" y="112" width="18" height="12" fill="#D4AF37" opacity="0.5"/>
+      <rect x="65" y="110" width="18" height="12" fill="#005035" opacity="0.4"/>
+      <rect x="98" y="112" width="18" height="12" fill="#A49665" opacity="0.5"/>
       <rect x="132" y="114" width="18" height="12" fill="#fff" opacity="0.3"/>
-      <rect x="50" y="145" width="18" height="12" fill="#D4AF37" opacity="0.4"/>
+      <rect x="50" y="145" width="18" height="12" fill="#A49665" opacity="0.4"/>
       <rect x="83" y="148" width="18" height="12" fill="#fff" opacity="0.5"/>
-      <rect x="116" y="146" width="18" height="12" fill="#C8102E" opacity="0.3"/>
+      <rect x="116" y="146" width="18" height="12" fill="#005035" opacity="0.3"/>
       <rect x="80" y="175" width="18" height="12" fill="#fff" opacity="0.3"/>
     </g>
     <!-- Hanging wire -->
@@ -768,7 +782,7 @@
       <div class="polaroid">
         <div class="polaroid-tape"></div>
         <div class="polaroid-img">
-          <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,5 55,50 5,50" fill="none" stroke="#D4AF37" stroke-width="2"/><line x1="30" y1="20" x2="30" y2="38" stroke="#D4AF37" stroke-width="2"/><circle cx="30" cy="43" r="2" fill="#D4AF37"/></svg>
+          <svg width="60" height="60" viewBox="0 0 60 60"><polygon points="30,5 55,50 5,50" fill="none" stroke="#A49665" stroke-width="2"/><line x1="30" y1="20" x2="30" y2="38" stroke="#A49665" stroke-width="2"/><circle cx="30" cy="43" r="2" fill="#A49665"/></svg>
         </div>
         <p class="polaroid-caption">Jersey Jalwa</p>
       </div>
@@ -782,7 +796,7 @@
       <div class="polaroid">
         <div class="polaroid-tape"></div>
         <div class="polaroid-img">
-          <svg width="60" height="60" viewBox="0 0 60 60"><path d="M10 40 Q30 10 50 40" stroke="#C8102E" stroke-width="2.5" fill="none"/><circle cx="30" cy="28" r="5" fill="#C8102E"/></svg>
+          <svg width="60" height="60" viewBox="0 0 60 60"><path d="M10 40 Q30 10 50 40" stroke="#005035" stroke-width="2.5" fill="none"/><circle cx="30" cy="28" r="5" fill="#005035"/></svg>
         </div>
         <p class="polaroid-caption">Fall SZN Recap</p>
       </div>
@@ -906,6 +920,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
+      <img src="public/qci-logo.svg" alt="Queen City Ishaare logo" style="width:64px;height:64px;border-radius:50%;margin-bottom:14px;border:1px solid rgba(255,255,255,0.18);">
       Queen City <span>Ishaare</span>
       <small>UNCC Bollywood Dance Team · Charlotte, NC</small>
     </div>

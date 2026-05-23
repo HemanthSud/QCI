@@ -40,9 +40,9 @@ export function ButtonLink({
     "inline-flex items-center justify-center px-6 py-3 font-accent text-[0.95rem] uppercase tracking-[0.2em] transition duration-200";
   const variants = {
     primary:
-      "bg-[var(--color-red)] text-[var(--color-on-red)] shadow-[0_12px_32px_rgba(200,16,46,0.3)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(200,16,46,0.4)]",
+      "bg-[var(--color-red)] text-[var(--color-on-red)] shadow-[0_12px_32px_rgba(0,80,53,0.34)] [clip-path:polygon(8px_0,100%_0,calc(100%-8px)_100%,0_100%)] hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(0,80,53,0.44)]",
     secondary:
-      "border border-[var(--color-gold)] bg-transparent text-[var(--color-gold)] hover:-translate-y-0.5 hover:bg-[var(--color-gold-dim)] hover:shadow-[0_16px_36px_rgba(212,175,55,0.15)]",
+      "border border-[var(--color-gold)] bg-transparent text-[var(--color-gold)] hover:-translate-y-0.5 hover:bg-[var(--color-gold-dim)] hover:shadow-[0_16px_36px_rgba(164,150,101,0.18)]",
     ghost:
       "text-[var(--color-cream)] hover:text-[var(--color-gold)]",
   };

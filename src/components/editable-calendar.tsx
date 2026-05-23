@@ -43,7 +43,7 @@ export function EditableCalendar({ fallbackCalendar }: EditableCalendarProps) {
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {events.map((event) => (
                 <article className="section-card relative overflow-hidden p-6" key={event.id}>
-                  <div className="absolute right-0 top-0 h-14 w-14 bg-[linear-gradient(135deg,transparent_50%,rgba(200,16,46,0.16)_50%)]" />
+                  <div className="absolute right-0 top-0 h-14 w-14 bg-[linear-gradient(135deg,transparent_50%,rgba(0,80,53,0.16)_50%)]" />
                   <div className="flex flex-wrap gap-2">
                     <span className="inline-flex bg-[var(--color-red)] px-3 py-1 font-accent text-[0.72rem] uppercase tracking-[0.16em] text-[var(--color-on-red)] [clip-path:polygon(6px_0,100%_0,calc(100%-6px)_100%,0_100%)]">
                       {event.kind || "Event"}
