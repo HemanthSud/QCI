@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { EditableHomePhotoStrip } from "@/components/editable-home-photo-strip";
 import { EditableText } from "@/components/editable-text";
@@ -8,7 +9,7 @@ import {
   homeEventHighlights,
   homeStoryStats,
 } from "@/lib/site-data";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, seoLandingPages } from "@/lib/seo";
 import { createDefaultSiteEditorContent } from "@/lib/site-editor";
 
 const fallbackEditorContent = createDefaultSiteEditorContent();
@@ -121,6 +122,45 @@ export default function Home() {
             <div className="reveal-on-scroll reveal-delay-1" data-reveal>
               <EditableHomePhotoStrip fallbackImages={fallbackEditorContent.homePhotoStrip} />
             </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-[4.5rem] sm:py-24" id="qci-search">
+        <Container className="space-y-10">
+          <div className="reveal-on-scroll max-w-3xl" data-reveal>
+            <p className="font-accent text-[0.8rem] uppercase tracking-[0.3em] text-[var(--color-red)]">
+              QCI in Charlotte
+            </p>
+            <h2 className="mt-4 font-display text-5xl leading-[1.02] text-[var(--color-cream)] sm:text-6xl">
+              Queen City Ishaare is QCI dance.
+            </h2>
+            <p className="mt-5 text-base leading-8 text-[var(--color-muted)]">
+              People search for QCI, QCI dance, UNC Charlotte Bollywood dance team,
+              Charlotte Bollywood dance, South Asian dance team Charlotte, and
+              Charlotte dance team. They all point back to Queen City Ishaare: a
+              student-run Bollywood fusion team from UNC Charlotte.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {seoLandingPages.map((page) => (
+              <Link
+                key={page.path}
+                className="section-card group block p-6 transition duration-300 hover:-translate-y-1 hover:border-[var(--color-gold)]"
+                href={page.path}
+              >
+                <p className="font-accent text-[0.72rem] uppercase tracking-[0.22em] text-[var(--color-gold)]">
+                  {page.eyebrow}
+                </p>
+                <h3 className="mt-4 font-display text-3xl leading-none text-[var(--color-cream)]">
+                  {page.title}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[var(--color-muted)]">
+                  {page.metaDescription}
+                </p>
+              </Link>
+            ))}
           </div>
         </Container>
       </section>
