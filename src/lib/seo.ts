@@ -308,10 +308,11 @@ export function createPageMetadata({
   path,
   image = defaultOgImage,
 }: PageMetadataOptions): Metadata {
-  const fullTitle = path === "/" ? `${siteMeta.name} | ${siteMeta.tagline}` : `${title} | ${siteMeta.name}`;
+  const titleIncludesBrand = title.includes(siteMeta.name);
+  const fullTitle = path === "/" ? `${siteMeta.name} | ${siteMeta.tagline}` : titleIncludesBrand ? title : `${title} | ${siteMeta.name}`;
 
   return {
-    title: path === "/" ? fullTitle : title,
+    title: path === "/" || titleIncludesBrand ? { absolute: fullTitle } : title,
     description,
     keywords: [...seoKeywords],
     alternates: {
